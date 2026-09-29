@@ -54,8 +54,11 @@ section{display:grid;gap:10px}
 .keys button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-.fields{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.field{display:grid;gap:4px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px 8px}
+.field .in.auto{background:transparent;border-style:dashed}
+.field .in.auto output{font:500 16px var(--mono);color:var(--muted);padding:10px;flex:1}
+.field{display:grid;gap:4px;grid-template-rows:1fr auto}
+.field label{align-self:end}
 .field label{font-size:12.5px;color:var(--muted);line-height:1.25}
 .field .in{display:flex;align-items:center;border:1px solid var(--line);border-radius:9px;background:var(--surface);padding-right:9px}
 .field .in:focus-within{border-color:var(--accent)}
@@ -109,9 +112,10 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   <section>
     <span class="label" data-i="tube">Трубка</span>
     <div class="fields">
-      <div class="field"><label for="bore" data-i="bore">Внутр. диаметр</label><div class="in"><input id="bore" type="text" inputmode="decimal" step="0.5" min="6" max="40"><span class="u" data-i="mm">мм</span></div></div>
-      <div class="field"><label for="wall" data-i="wall">Стенка</label><div class="in"><input id="wall" type="text" inputmode="decimal" step="0.5" min="0.3" max="6"><span class="u" data-i="mm">мм</span></div></div>
-      <div class="field"><label for="hole" data-i="hole">Отверстия</label><div class="in"><input id="hole" type="text" inputmode="decimal" step="0.5" min="3" max="16"><span class="u" data-i="mm">мм</span></div></div>
+      <div class="field"><label for="bore" data-i="bore">Внутренний диаметр трубки</label><div class="in"><input id="bore" type="text" inputmode="decimal"><span class="u" data-i="mm">мм</span></div></div>
+      <div class="field"><label for="outer" data-i="outer">Внешний диаметр трубки</label><div class="in"><input id="outer" type="text" inputmode="decimal"><span class="u" data-i="mm">мм</span></div></div>
+      <div class="field"><label for="wallOut" data-i="wall">Толщина стенки (считается сама)</label><div class="in auto"><output id="wallOut" for="bore outer"></output><span class="u" data-i="mm">мм</span></div></div>
+      <div class="field"><label for="hole" data-i="hole">Диаметр отверстий</label><div class="in"><input id="hole" type="text" inputmode="decimal"><span class="u" data-i="mm">мм</span></div></div>
     </div>
   </section>
 
@@ -134,7 +138,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   const STEPS=[1,3,5];                 // шаги отверстий снизу вверх
   const BLOW=55.5, TEMP=25, A4=440;    // калибровка по замерам
   const TXT={
-    ru:{h1:"Къамыл",key:"Тональность",tube:"Трубка",bore:"Внутр. диаметр",wall:"Стенка",hole:"Отверстия",mm:"мм",
+    ru:{h1:"Къамыл",key:"Тональность",tube:"Трубка",bore:"Внутренний диаметр трубки",outer:"Внешний диаметр трубки",wall:"Толщина стенки (считается сама)",hole:"Диаметр отверстий",badOuter:"Внешний диаметр должен быть больше внутреннего",mm:"мм",
         len:"Длина трубки",h:["Отверстие 1","Отверстие 2","Отверстие 3"],draw:"Чертёж",top:"вдув",bottom:"низ",scaleNote:"длина в масштабе, мм",
         fb:"Это бета-версия, значения могут немного быть неточными. Буду рад фидбеку, который поможет улучшить точность - пишите в Instagram ",
         howT:"Как размечать",
@@ -143,7 +147,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
           `Сверлите так, чтобы <b>ближний край попал точно на отметку</b>: центр сверла ставьте на ${h} мм ниже отметки (половина диаметра отверстия).`,
           `Трубку отпилите на 20-30 мм длиннее и подпиливайте низ по тюнеру, пока тоника не попадёт в ноту.`],
         bad:"Проверьте размеры трубки"},
-    en:{h1:"Kamyl",key:"Key",tube:"Tube",bore:"Inner diameter",wall:"Wall",hole:"Holes",mm:"mm",
+    en:{h1:"Kamyl",key:"Key",tube:"Tube",bore:"Inner tube diameter",outer:"Outer tube diameter",wall:"Wall thickness (calculated)",hole:"Hole diameter",badOuter:"The outer diameter must be larger than the inner one",mm:"mm",
         len:"Tube length",h:["Hole 1","Hole 2","Hole 3"],draw:"Drawing",top:"blowing end",bottom:"bottom",scaleNote:"length to scale, mm",
         fb:"This is a beta version, the values may be slightly inaccurate. I'd be glad of feedback that helps improve the accuracy - message me on Instagram ",
         howT:"How to mark",
@@ -153,19 +157,22 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
           `Cut the tube 20-30 mm long and trim the bottom to a tuner until the tonic is in tune.`],
         bad:"Check the tube dimensions"}
   };
-  const DEF={lang:"ru",key:0,bore:14,wall:1,hole:8};
+  const DEF={lang:"ru",key:0,bore:14,outer:16,hole:8};
   let S=Object.assign({},DEF);
   try{const s=JSON.parse(localStorage.getItem("kamyl-lite")||"null");if(s)S=Object.assign(S,s);}catch(e){}
+  if(!(S.outer>0)) S.outer=S.bore+2*(S.wall>0?S.wall:1);
+  delete S.wall;
   if(location.hash==="#en")S.lang="en";else if(location.hash==="#ru")S.lang="ru";
   const $=id=>document.getElementById(id);
   const t=()=>TXT[S.lang]||TXT.ru;
 
+  const wallOf=()=>(S.outer-S.bore)/2;
   function calc(tonic){
     const c=331.3+0.606*TEMP;
     const Leff=m=>c*1000/(2*A4*Math.pow(2,(m-69)/12));
     const L=Leff(tonic)-BLOW-0.6133*S.bore/2;
-    const te=S.wall+0.75*S.hole, R=Math.pow(S.bore/S.hole,2);
-    let prev=L, ok=L>0&&S.bore>0&&S.hole>0&&S.wall>0; const holes=[], centers=[];
+    const te=wallOf()+0.75*S.hole, R=Math.pow(S.bore/S.hole,2);
+    let prev=L, ok=L>0&&S.bore>0&&S.hole>0&&wallOf()>0; const holes=[], centers=[];
     for(const st of STEPS){
       const target=Leff(tonic+st)-BLOW; let lo=0,hi=prev;
       for(let i=0;i<70;i++){const x=(lo+hi)/2,g=Math.max(prev-x,1e-6);const z=g/2*(Math.sqrt(1+4*te/g*R)-1);if(x+z>target)hi=x;else lo=x;}
@@ -177,7 +184,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 
   const keysEl=$("keys");
   KEYS.forEach(([n,m],i)=>{const b=document.createElement("button");b.type="button";b.innerHTML=n+"<sup>"+(Math.floor(m/12)-1)+"</sup>";b.addEventListener("click",()=>{S.key=i;render();});keysEl.appendChild(b);});
-  ["bore","wall","hole"].forEach(k=>{const el=$(k);el.value=S[k];el.addEventListener("input",()=>{const v=parseFloat(el.value.replace(",","."));if(isFinite(v)&&v>0){S[k]=v;render();}});});
+  ["bore","outer","hole"].forEach(k=>{const el=$(k);el.value=S[k];el.addEventListener("input",()=>{const v=parseFloat(el.value.replace(",","."));if(isFinite(v)&&v>0){S[k]=v;render();}});});
   $("ru").addEventListener("click",()=>{S.lang="ru";render();});
   $("en").addEventListener("click",()=>{S.lang="en";render();});
 
@@ -229,7 +236,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     $("result").innerHTML=
       `<div class="row"><span class="k">${T.len}</span><span class="v">${v(r.L)}</span></div>`+
       r.holes.map((h,i)=>`<div class="row"><span class="k">${T.h[i]}</span><span class="v">${v(h)}</span></div>`).join("")+
-      (r.ok?"":`<div class="row"><span class="k">${T.bad}</span></div>`);
+      (r.ok?"":`<div class="row"><span class="k">${wallOf()>0?T.bad:T.badOuter}</span></div>`);
+    const w=wallOf();
+    $("wallOut").textContent=w>0?String(Math.round(w*100)/100).replace(".",S.lang==="ru"?",":"."):"-";
     $("drawingBox").hidden=!r.ok;
     const half=String(Math.round(S.hole/2*10)/10).replace(".",S.lang==="ru"?",":".");
     $("fb").innerHTML=T.fb+`<a href="https://www.instagram.com/circassian_flute/" target="_blank" rel="noopener">@circassian_flute</a>`;
