@@ -94,42 +94,42 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .tn-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .tn-tt{display:grid;gap:1px}
 .tn-tt small{font-size:12px;color:var(--muted)}
-.tn-body{display:grid;gap:10px;padding:0 12px 12px}
+.tn-body{display:grid;gap:14px;padding:2px 14px 16px}
 .tn-body[hidden]{display:none}
 .tn-head{display:flex;align-items:center;gap:10px}
 .tn-btn{flex:none;font:600 13.5px var(--sans);border:0;border-radius:9px;padding:8px 12px;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
 .tn-btn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
 .tn-level{flex:1;height:6px;border-radius:3px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
 .tn-level i{display:block;height:100%;width:0;background:var(--accent);transition:width .08s linear}
-.tn-main{display:grid;gap:6px}
+.tn-main{display:grid;gap:8px;padding:4px 0}
 .tn-main.stale{opacity:.45}
 .tn-read{display:flex;align-items:baseline;justify-content:center;gap:12px}
-.tn-note{font:500 30px var(--mono);line-height:1}
+.tn-note{font:500 34px var(--mono);line-height:1}
 .tn-note sup{font-size:.5em}
 .tn-cents{font:500 14px var(--mono);color:var(--muted)}
-.tn-meter{position:relative;height:18px;border-radius:6px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.tn-meter{position:relative;height:22px;border-radius:6px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
 .tn-zone{position:absolute;top:0;bottom:0;left:45%;width:10%;background:var(--accent-soft)}
 .tn-mid{position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--faint)}
 .tn-needle{position:absolute;top:2px;bottom:2px;width:4px;margin-left:-2px;border-radius:2px;background:var(--ink);left:50%;transition:left .25s ease-out}
 .tn-needle.ok{background:var(--accent)}
 .tn-tip{font-size:12.5px;color:var(--muted);text-align:center;margin:0;min-height:0}
 .tn-tip:empty{display:none}
-.tn-targets{display:grid;grid-template-columns:12px repeat(4,1fr);gap:4px;align-items:stretch}
+.tn-targets{display:grid;grid-template-columns:14px repeat(4,1fr);gap:8px;align-items:center;max-width:420px;width:100%;justify-self:center}
 .tn-reg{font:600 11px var(--mono);color:var(--faint);align-self:center;text-align:center}
-.tn-t{position:relative;font:inherit;color:var(--ink);cursor:pointer;border:1px solid var(--line);border-radius:8px;padding:4px 2px;height:40px;display:flex;align-items:center;justify-content:center;gap:6px;background:var(--bg);transition:background .15s,border-color .15s}
-.tn-t b{font-size:15px;font-weight:700;line-height:1}
+.tn-t{position:relative;font:inherit;color:var(--ink);cursor:pointer;border:1px solid var(--line);border-radius:12px;padding:0;aspect-ratio:1/1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;background:var(--bg);transition:background .15s,border-color .15s}
+.tn-t b{font-size:17px;font-weight:700;line-height:1}
 .tn-t b sup{font-size:.62em;font-weight:500}
-.tn-t .fd{display:grid;gap:2px}
-.tn-t .fd i{display:block;width:7px;height:7px;border-radius:50%;border:1.3px solid var(--ink);box-sizing:border-box}
+.tn-t .fd{display:grid;gap:3px}
+.tn-t .fd i{display:block;width:8px;height:8px;border-radius:50%;border:1.4px solid var(--ink);box-sizing:border-box}
 .tn-t .fd i.cl{background:var(--ink)}
-.tn-t .pl{position:absolute;top:2px;right:4px;font-size:8px;color:var(--accent);line-height:1}
+.tn-t .pl{position:absolute;bottom:6px;right:7px;font-size:9px;color:var(--accent);line-height:1}
 .tn-t .c{display:none}
 .tn-t.on{border-color:var(--accent);background:var(--accent-soft)}
 .tn-t.ok{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .tn-t.ok .fd i{border-color:var(--accent-ink)} .tn-t.ok .fd i.cl{background:var(--accent-ink)} .tn-t.ok .pl{color:var(--accent-ink)}
 .tn-t[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--accent)}
-.tn-tap{font-size:12px;color:var(--muted);margin:-4px 0 0;text-align:center}
-.tn-hint{font-size:12px;color:var(--muted);margin:0;line-height:1.4}
+.tn-tap{font-size:12.5px;color:var(--muted);margin:-2px 0 0;text-align:center}
+.tn-hint{font-size:12.5px;color:var(--muted);margin:0;line-height:1.5;text-align:center}
 .drawing{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 12px 12px;display:grid;gap:6px}
 .drawing .label{padding-left:6px}
 .drawing svg{display:block;width:100%;max-width:340px;height:auto;margin:0 auto}
@@ -169,7 +169,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     </div>
     <p class="tn-tip" id="tnTip" aria-live="polite"></p>
     <div class="tn-targets" id="tnTargets"></div>
-    <p class="tn-tap" data-i="tnTap">Нажмите на ноту, чтобы услышать её</p>
     <p class="tn-hint" data-i="tnHint"></p>
     </div>
   </section>
@@ -213,7 +212,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         tnIdle:"Включите микрофон и сыграйте ноту.",
         tnListen:"Слушаю… сыграйте ноту ровно и не слишком громко.",
         tnMic:"Нет доступа к микрофону. Разрешите его в настройках браузера. Во встроенном браузере Telegram или Instagram микрофон может не работать - откройте сайт в Chrome или Safari.",
-        tnHint:"Тюнер сам определяет, какую ноту камыля вы играете, и подсвечивает её. Играйте так, как играете обычно. Звук никуда не отправляется, всё считается на вашем устройстве.",
+        tnHint:"Нажмите на ноту, чтобы услышать её. Тюнер сам подсветит ноту, которую вы играете. Звук никуда не отправляется.",
         cents:"ц",
         howT:"Как размечать",
         how:h=>[`Все расстояния меряйте <b>от места, куда задувается воздух</b> (верхний срез трубки).`,
@@ -230,7 +229,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         tnIdle:"Turn on the microphone and play a note.",
         tnListen:"Listening… play a steady note, not too loud.",
         tnMic:"No access to the microphone. Allow it in your browser settings. Inside Telegram or Instagram the microphone may not work - open the site in Chrome or Safari.",
-        tnHint:"The tuner detects which note of the kamyl you are playing and highlights it. Play the way you normally play. The sound is not sent anywhere; everything is computed on your device.",
+        tnHint:"Tap a note to hear it. The tuner highlights the note you are playing. The sound is not sent anywhere.",
         cents:"c",
         howT:"How to mark",
         how:h=>[`Measure every distance <b>from where you blow into the tube</b> (the top end).`,
