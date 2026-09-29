@@ -113,6 +113,10 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .tn-tip{border-radius:10px;padding:12px 14px;background:var(--bg);font-size:14.5px;line-height:1.45;min-height:3em}
 .tn-tip.ok{background:var(--accent-soft)}
 .tn-tip b{font-weight:700}
+.tn-sens{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.tn-sens input{width:100%;accent-color:var(--accent)}
+.tn-level{height:6px;border-radius:3px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.tn-level i{display:block;height:100%;width:0;background:var(--accent);transition:width .08s linear}
 .tn-hint{font-size:12.5px;color:var(--muted);margin:0;line-height:1.45}
 .drawing{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 12px 12px;display:grid;gap:6px}
 .drawing .label{padding-left:6px}
@@ -164,6 +168,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 
   <section class="tuner" id="tuner" aria-live="polite">
     <div class="tn-head"><span class="label" data-i="tnTitle">Тюнер</span><button type="button" class="tn-btn" id="tnBtn" aria-pressed="false">Включить микрофон</button></div>
+    <div class="tn-sens"><label for="tnSens" data-i="tnSensL">Чувствительность</label><input type="range" id="tnSens" min="1" max="10" step="1"><output id="tnSensV"></output></div>
+    <div class="tn-level" aria-hidden="true"><i id="tnLevel"></i></div>
     <div class="tn-targets" id="tnTargets"></div>
     <div class="tn-main">
       <div class="tn-note" id="tnNote">-</div>
@@ -189,7 +195,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         len:"Длина трубки",h:["Отверстие 1","Отверстие 2","Отверстие 3"],draw:"Чертёж",top:"вдув",bottom:"низ",scaleNote:"длина в масштабе, мм",
         fb:"Это бета-версия, значения могут немного быть неточными. Буду рад фидбеку, который поможет улучшить точность - пишите в Instagram ",
 
-        tnTitle:"Тюнер",tnOn:"Включить микрофон",tnOff:"Выключить",
+        tnTitle:"Тюнер",tnSensL:"Чувствительность",tnOn:"Включить микрофон",tnOff:"Выключить",
         tnFing:["все закрыты","отв. 1","отв. 1-2","отв. 1-3"],
         tnIdle:"Включите микрофон и сыграйте ноту в нижнем регистре.",
         tnListen:"Слушаю… сыграйте ноту ровно и не слишком громко.",
@@ -212,7 +218,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         len:"Tube length",h:["Hole 1","Hole 2","Hole 3"],draw:"Drawing",top:"blowing end",bottom:"bottom",scaleNote:"length to scale, mm",
         fb:"This is a beta version, the values may be slightly inaccurate. I'd be glad of feedback that helps improve the accuracy - message me on Instagram ",
 
-        tnTitle:"Tuner",tnOn:"Turn on microphone",tnOff:"Turn off",
+        tnTitle:"Tuner",tnSensL:"Sensitivity",tnOn:"Turn on microphone",tnOff:"Turn off",
         tnFing:["all closed","hole 1","holes 1-2","holes 1-3"],
         tnIdle:"Turn on the microphone and play a note in the low register.",
         tnListen:"Listening… play a steady note, not too loud.",
@@ -232,7 +238,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
           `Cut the tube 20-30 mm long and trim the bottom to a tuner until the tonic is in tune.`],
         bad:"Check the tube dimensions"}
   };
-  const DEF={lang:"ru",key:5,bore:14,outer:16,hole:8};
+  const DEF={lang:"ru",key:5,bore:14,outer:16,hole:8,sens:8};
   let S=Object.assign({},DEF);
   try{const s=JSON.parse(localStorage.getItem("kamyl-lite")||"null");if(s)S=Object.assign(S,s);}catch(e){}
   if(!(S.outer>0)) S.outer=S.bore+2*(S.wall>0?S.wall:1);
@@ -317,9 +323,10 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   }
 
   // McLeod-style normalized autocorrelation
-  function detect(x,sr){
+  const gate=()=>0.02*Math.pow(0.5,(S.sens||8)-1);   // 1 -> 0.02 ... 10 -> ~0.00004
+  function detect(x,sr,g){
     const N=x.length; let e=0; for(let i=0;i<N;i++) e+=x[i]*x[i];
-    if(Math.sqrt(e/N)<0.008) return null;
+    if(Math.sqrt(e/N)<(g===undefined?gate():g)) return null;
     const minLag=Math.max(2,Math.floor(sr/2400)), maxLag=Math.min(Math.floor(sr/110),(N>>1));
     const n=new Float32Array(maxLag+2);
     for(let tau=minLag;tau<=maxLag+1;tau++){
@@ -335,8 +342,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     }
     if(pos&&bestT>0) peaks.push([bestT,best]);
     if(!peaks.length) return null;
-    const mx=Math.max(...peaks.map(p=>p[1])); if(mx<0.6) return null;
-    const pk=peaks.find(p=>p[1]>=0.88*mx), T0=pk[0];
+    const mx=Math.max(...peaks.map(p=>p[1])); if(mx<0.45) return null;
+    const pk=peaks.find(p=>p[1]>=0.86*mx), T0=pk[0];
     const a=n[T0-1],b=n[T0],c=n[T0+1], den=a-2*b+c, sh=den?(a-c)/(2*den):0;
     return sr/(T0+sh);
   }
@@ -374,6 +381,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     if(!TN.on) return;
     TN.raf=requestAnimationFrame(loop);
     TN.an.getFloatTimeDomainData(TN.buf);
+    let e=0; for(let i=0;i<TN.buf.length;i++) e+=TN.buf[i]*TN.buf[i];
+    const rms=Math.sqrt(e/TN.buf.length), lvl=Math.max(0,Math.min(1,(Math.log10(rms+1e-9)+5)/4.3));
+    $("tnLevel").style.width=(lvl*100)+"%";
     const f=detect(TN.buf,TN.ctx.sampleRate), now=performance.now();
     if(f){
       TN.hist.push(f); if(TN.hist.length>7) TN.hist.shift();
@@ -387,11 +397,14 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     const T=t();
     try{
       if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) throw new Error("no media");
-      TN.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+      TN.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:true}});
       TN.ctx=new (window.AudioContext||window.webkitAudioContext)();
       if(TN.ctx.state==="suspended") await TN.ctx.resume();
       const src=TN.ctx.createMediaStreamSource(TN.stream);
-      TN.an=TN.ctx.createAnalyser(); TN.an.fftSize=2048; src.connect(TN.an);
+      const hp=TN.ctx.createBiquadFilter(); hp.type="highpass"; hp.frequency.value=110;
+      const lp=TN.ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=2600;
+      TN.an=TN.ctx.createAnalyser(); TN.an.fftSize=2048;
+      src.connect(hp); hp.connect(lp); lp.connect(TN.an);
       TN.buf=new Float32Array(TN.an.fftSize); TN.on=true; TN.last=0; TN.hist=[];
       $("tnTip").textContent=T.tnListen; tunerBtn(); loop();
     }catch(e){ tunerStop(); $("tnTip").className="tn-tip"; $("tnTip").textContent=T.tnMic; }
@@ -404,6 +417,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   }
   function tunerBtn(){const b=$("tnBtn");b.setAttribute("aria-pressed",TN.on);b.textContent=TN.on?t().tnOff:t().tnOn;}
   $("tnBtn").addEventListener("click",()=>{TN.on?tunerStop():tunerStart();});
+  const sens=$("tnSens"); sens.value=S.sens||8; $("tnSensV").textContent=sens.value;
+  sens.addEventListener("input",()=>{S.sens=+sens.value;$("tnSensV").textContent=sens.value;try{localStorage.setItem("kamyl-lite",JSON.stringify(S));}catch(e){}});
   window.__kamylDetect=detect;
 
   function render(){
