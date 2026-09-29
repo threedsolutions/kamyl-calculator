@@ -88,49 +88,48 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .fb{font-size:13.5px;color:var(--muted);margin:0;padding:0 4px;line-height:1.5}
 .fb a{color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap}
 .fb a:hover{text-decoration:underline}
-.tuner{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:14px}
-.tn-head{display:flex;justify-content:flex-start;align-items:center;gap:10px;flex-wrap:wrap}
-.tuner{padding:0;gap:0}
-.tn-toggle{all:unset;box-sizing:border-box;width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;border-radius:14px}
-.tn-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.tn-tt{display:grid;gap:2px}
-.tn-tt small{font-size:12.5px;color:var(--muted)}
 .chev{font:500 20px var(--mono);color:var(--muted);width:24px;text-align:center}
-.tn-body{display:grid;gap:14px;padding:0 16px 16px}
+.tuner{background:var(--surface);border:1px solid var(--line);border-radius:14px;display:grid}
+.tn-toggle{all:unset;box-sizing:border-box;width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;border-radius:14px}
+.tn-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tn-tt{display:grid;gap:1px}
+.tn-tt small{font-size:12px;color:var(--muted)}
+.tn-body{display:grid;gap:10px;padding:0 12px 12px}
 .tn-body[hidden]{display:none}
-.tn-btn{font:600 14px var(--sans);border:0;border-radius:9px;padding:10px 14px;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+.tn-head{display:flex;align-items:center;gap:10px}
+.tn-btn{flex:none;font:600 13.5px var(--sans);border:0;border-radius:9px;padding:8px 12px;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
 .tn-btn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
-.tn-targets{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.tn-t{font:inherit;color:var(--ink);cursor:pointer;border:1px solid var(--line);border-radius:10px;padding:8px 4px;display:grid;justify-items:center;gap:2px;background:var(--bg);transition:background .15s,border-color .15s}
-.tn-t{position:relative}
-.tn-t .fd{display:grid;gap:3px;margin:3px 0 1px}
-.tn-t .fd i{display:block;width:10px;height:10px;border-radius:50%;border:1.5px solid var(--ink);box-sizing:border-box}
-.tn-t .fd i.cl{background:var(--ink)}
-.tn-t .pl{position:absolute;top:4px;right:6px;font-size:10px;color:var(--accent)}
-.tn-t[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--accent)}
-.tn-tap{font-size:12.5px;color:var(--muted);margin:-6px 0 0;text-align:center}
+.tn-level{flex:1;height:6px;border-radius:3px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.tn-level i{display:block;height:100%;width:0;background:var(--accent);transition:width .08s linear}
+.tn-main{display:grid;gap:6px}
 .tn-main.stale{opacity:.45}
-.tn-t b{font-size:17px}
-.tn-t b sup{font-size:.6em;font-weight:500}
-.tn-t small{font-size:11.5px;color:var(--muted);text-align:center;line-height:1.2}
-.tn-t .c{font:500 12px var(--mono);color:var(--muted);min-height:1.2em}
-.tn-t.on{border-color:var(--accent);background:var(--accent-soft)}
-.tn-t.ok .c{color:var(--accent);font-weight:600}
-.tn-main{display:grid;justify-items:center;gap:8px;padding:6px 0}
-.tn-note{font:500 40px var(--mono);line-height:1}
+.tn-read{display:flex;align-items:baseline;justify-content:center;gap:12px}
+.tn-note{font:500 30px var(--mono);line-height:1}
 .tn-note sup{font-size:.5em}
-.tn-cents{font:500 15px var(--mono);color:var(--muted)}
-.tn-meter{position:relative;width:100%;max-width:360px;height:30px;border-radius:8px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.tn-cents{font:500 14px var(--mono);color:var(--muted)}
+.tn-meter{position:relative;height:18px;border-radius:6px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
 .tn-zone{position:absolute;top:0;bottom:0;left:45%;width:10%;background:var(--accent-soft)}
 .tn-mid{position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--faint)}
-.tn-needle{position:absolute;top:3px;bottom:3px;width:4px;margin-left:-2px;border-radius:2px;background:var(--ink);left:50%;transition:left .25s ease-out}
+.tn-needle{position:absolute;top:2px;bottom:2px;width:4px;margin-left:-2px;border-radius:2px;background:var(--ink);left:50%;transition:left .25s ease-out}
 .tn-needle.ok{background:var(--accent)}
-.tn-scale{display:flex;justify-content:space-between;width:100%;max-width:360px;font:500 11px var(--mono);color:var(--faint)}
-.tn-tip{font-size:13.5px;color:var(--muted);text-align:center;min-height:1.4em;margin:0}
-.tn-reg{grid-column:1/-1;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:4px}
-.tn-level{height:6px;border-radius:3px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
-.tn-level i{display:block;height:100%;width:0;background:var(--accent);transition:width .08s linear}
-.tn-hint{font-size:12.5px;color:var(--muted);margin:0;line-height:1.45}
+.tn-tip{font-size:12.5px;color:var(--muted);text-align:center;margin:0;min-height:0}
+.tn-tip:empty{display:none}
+.tn-targets{display:grid;grid-template-columns:12px repeat(4,1fr);gap:4px;align-items:stretch}
+.tn-reg{font:600 11px var(--mono);color:var(--faint);align-self:center;text-align:center}
+.tn-t{position:relative;font:inherit;color:var(--ink);cursor:pointer;border:1px solid var(--line);border-radius:8px;padding:4px 2px;height:40px;display:flex;align-items:center;justify-content:center;gap:6px;background:var(--bg);transition:background .15s,border-color .15s}
+.tn-t b{font-size:15px;font-weight:700;line-height:1}
+.tn-t b sup{font-size:.62em;font-weight:500}
+.tn-t .fd{display:grid;gap:2px}
+.tn-t .fd i{display:block;width:7px;height:7px;border-radius:50%;border:1.3px solid var(--ink);box-sizing:border-box}
+.tn-t .fd i.cl{background:var(--ink)}
+.tn-t .pl{position:absolute;top:2px;right:4px;font-size:8px;color:var(--accent);line-height:1}
+.tn-t .c{display:none}
+.tn-t.on{border-color:var(--accent);background:var(--accent-soft)}
+.tn-t.ok{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.tn-t.ok .fd i{border-color:var(--accent-ink)} .tn-t.ok .fd i.cl{background:var(--accent-ink)} .tn-t.ok .pl{color:var(--accent-ink)}
+.tn-t[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--accent)}
+.tn-tap{font-size:12px;color:var(--muted);margin:-4px 0 0;text-align:center}
+.tn-hint{font-size:12px;color:var(--muted);margin:0;line-height:1.4}
 .drawing{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 12px 12px;display:grid;gap:6px}
 .drawing .label{padding-left:6px}
 .drawing svg{display:block;width:100%;max-width:340px;height:auto;margin:0 auto}
@@ -163,17 +162,14 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   <section class="tuner" id="tuner">
     <button type="button" class="tn-toggle" id="tnToggle" aria-expanded="false" aria-controls="tnBody"><span class="tn-tt"><span class="label" data-i="tnTitle">Тюнер</span><small data-i="tnSub">проверка строя и звучание всех нот камыля</small></span><span class="chev" aria-hidden="true">+</span></button>
     <div class="tn-body" id="tnBody" hidden>
-    <div class="tn-head"><button type="button" class="tn-btn" id="tnBtn" aria-pressed="false">Включить микрофон</button></div>
-    <div class="tn-level" aria-hidden="true"><i id="tnLevel"></i></div>
+    <div class="tn-head"><button type="button" class="tn-btn" id="tnBtn" aria-pressed="false">Включить микрофон</button><div class="tn-level" aria-hidden="true"><i id="tnLevel"></i></div></div>
+    <div class="tn-main" id="tnMain">
+      <div class="tn-read"><span class="tn-note" id="tnNote">-</span><span class="tn-cents" id="tnCents">&nbsp;</span></div>
+      <div class="tn-meter"><div class="tn-zone"></div><div class="tn-mid"></div><div class="tn-needle" id="tnNeedle"></div></div>
+    </div>
+    <p class="tn-tip" id="tnTip" aria-live="polite"></p>
     <div class="tn-targets" id="tnTargets"></div>
     <p class="tn-tap" data-i="tnTap">Нажмите на ноту, чтобы услышать её</p>
-    <p class="tn-tip" id="tnTip" aria-live="polite"></p>
-    <div class="tn-main" id="tnMain">
-      <div class="tn-note" id="tnNote">-</div>
-      <div class="tn-cents" id="tnCents">&nbsp;</div>
-      <div class="tn-meter"><div class="tn-zone"></div><div class="tn-mid"></div><div class="tn-needle" id="tnNeedle"></div></div>
-      <div class="tn-scale"><span>−50</span><span>0</span><span>+50</span></div>
-    </div>
     <p class="tn-hint" data-i="tnHint"></p>
     </div>
   </section>
@@ -333,7 +329,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
       box.dataset.sig=sig;
       let h="", reg=-1;
       all.forEach((n,i)=>{
-        if(n.reg!==reg){reg=n.reg; h+=`<span class="tn-reg">${T.tnReg(reg+1)}</span>`;}
+        if(n.reg!==reg){reg=n.reg; h+=`<span class="tn-reg" title="${T.tnReg(reg+1)}" aria-label="${T.tnReg(reg+1)}">${reg+1}</span>`;}
         const open=[[],[1],[1,2],[1,2,3],[2]][n.f];
         const dots=[3,2,1].map(k=>`<i class="${open.includes(k)?"":"cl"}"></i>`).join("");
         h+=`<button type="button" class="tn-t" data-n="${i}" aria-pressed="false" aria-label="${noteTxtA(n.m)}, ${T.tnFing[n.f]}"><span class="pl"></span><b>${noteHtml(n.m)}</b><span class="fd" aria-hidden="true">${dots}</span><span class="c"></span></button>`;
