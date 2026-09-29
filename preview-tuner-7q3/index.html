@@ -102,7 +102,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .tn-btn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
 .tn-targets{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .tn-t{font:inherit;color:var(--ink);cursor:pointer;border:1px solid var(--line);border-radius:10px;padding:8px 4px;display:grid;justify-items:center;gap:2px;background:var(--bg);transition:background .15s,border-color .15s}
-.tn-t .pl{font-size:11.5px;font-weight:600;color:var(--accent);margin-top:2px}
+.tn-t{position:relative}
+.tn-t .pl{position:absolute;top:4px;right:6px;font-size:10px;color:var(--accent)}
 .tn-t[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--accent)}
 .tn-tap{font-size:12.5px;color:var(--muted);margin:-6px 0 0;text-align:center}
 .tn-main.stale{opacity:.45}
@@ -119,12 +120,11 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .tn-meter{position:relative;width:100%;max-width:360px;height:30px;border-radius:8px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
 .tn-zone{position:absolute;top:0;bottom:0;left:45%;width:10%;background:var(--accent-soft)}
 .tn-mid{position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--faint)}
-.tn-needle{position:absolute;top:3px;bottom:3px;width:4px;margin-left:-2px;border-radius:2px;background:var(--ink);left:50%;transition:left .12s linear}
+.tn-needle{position:absolute;top:3px;bottom:3px;width:4px;margin-left:-2px;border-radius:2px;background:var(--ink);left:50%;transition:left .25s ease-out}
 .tn-needle.ok{background:var(--accent)}
 .tn-scale{display:flex;justify-content:space-between;width:100%;max-width:360px;font:500 11px var(--mono);color:var(--faint)}
-.tn-tip{border-radius:10px;padding:12px 14px;background:var(--bg);font-size:14.5px;line-height:1.45;min-height:3em}
-.tn-tip.ok{background:var(--accent-soft)}
-.tn-tip b{font-weight:700}
+.tn-tip{font-size:13.5px;color:var(--muted);text-align:center;min-height:1.4em;margin:0}
+.tn-reg{grid-column:1/-1;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:4px}
 .tn-level{height:6px;border-radius:3px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
 .tn-level i{display:block;height:100%;width:0;background:var(--accent);transition:width .08s linear}
 .tn-hint{font-size:12.5px;color:var(--muted);margin:0;line-height:1.45}
@@ -158,19 +158,19 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   </section>
 
   <section class="tuner" id="tuner">
-    <button type="button" class="tn-toggle" id="tnToggle" aria-expanded="false" aria-controls="tnBody"><span class="tn-tt"><span class="label" data-i="tnTitle">Тюнер</span><small data-i="tnSub">проверка строя и подсказка, сколько подпилить</small></span><span class="chev" aria-hidden="true">+</span></button>
+    <button type="button" class="tn-toggle" id="tnToggle" aria-expanded="false" aria-controls="tnBody"><span class="tn-tt"><span class="label" data-i="tnTitle">Тюнер</span><small data-i="tnSub">проверка строя и звучание всех нот камыля</small></span><span class="chev" aria-hidden="true">+</span></button>
     <div class="tn-body" id="tnBody" hidden>
     <div class="tn-head"><button type="button" class="tn-btn" id="tnBtn" aria-pressed="false">Включить микрофон</button></div>
     <div class="tn-level" aria-hidden="true"><i id="tnLevel"></i></div>
     <div class="tn-targets" id="tnTargets"></div>
     <p class="tn-tap" data-i="tnTap">Нажмите на ноту, чтобы услышать её</p>
+    <p class="tn-tip" id="tnTip" aria-live="polite"></p>
     <div class="tn-main" id="tnMain">
       <div class="tn-note" id="tnNote">-</div>
       <div class="tn-cents" id="tnCents">&nbsp;</div>
       <div class="tn-meter"><div class="tn-zone"></div><div class="tn-mid"></div><div class="tn-needle" id="tnNeedle"></div></div>
       <div class="tn-scale"><span>−50</span><span>0</span><span>+50</span></div>
     </div>
-    <div class="tn-tip" id="tnTip" aria-live="polite"></div>
     <p class="tn-hint" data-i="tnHint"></p>
     </div>
   </section>
@@ -209,18 +209,12 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         len:"Длина трубки",h:["Отверстие 1","Отверстие 2","Отверстие 3"],draw:"Чертёж",top:"вдув",bottom:"низ",scaleNote:"длина в масштабе, мм",
         fb:"Это бета-версия, значения могут немного быть неточными. Буду рад фидбеку, который поможет улучшить точность - пишите в Instagram ",
 
-        tnTitle:"Тюнер",tnSub:"проверка строя и подсказка, сколько подпилить",tnTap:"Нажмите на ноту, чтобы услышать её",tnPlay:"слушать",tnStop:"стоп",tnOn:"Включить микрофон",tnOff:"Выключить",
-        tnFing:["все закрыты","отв. 1","отв. 1-2","отв. 1-3"],
-        tnIdle:"Включите микрофон и сыграйте ноту в нижнем регистре.",
+        tnTitle:"Тюнер",tnSub:"проверка строя и звучание всех нот камыля",tnTap:"Нажмите на ноту, чтобы услышать её",tnPlay:"слушать",tnStop:"стоп",tnOn:"Включить микрофон",tnOff:"Выключить",
+        tnFing:["все закрыты","отв. 1","отв. 1-2","отв. 1-3","отв. 2"],tnReg:n=>`Регистр ${n}`,
+        tnIdle:"Включите микрофон и сыграйте ноту.",
         tnListen:"Слушаю… сыграйте ноту ровно и не слишком громко.",
-        tnOther:n=>`Звучит ${n}. Это не нота этого камыля: проверьте аппликатуру или сыграйте ниже, в нижнем регистре.`,
-        tnOk:n=>`<b>${n} в строю.</b>`,
-        tnTonicFlat:(c,mm)=>`<b>Тоника ниже на ${c} ц.</b> Подпилите низ трубки примерно на <b>${mm} мм</b>. Пилите по 2-3 мм и проверяйте снова.`,
-        tnTonicSharp:(c,mm)=>`<b>Тоника выше на ${c} ц</b> - трубка коротковата примерно на ${mm} мм. Попробуйте сильнее прикрыть срез губой. Удлинить трубку нельзя, поэтому пилите всегда с запасом.`,
-        tnHoleFlat:(k,c,mm)=>`<b>Отверстие ${k}: нота ниже на ${c} ц.</b> Рассверлите его немного шире или подпилите надфилем верхний край (в сторону вдува) примерно на <b>${mm} мм</b>. Делайте по чуть-чуть.`,
-        tnHoleSharp:(k,c,mm)=>`<b>Отверстие ${k}: нота выше на ${c} ц.</b> Отверстие великовато или высоковато. Частично заклейте его нижний край (изолента, воск) примерно на ${mm} мм.`,
         tnMic:"Нет доступа к микрофону. Разрешите его в настройках браузера. Во встроенном браузере Telegram или Instagram микрофон может не работать - откройте сайт в Chrome или Safari.",
-        tnHint:"Порядок настройки: сначала тоника (все отверстия закрыты), потом отверстия 1, 2, 3 снизу вверх. Играйте в нижнем регистре, так, как играете обычно. Звук никуда не отправляется, всё считается на вашем устройстве.",
+        tnHint:"Тюнер сам определяет, какую ноту камыля вы играете, и подсвечивает её. Играйте так, как играете обычно. Звук никуда не отправляется, всё считается на вашем устройстве.",
         cents:"ц",
         howT:"Как размечать",
         how:h=>[`Все расстояния меряйте <b>от места, куда задувается воздух</b> (верхний срез трубки).`,
@@ -232,18 +226,12 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         len:"Tube length",h:["Hole 1","Hole 2","Hole 3"],draw:"Drawing",top:"blowing end",bottom:"bottom",scaleNote:"length to scale, mm",
         fb:"This is a beta version, the values may be slightly inaccurate. I'd be glad of feedback that helps improve the accuracy - message me on Instagram ",
 
-        tnTitle:"Tuner",tnSub:"check the tuning and see how much to trim",tnTap:"Tap a note to hear it",tnPlay:"listen",tnStop:"stop",tnOn:"Turn on microphone",tnOff:"Turn off",
-        tnFing:["all closed","hole 1","holes 1-2","holes 1-3"],
-        tnIdle:"Turn on the microphone and play a note in the low register.",
+        tnTitle:"Tuner",tnSub:"check the tuning and hear every note of the kamyl",tnTap:"Tap a note to hear it",tnPlay:"listen",tnStop:"stop",tnOn:"Turn on microphone",tnOff:"Turn off",
+        tnFing:["all closed","hole 1","holes 1-2","holes 1-3","hole 2"],tnReg:n=>`Register ${n}`,
+        tnIdle:"Turn on the microphone and play a note.",
         tnListen:"Listening… play a steady note, not too loud.",
-        tnOther:n=>`Hearing ${n}. That's not a note of this kamyl: check the fingering or play lower, in the low register.`,
-        tnOk:n=>`<b>${n} is in tune.</b>`,
-        tnTonicFlat:(c,mm)=>`<b>The tonic is ${c} c flat.</b> Trim the bottom of the tube by about <b>${mm} mm</b>. Cut 2-3 mm at a time and check again.`,
-        tnTonicSharp:(c,mm)=>`<b>The tonic is ${c} c sharp</b> - the tube is about ${mm} mm too short. Try covering more of the top with your lip. A tube can't be lengthened, so always cut it long.`,
-        tnHoleFlat:(k,c,mm)=>`<b>Hole ${k}: the note is ${c} c flat.</b> Widen the hole slightly, or file its upper edge (towards the blowing end) by about <b>${mm} mm</b>. Go a little at a time.`,
-        tnHoleSharp:(k,c,mm)=>`<b>Hole ${k}: the note is ${c} c sharp.</b> The hole is a bit too big or too high. Partly cover its lower edge (tape, wax) by about ${mm} mm.`,
         tnMic:"No access to the microphone. Allow it in your browser settings. Inside Telegram or Instagram the microphone may not work - open the site in Chrome or Safari.",
-        tnHint:"Tuning order: the tonic first (all holes closed), then holes 1, 2, 3 from the bottom up. Play in the low register, the way you normally play. The sound is not sent anywhere; everything is computed on your device.",
+        tnHint:"The tuner detects which note of the kamyl you are playing and highlights it. Play the way you normally play. The sound is not sent anywhere; everything is computed on your device.",
         cents:"c",
         howT:"How to mark",
         how:h=>[`Measure every distance <b>from where you blow into the tube</b> (the top end).`,
@@ -321,28 +309,39 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 
 
   // ---------- tuner
-  const TN={on:false,ctx:null,stream:null,an:null,buf:null,hist:[],last:0,raf:0};
-  const noteHtml=m=>{const n=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"][((m%12)+12)%12];return n+"<sup>"+(Math.floor(m/12)-1)+"</sup>";};
-  const noteTxt=m=>["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"][((m%12)+12)%12]+(Math.floor(m/12)-1);
+  const TN={on:false,ctx:null,stream:null,an:null,buf:null,hist:[],last:0,raf:0,match:null,sm:null};
+  const NN=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+  const noteHtml=m=>NN[((m%12)+12)%12]+"<sup>"+(Math.floor(m/12)-1)+"</sup>";
   const fOf=m=>A4*Math.pow(2,(m-69)/12);
-  const targets=()=>{const tn=KEYS[S.key][1];return [tn].concat(STEPS.map(s=>tn+s));};
-
+  // all notes of the kamyl, as in the fingering chart: 4 registers x 4 fingerings + 2 top notes
+  const REGS=[0,12,19,24];
+  const allNotes=()=>{
+    const tn=KEYS[S.key][1], out=[];
+    REGS.forEach((r,ri)=>[0].concat(STEPS).forEach((st,fi)=>out.push({m:tn+r+st,reg:ri,f:fi})));
+    out.push({m:tn+31,reg:4,f:4},{m:tn+32,reg:4,f:1});
+    return out;
+  };
   const GEN={ctx:null,osc:[],gain:null,idx:-1,key:-1};
   function renderTargets(match){
     if(match!==undefined) TN.match=match; match=TN.match;
-    const T=t(), box=$("tnTargets"), sig=S.key+"|"+S.lang;
+    const T=t(), box=$("tnTargets"), sig=S.key+"|"+S.lang, all=allNotes();
     if(box.dataset.sig!==sig){   // rebuild only when key or language changes, so taps are not lost
       box.dataset.sig=sig;
-      box.innerHTML=targets().map((m,i)=>`<button type="button" class="tn-t" data-n="${i}" aria-pressed="false"><b>${noteHtml(m)}</b><small>${T.tnFing[i]}</small><span class="c"></span><span class="pl"></span></button>`).join("");
+      let h="", reg=-1;
+      all.forEach((n,i)=>{
+        if(n.reg!==reg){reg=n.reg; h+=`<span class="tn-reg">${T.tnReg(reg+1)}</span>`;}
+        h+=`<button type="button" class="tn-t" data-n="${i}" aria-pressed="false"><span class="pl"></span><b>${noteHtml(n.m)}</b><small>${T.tnFing[n.f]}</small><span class="c"></span></button>`;
+      });
+      box.innerHTML=h;
     }
-    [...box.children].forEach((btn,i)=>{
-      const on=!!(match&&match.i===i), ok=on&&Math.abs(match.c)<=5, pl=GEN.idx===i;
+    box.querySelectorAll(".tn-t").forEach(btn=>{
+      const i=+btn.dataset.n, on=!!(match&&match.i===i), ok=on&&Math.abs(match.c)<=5, pl=GEN.idx===i;
       btn.classList.toggle("on",on); btn.classList.toggle("ok",ok); btn.setAttribute("aria-pressed",pl);
       btn.querySelector(".c").textContent=on?(match.c>0?"+":match.c<0?"−":"")+Math.abs(Math.round(match.c))+" "+T.cents:"";
-      btn.querySelector(".pl").textContent=pl?"■ "+T.tnStop:"▶ "+T.tnPlay;
+      btn.querySelector(".pl").textContent=pl?"■":"▶";
     });
   }
-  // note generator: soft tone with a few harmonics so phone speakers can play low notes
+  // note generator: loud, soft-edged tone with harmonics so phone speakers can play low notes
   function genStop(){
     if(GEN.gain&&GEN.ctx){
       const g=GEN.gain, now=GEN.ctx.currentTime, os=GEN.osc;
@@ -353,12 +352,22 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   }
   function genPlay(i){
     try{
-      if(!GEN.ctx) GEN.ctx=new (window.AudioContext||window.webkitAudioContext)();
+      if(!GEN.ctx){
+        GEN.ctx=new (window.AudioContext||window.webkitAudioContext)();
+        GEN.comp=GEN.ctx.createDynamicsCompressor();
+        GEN.comp.threshold.value=-10; GEN.comp.knee.value=6; GEN.comp.ratio.value=8;
+        GEN.comp.attack.value=0.003; GEN.comp.release.value=0.2;
+        GEN.comp.connect(GEN.ctx.destination);
+      }
       if(GEN.ctx.state==="suspended") GEN.ctx.resume();
       if(GEN.idx>=0) genStop();
-      const f=fOf(targets()[i]), g=GEN.ctx.createGain(); g.gain.value=0; g.connect(GEN.ctx.destination);
-      [[1,.55],[2,.28],[3,.14],[4,.06]].forEach(([h,a])=>{const o=GEN.ctx.createOscillator();o.type="sine";o.frequency.value=f*h;const og=GEN.ctx.createGain();og.gain.value=a;o.connect(og);og.connect(g);o.start();GEN.osc.push(o);});
-      g.gain.setTargetAtTime(0.4,GEN.ctx.currentTime,0.04);
+      const f=fOf(allNotes()[i].m), g=GEN.ctx.createGain(); g.gain.value=0; g.connect(GEN.comp);
+      [[1,.6],[2,.4],[3,.25],[4,.14],[5,.07]].forEach(([h,a])=>{
+        if(f*h>8000) return;
+        const o=GEN.ctx.createOscillator();o.type="sine";o.frequency.value=f*h;
+        const og=GEN.ctx.createGain();og.gain.value=a;o.connect(og);og.connect(g);o.start();GEN.osc.push(o);
+      });
+      g.gain.setTargetAtTime(1.6,GEN.ctx.currentTime,0.04);
       GEN.gain=g; GEN.idx=i; GEN.key=S.key; renderTargets();
     }catch(e){}
   }
@@ -388,30 +397,14 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     return sr/(T0+sh);
   }
 
-  function advise(f){
-    const T=t(), tg=targets(), mf=69+12*Math.log2(f/A4);
+  function show(mf,f){
+    const T=t(), all=allNotes();
     let best=null;
-    tg.forEach((m,i)=>[0,12].forEach(o=>{const c=(mf-(m+o))*100; if(!best||Math.abs(c)<Math.abs(best.c)) best={i,m,o,c};}));
-    const near=Math.round(mf);
-    $("tnNote").innerHTML=noteHtml(best&&Math.abs(best.c)<=80?best.m+best.o:near);
-    if(!best||Math.abs(best.c)>80){
-      const c=(mf-near)*100;
-      $("tnCents").textContent=(c>0?"+":c<0?"−":"")+Math.abs(Math.round(c))+" "+T.cents+" · "+f.toFixed(1)+" Hz";
-      setNeedle(c); renderTargets(null);
-      $("tnTip").className="tn-tip"; $("tnTip").innerHTML=T.tnOther(noteTxt(near)); return;
-    }
-    const c=best.c, ac=Math.abs(Math.round(c));
-    $("tnCents").textContent=(c>0?"+":c<0?"−":"")+ac+" "+T.cents+" · "+f.toFixed(1)+" Hz";
-    setNeedle(c); renderTargets(best);
-    // effective-length difference (fundamental), mm
-    const sound=331.3+0.606*TEMP, f1=f/Math.pow(2,best.o/12), ft=fOf(best.m);
-    const dmm=Math.abs(sound*1000/2*(1/f1-1/ft));
-    const mm=dmm<1?String(Math.round(dmm*10)/10).replace(".",S.lang==="ru"?",":"."):String(Math.round(dmm));
-    const tip=$("tnTip");
-    if(ac<=5){tip.className="tn-tip ok";tip.innerHTML=T.tnOk(noteTxt(best.m));return;}
-    tip.className="tn-tip";
-    if(best.i===0) tip.innerHTML=c<0?T.tnTonicFlat(ac,mm):T.tnTonicSharp(ac,mm);
-    else tip.innerHTML=c<0?T.tnHoleFlat(best.i,ac,mm):T.tnHoleSharp(best.i,ac,mm);
+    all.forEach((n,i)=>{const c=(mf-n.m)*100; if(!best||Math.abs(c)<Math.abs(best.c)) best={i,m:n.m,c};});
+    const hit=best&&Math.abs(best.c)<=80, near=Math.round(mf), c=hit?best.c:(mf-near)*100;
+    $("tnNote").innerHTML=noteHtml(hit?best.m:near);
+    $("tnCents").textContent=(c>0?"+":c<0?"−":"")+Math.abs(Math.round(c))+" "+T.cents+" · "+f.toFixed(1)+" Hz";
+    setNeedle(c); renderTargets(hit?best:null);
   }
   function setNeedle(c){
     const v=Math.max(-50,Math.min(50,c));
@@ -426,11 +419,14 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     $("tnLevel").style.width=(lvl*100)+"%";
     const f=detect(TN.buf,TN.ctx.sampleRate), now=performance.now();
     if(f){
-      TN.hist.push(f); if(TN.hist.length>7) TN.hist.shift();
-      const sorted=[...TN.hist].sort((a,b)=>a-b); advise(sorted[sorted.length>>1]); TN.last=now;
-      $("tnMain").classList.remove("stale");
+      TN.hist.push(f); if(TN.hist.length>9) TN.hist.shift();
+      const fm=[...TN.hist].sort((a,b)=>a-b)[TN.hist.length>>1], mf=69+12*Math.log2(fm/A4);
+      // inertia: glide toward the new reading; jump only when a different note starts
+      if(TN.sm===null||Math.abs(mf-TN.sm)>0.6) TN.sm=mf; else TN.sm+=(mf-TN.sm)*0.12;
+      show(TN.sm,A4*Math.pow(2,(TN.sm-69)/12)); TN.last=now;
+      $("tnMain").classList.remove("stale"); $("tnTip").textContent="";
     } else if(now-TN.last>1200){
-      TN.hist=[]; $("tnMain").classList.add("stale");   // keep the last reading, just dim it
+      TN.hist=[]; TN.sm=null; $("tnMain").classList.add("stale");   // keep the last reading, just dim it
     }
   }
   async function tunerStart(){
@@ -445,9 +441,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
       const lp=TN.ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=2600;
       TN.an=TN.ctx.createAnalyser(); TN.an.fftSize=2048;
       src.connect(hp); hp.connect(lp); lp.connect(TN.an);
-      TN.buf=new Float32Array(TN.an.fftSize); TN.on=true; TN.last=0; TN.hist=[];
+      TN.buf=new Float32Array(TN.an.fftSize); TN.on=true; TN.last=0; TN.hist=[]; TN.sm=null;
       $("tnTip").textContent=T.tnListen; tunerBtn(); loop();
-    }catch(e){ tunerStop(); $("tnTip").className="tn-tip"; $("tnTip").textContent=T.tnMic; }
+    }catch(e){ tunerStop(); $("tnTip").textContent=T.tnMic; }
   }
   function tunerStop(){
     TN.on=false; cancelAnimationFrame(TN.raf);
@@ -490,7 +486,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     $("drawing").innerHTML=r.ok?drawing(r,T):"";
     if(GEN.idx>=0&&GEN.key!==S.key) genStop();
     tunerBtn(); renderTargets(TN.on?undefined:null);
-    if(!TN.on){$("tnTip").className="tn-tip";$("tnTip").textContent=T.tnIdle;$("tnNote").textContent="-";}
+    if(!TN.on){$("tnTip").textContent=T.tnIdle;$("tnNote").textContent="-";}
   }
   render();
 })();
