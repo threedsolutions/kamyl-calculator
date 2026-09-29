@@ -74,6 +74,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .howto h2{margin:0;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 .howto ol{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14.5px;line-height:1.45}
 .howto b{font-weight:700}
+.fb{font-size:13.5px;color:var(--muted);margin:0;padding:0 4px;line-height:1.5}
+.fb a{color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap}
+.fb a:hover{text-decoration:underline}
 .drawing{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 12px 12px;display:grid;gap:6px}
 .drawing .label{padding-left:6px}
 .drawing svg{display:block;width:100%;max-width:340px;height:auto;margin:0 auto}
@@ -120,6 +123,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   </div>
 
   <div class="howto" id="howto"></div>
+
+  <p class="fb" id="fb"></p>
 </div>
 
 <script>
@@ -131,6 +136,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   const TXT={
     ru:{h1:"Къамыл",key:"Тональность",tube:"Трубка",bore:"Внутр. диаметр",wall:"Стенка",hole:"Отверстия",mm:"мм",
         len:"Длина трубки",h:["Отверстие 1","Отверстие 2","Отверстие 3"],draw:"Чертёж",top:"вдув",bottom:"низ",scaleNote:"длина в масштабе, мм",
+        fb:"Значения приблизительные: они рассчитаны по модели и зависят от вашей трубки и манеры игры. Буду благодарен за обратную связь - пишите в Instagram ",
         howT:"Как размечать",
         how:h=>[`Все расстояния меряйте <b>от места, куда задувается воздух</b> (верхний срез трубки).`,
           `Для отверстий указано расстояние <b>до ближнего края отверстия</b>, а не до центра.`,
@@ -139,6 +145,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         bad:"Проверьте размеры трубки"},
     en:{h1:"Kamyl",key:"Key",tube:"Tube",bore:"Inner diameter",wall:"Wall",hole:"Holes",mm:"mm",
         len:"Tube length",h:["Hole 1","Hole 2","Hole 3"],draw:"Drawing",top:"blowing end",bottom:"bottom",scaleNote:"length to scale, mm",
+        fb:"These values are approximate: they come from a model and depend on your tube and playing style. I'd be grateful for feedback - message me on Instagram ",
         howT:"How to mark",
         how:h=>[`Measure every distance <b>from where you blow into the tube</b> (the top end).`,
           `Hole distances are <b>to the near edge of the hole</b>, not to its centre.`,
@@ -225,6 +232,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
       (r.ok?"":`<div class="row"><span class="k">${T.bad}</span></div>`);
     $("drawingBox").hidden=!r.ok;
     const half=String(Math.round(S.hole/2*10)/10).replace(".",S.lang==="ru"?",":".");
+    $("fb").innerHTML=T.fb+`<a href="https://www.instagram.com/circassian_flute/" target="_blank" rel="noopener">@circassian_flute</a>`;
     $("howto").innerHTML=`<h2>${T.howT}</h2><ol>`+T.how(half).map(x=>`<li>${x}</li>`).join("")+`</ol>`;
     $("drawing").innerHTML=r.ok?drawing(r,T):"";
   }
