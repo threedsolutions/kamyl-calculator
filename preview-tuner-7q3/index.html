@@ -130,6 +130,25 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .tn-t[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--accent)}
 .tn-tap{font-size:12.5px;color:var(--muted);margin:-2px 0 0;text-align:center}
 .tn-hint{font-size:12.5px;color:var(--muted);margin:0;line-height:1.5;text-align:center}
+.kd-reset{flex:none;font:600 13px var(--sans);border:1px solid var(--line);border-radius:9px;padding:8px 12px;cursor:pointer;background:var(--surface);color:var(--ink)}
+.kd-time{margin-left:auto;font:500 13px var(--mono);color:var(--muted)}
+.kd-now{display:flex;justify-content:center;align-items:baseline;gap:10px;font:500 26px var(--mono);min-height:32px}
+.kd-now sup{font-size:.5em}
+.kd-now small{font:500 12px var(--mono);color:var(--muted)}
+.kd-hist{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;align-items:end;height:92px}
+.kd-bar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%}
+.kd-bar i{display:block;width:100%;border-radius:4px 4px 2px 2px;background:var(--accent-soft);min-height:3px;transition:height .3s ease-out}
+.kd-bar.in i{background:var(--accent)}
+.kd-bar span{font:600 10.5px var(--mono);color:var(--muted)}
+.kd-res{display:grid;gap:8px}
+.kd-r{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;font:inherit;color:var(--ink);text-align:left;cursor:pointer;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--bg)}
+.kd-r.best{border-color:var(--accent);background:var(--accent-soft)}
+.kd-r b{font-size:17px}
+.kd-r b sup{font-size:.6em;font-weight:500}
+.kd-r .kd-m{font-size:12.5px;color:var(--muted);line-height:1.35}
+.kd-l{display:grid;gap:3px}
+.kd-r .kd-p{font-size:12px;font-weight:600;color:var(--accent)}
+.kd-msg{font-size:13.5px;color:var(--muted);text-align:center;margin:0}
 .drawing{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 12px 12px;display:grid;gap:6px}
 .drawing .label{padding-left:6px}
 .drawing svg{display:block;width:100%;max-width:340px;height:auto;margin:0 auto}
@@ -173,6 +192,17 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     </div>
   </section>
 
+  <section class="tuner" id="kd">
+    <button type="button" class="tn-toggle" id="kdToggle" aria-expanded="false" aria-controls="kdBody"><span class="tn-tt"><span class="label" data-i="kdTitle">Подбор къамыла</span><small data-i="kdSub">сыграйте или спойте мелодию - подскажу тональность</small></span><span class="chev" aria-hidden="true">+</span></button>
+    <div class="tn-body" id="kdBody" hidden>
+    <div class="tn-head"><button type="button" class="tn-btn" id="kdBtn" aria-pressed="false">Слушать мелодию</button><button type="button" class="kd-reset" id="kdReset" data-i="kdReset">Сбросить</button><span class="kd-time" id="kdTime"></span></div>
+    <div class="kd-now"><span id="kdNow">-</span><small id="kdTune"></small></div>
+    <div class="kd-hist" id="kdHist" aria-hidden="true"></div>
+    <div class="kd-res" id="kdRes"></div>
+    <p class="tn-hint" data-i="kdHint"></p>
+    </div>
+  </section>
+
   <section>
     <span class="label" data-i="tube">Трубка</span>
     <div class="fields">
@@ -207,7 +237,10 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         len:"Длина трубки",h:["Отверстие 1","Отверстие 2","Отверстие 3"],draw:"Чертёж",top:"вдув",bottom:"низ",scaleNote:"длина в масштабе, мм",
         fb:"Это бета-версия, значения могут немного быть неточными. Буду рад фидбеку, который поможет улучшить точность - пишите в Instagram ",
 
-        tnTitle:"Тюнер",tnSub:"проверка строя и звучание всех нот камыля",tnTap:"Нажмите на ноту, чтобы услышать её",tnPlay:"слушать",tnStop:"стоп",tnOn:"Включить микрофон",tnOff:"Выключить",
+        kdTitle:"Подбор къамыла",kdSub:"сыграйте или спойте мелодию - подскажу тональность",kdOn:"Слушать мелодию",kdOff:"Стоп",kdReset:"Сбросить",
+        kdHint:"Лучше всего работает с одним голосом: пение, свист, камыль или другой инструмент соло. Музыка с аккомпанементом может сбить определение. Нажмите на вариант, чтобы выбрать эту тональность в калькуляторе.",
+        kdWait:"Слушаю… нужно хотя бы 5-10 секунд мелодии.",kdIdle:"Включите микрофон и сыграйте или спойте мелодию.",
+        kdKamyl:"Къамыл в",kdFit:p=>`совпадает ${p}% мелодии`,kdMiss:n=>`нет нот: ${n}`,kdAll:"все ноты мелодии есть",kdTuneL:c=>`строй записи ${c} ц`,kdSel:"выбран",tnSub:"проверка строя и звучание всех нот камыля",tnTap:"Нажмите на ноту, чтобы услышать её",tnPlay:"слушать",tnStop:"стоп",tnOn:"Включить микрофон",tnOff:"Выключить",
         tnFing:["все закрыты","отв. 1","отв. 1-2","отв. 1-3","отв. 2"],tnReg:n=>`Регистр ${n}`,
         tnIdle:"Включите микрофон и сыграйте ноту.",
         tnListen:"Слушаю… сыграйте ноту ровно и не слишком громко.",
@@ -224,7 +257,10 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         len:"Tube length",h:["Hole 1","Hole 2","Hole 3"],draw:"Drawing",top:"blowing end",bottom:"bottom",scaleNote:"length to scale, mm",
         fb:"This is a beta version, the values may be slightly inaccurate. I'd be glad of feedback that helps improve the accuracy - message me on Instagram ",
 
-        tnTitle:"Tuner",tnSub:"check the tuning and hear every note of the kamyl",tnTap:"Tap a note to hear it",tnPlay:"listen",tnStop:"stop",tnOn:"Turn on microphone",tnOff:"Turn off",
+        kdTitle:"Find a kamyl",kdSub:"play or sing a melody - I'll suggest the key",kdOn:"Listen to a melody",kdOff:"Stop",kdReset:"Reset",
+        kdHint:"Works best with a single voice: singing, whistling, a kamyl or another solo instrument. Music with accompaniment can confuse it. Tap a suggestion to select that key in the calculator.",
+        kdWait:"Listening… play at least 5-10 seconds of the melody.",kdIdle:"Turn on the microphone and play or sing a melody.",
+        kdKamyl:"Kamyl in",kdFit:p=>`matches ${p}% of the melody`,kdMiss:n=>`missing: ${n}`,kdAll:"every note of the melody fits",kdTuneL:c=>`recording tuning ${c} c`,kdSel:"selected",tnSub:"check the tuning and hear every note of the kamyl",tnTap:"Tap a note to hear it",tnPlay:"listen",tnStop:"stop",tnOn:"Turn on microphone",tnOff:"Turn off",
         tnFing:["all closed","hole 1","holes 1-2","holes 1-3","hole 2"],tnReg:n=>`Register ${n}`,
         tnIdle:"Turn on the microphone and play a note.",
         tnListen:"Listening… play a steady note, not too loud.",
@@ -432,6 +468,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   }
   async function tunerStart(){
     const T=t();
+    if(typeof KD!=="undefined"&&KD.on) kdStop();
     try{
       if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) throw new Error("no media");
       TN.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:true}});
@@ -464,6 +501,102 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   tunerOpen(!!S.tuner);
   $("tnTargets").addEventListener("click",e=>{const b=e.target.closest(".tn-t");if(!b)return;const i=+b.dataset.n;GEN.idx===i?genStop():genPlay(i);});
   window.__kamylDetect=detect;
+  // ---------- key finder: which kamyl can play the melody
+  const OFFS=[0,1,3,5,12,13,15,17,19,20,22,24,25,27,29,31,32];   // every note of a kamyl, from the tonic
+  const KD={on:false,ctx:null,stream:null,an:null,buf:null,raf:0,frames:[],prev:null,t0:0,lastA:0};
+  function kdAudio(){
+    return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:true}}).then(st=>{
+      const ctx=new (window.AudioContext||window.webkitAudioContext)(), src=ctx.createMediaStreamSource(st);
+      const hp=ctx.createBiquadFilter(); hp.type="highpass"; hp.frequency.value=110;
+      const lp=ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=2600;
+      const an=ctx.createAnalyser(); an.fftSize=2048; src.connect(hp); hp.connect(lp); lp.connect(an);
+      return {st,ctx,an};
+    });
+  }
+  async function kdStart(){
+    const T=t();
+    if(TN.on) tunerStop();
+    if(GEN.idx>=0) genStop();
+    try{
+      if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) throw new Error("no media");
+      const a=await kdAudio(); KD.stream=a.st; KD.ctx=a.ctx; KD.an=a.an;
+      if(KD.ctx.state==="suspended") await KD.ctx.resume();
+      KD.buf=new Float32Array(KD.an.fftSize); KD.on=true; KD.prev=null; KD.t0=performance.now()-kdElapsed();
+      kdBtn(); kdAnalyze(); kdLoop();
+    }catch(e){ kdStop(); $("kdRes").innerHTML=`<p class="kd-msg">${T.tnMic}</p>`; }
+  }
+  function kdElapsed(){return KD.frames.length*1000/60;}
+  function kdStop(){
+    KD.on=false; cancelAnimationFrame(KD.raf);
+    if(KD.stream) KD.stream.getTracks().forEach(tr=>tr.stop());
+    if(KD.ctx) KD.ctx.close().catch(()=>{});
+    KD.stream=KD.ctx=KD.an=null; kdBtn(); kdAnalyze();
+  }
+  function kdBtn(){const b=$("kdBtn");b.setAttribute("aria-pressed",KD.on);b.textContent=KD.on?t().kdOff:t().kdOn;}
+  function kdLoop(){
+    if(!KD.on) return;
+    KD.raf=requestAnimationFrame(kdLoop);
+    KD.an.getFloatTimeDomainData(KD.buf);
+    const f=detect(KD.buf,KD.ctx.sampleRate), now=performance.now();
+    if(f){
+      const m=69+12*Math.log2(f/A4);
+      if(KD.prev!==null&&Math.abs(m-KD.prev)<0.35) KD.frames.push(m);   // keep only steady, sung/played notes
+      KD.prev=m; $("kdNow").innerHTML=noteHtml(Math.round(m));
+    } else KD.prev=null;
+    const sec=Math.round(KD.frames.length/60);
+    $("kdTime").textContent=sec+" s";
+    if(now-KD.lastA>500){KD.lastA=now; kdAnalyze();}
+  }
+  function kdAnalyze(){
+    const T=t(), fr=KD.frames;
+    // bars for the 12 note names
+    const hist=new Array(12).fill(0);
+    let off=0;
+    if(fr.length){
+      const dev=fr.map(m=>m-Math.round(m)).sort((a,b)=>a-b); off=dev[dev.length>>1];   // how far the recording is from A=440
+      fr.forEach(m=>hist[(((Math.round(m-off))%12)+12)%12]++);
+    }
+    const best=kdRank(fr,off), top=best[0], mx=Math.max(1,...hist);
+    const inSet=top&&fr.length>=60?new Set(OFFS.map(o=>(KEYS[top.i][1]+o)%12)):null;
+    $("kdHist").innerHTML=NN.map((n,i)=>`<div class="kd-bar ${inSet&&inSet.has(i)?"in":""}"><i style="height:${Math.round(hist[i]/mx*72)+3}px"></i><span>${n}</span></div>`).join("");
+    $("kdTune").textContent=fr.length>=60?T.kdTuneL((off>0?"+":off<0?"−":"")+Math.abs(Math.round(off*100))):"";
+    if(fr.length<300){ $("kdRes").innerHTML=`<p class="kd-msg">${fr.length?T.kdWait:(KD.on?T.kdWait:T.kdIdle)}</p>`; return; }
+    $("kdRes").innerHTML=best.slice(0,3).map((r,j)=>{
+      const miss=r.miss.length?T.kdMiss(r.miss.join(", ")):T.kdAll;
+      return `<button type="button" class="kd-r ${j===0?"best":""}" data-k="${r.i}"><span class="kd-l"><b>${T.kdKamyl} ${noteHtml(KEYS[r.i][1])}</b><span class="kd-m">${T.kdFit(r.p)} · ${miss}</span></span><span class="kd-p">${r.i===S.key?T.kdSel:""}</span></button>`;
+    }).join("");
+  }
+  function kdRank(fr,off){
+    if(!fr.length) return [];
+    const cnt=new Map(); fr.forEach(m=>{const k=Math.round(m-off);cnt.set(k,(cnt.get(k)||0)+1);});
+    const total=fr.length, out=[];
+    KEYS.forEach(([n,tonic],i)=>{
+      const set=new Set(OFFS.map(o=>tonic+o));
+      // best octave placement: most of the melody playable, then the lowest (easiest) registers
+      let best=null;
+      [-24,-12,0,12,24].forEach(sh=>{
+        let c=0,hi=0; cnt.forEach((v,k)=>{if(set.has(k+sh)){c+=v;hi+=v*(k+sh-tonic);}});
+        const score=c/total*100-(c?hi/c:32)/32*3;
+        if(!best||score>best.score) best={score,c,sh};
+      });
+      const miss=[]; cnt.forEach((v,k)=>{if(!set.has(k+best.sh)&&v/total>0.03){const nm=NN[(((k+best.sh)%12)+12)%12]; if(miss.indexOf(nm)<0) miss.push(nm);}});
+      out.push({i,p:Math.round(best.c/total*100),score:best.score,miss});
+    });
+    return out.sort((a,b)=>b.score-a.score);
+  }
+  $("kdBtn").addEventListener("click",()=>{KD.on?kdStop():kdStart();});
+  $("kdReset").addEventListener("click",()=>{KD.frames=[];KD.prev=null;$("kdNow").textContent="-";$("kdTime").textContent="";kdAnalyze();});
+  $("kdRes").addEventListener("click",e=>{const b=e.target.closest(".kd-r");if(!b)return;S.key=+b.dataset.k;render();kdAnalyze();});
+  function kdOpen(open){
+    S.kd=open; $("kdBody").hidden=!open; $("kdToggle").setAttribute("aria-expanded",open);
+    $("kd").querySelector(".chev").textContent=open?"−":"+";
+    if(!open&&KD.on) kdStop();
+    try{localStorage.setItem("kamyl-lite",JSON.stringify(S));}catch(e){}
+  }
+  $("kdToggle").addEventListener("click",()=>kdOpen(!S.kd));
+  kdOpen(!!S.kd);
+  window.__kamylRank=kdRank;
+
 
   function render(){
     try{localStorage.setItem("kamyl-lite",JSON.stringify(S));}catch(e){}
@@ -486,6 +619,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     $("howto").innerHTML=`<h2>${T.howT}</h2><ol>`+T.how(half).map(x=>`<li>${x}</li>`).join("")+`</ol>`;
     $("drawing").innerHTML=r.ok?drawing(r,T):"";
     if(GEN.idx>=0&&GEN.key!==S.key) genStop();
+    if(typeof kdBtn==="function"){kdBtn(); kdAnalyze();}
     tunerBtn(); renderTargets(TN.on?undefined:null);
     if(!TN.on){$("tnTip").textContent=T.tnIdle;$("tnNote").textContent="-";}
   }
