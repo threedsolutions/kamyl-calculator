@@ -15,7 +15,7 @@
 :root{
   --bg:#F2F3F1; --surface:#FFFFFF;
   --ink:#191C1A; --muted:#656B67; --faint:#9A9F9B; --line:#D9DCD8;
-  --accent:#2E6A4E; --accent-soft:#DDEBE3;
+  --accent:#2E6A4E; --accent-soft:#DDEBE3; --accent-ink:#FFFFFF;
   --sans:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
 }
@@ -24,14 +24,14 @@
     color-scheme:dark;
     --bg:#111413; --surface:#191D1B;
     --ink:#E7EAE8; --muted:#9DA4A0; --faint:#6E7571; --line:#2D3330;
-    --accent:#72C39A; --accent-soft:#1F3329;
+    --accent:#72C39A; --accent-soft:#1F3329; --accent-ink:#0E1A14;
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
   --bg:#111413; --surface:#191D1B;
   --ink:#E7EAE8; --muted:#9DA4A0; --faint:#6E7571; --line:#2D3330;
-  --accent:#72C39A; --accent-soft:#1F3329;
+  --accent:#72C39A; --accent-soft:#1F3329; --accent-ink:#0E1A14;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -70,7 +70,10 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .row .v{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:24px;font-weight:500;white-space:nowrap}
 .row:first-child .v{font-size:34px}
 .row .v small{font-size:13px;color:var(--muted);margin-left:4px}
-.note{font-size:13px;color:var(--muted);margin:0}
+.howto{background:var(--accent);color:var(--accent-ink);border-radius:14px;padding:16px 18px;display:grid;gap:8px}
+.howto h2{margin:0;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.howto ol{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14.5px;line-height:1.45}
+.howto b{font-weight:700}
 .drawing{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 12px 12px;display:grid;gap:6px}
 .drawing .label{padding-left:6px}
 .drawing svg{display:block;width:100%;max-width:340px;height:auto;margin:0 auto}
@@ -116,7 +119,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     <div id="drawing"></div>
   </div>
 
-  <p class="note" data-i="note">Все размеры от места вдува. Отверстия - до ближнего края. Режьте трубку на 20-30 мм длиннее и подпиливайте низ по тюнеру.</p>
+  <div class="howto" id="howto"></div>
 </div>
 
 <script>
@@ -128,11 +131,19 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   const TXT={
     ru:{h1:"Къамыл",key:"Тональность",tube:"Трубка",bore:"Внутр. диаметр",wall:"Стенка",hole:"Отверстия",mm:"мм",
         len:"Длина трубки",h:["Отверстие 1","Отверстие 2","Отверстие 3"],draw:"Чертёж",top:"вдув",bottom:"низ",scaleNote:"длина в масштабе, мм",
-        note:"Все размеры от места вдува. Отверстия - до ближнего края. Режьте трубку на 20-30 мм длиннее и подпиливайте низ по тюнеру.",
+        howT:"Как размечать",
+        how:h=>[`Все расстояния меряйте <b>от места, куда задувается воздух</b> (верхний срез трубки).`,
+          `Для отверстий указано расстояние <b>до ближнего края отверстия</b>, а не до центра.`,
+          `Сверлите так, чтобы <b>ближний край попал точно на отметку</b>: центр сверла ставьте на ${h} мм ниже отметки (половина диаметра отверстия).`,
+          `Трубку отпилите на 20-30 мм длиннее и подпиливайте низ по тюнеру, пока тоника не попадёт в ноту.`],
         bad:"Проверьте размеры трубки"},
     en:{h1:"Kamyl",key:"Key",tube:"Tube",bore:"Inner diameter",wall:"Wall",hole:"Holes",mm:"mm",
         len:"Tube length",h:["Hole 1","Hole 2","Hole 3"],draw:"Drawing",top:"blowing end",bottom:"bottom",scaleNote:"length to scale, mm",
-        note:"All distances are from the blowing end. Holes are measured to the near edge. Cut the tube 20-30 mm long and trim the bottom to a tuner.",
+        howT:"How to mark",
+        how:h=>[`Measure every distance <b>from where you blow into the tube</b> (the top end).`,
+          `Hole distances are <b>to the near edge of the hole</b>, not to its centre.`,
+          `Drill so that <b>the near edge lands exactly on the mark</b>: put the drill centre ${h} mm below the mark (half the hole diameter).`,
+          `Cut the tube 20-30 mm long and trim the bottom to a tuner until the tonic is in tune.`],
         bad:"Check the tube dimensions"}
   };
   const DEF={lang:"ru",key:0,bore:14,wall:1,hole:8};
@@ -213,6 +224,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
       r.holes.map((h,i)=>`<div class="row"><span class="k">${T.h[i]}</span><span class="v">${v(h)}</span></div>`).join("")+
       (r.ok?"":`<div class="row"><span class="k">${T.bad}</span></div>`);
     $("drawingBox").hidden=!r.ok;
+    const half=String(Math.round(S.hole/2*10)/10).replace(".",S.lang==="ru"?",":".");
+    $("howto").innerHTML=`<h2>${T.howT}</h2><ol>`+T.how(half).map(x=>`<li>${x}</li>`).join("")+`</ol>`;
     $("drawing").innerHTML=r.ok?drawing(r,T):"";
   }
   render();
