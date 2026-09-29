@@ -164,7 +164,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
           `Cut the tube 20-30 mm long and trim the bottom to a tuner until the tonic is in tune.`],
         bad:"Check the tube dimensions"}
   };
-  const DEF={lang:"ru",key:0,bore:14,outer:16,hole:8};
+  const DEF={lang:"ru",key:5,bore:14,outer:16,hole:8};
   let S=Object.assign({},DEF);
   try{const s=JSON.parse(localStorage.getItem("kamyl-lite")||"null");if(s)S=Object.assign(S,s);}catch(e){}
   if(!(S.outer>0)) S.outer=S.bore+2*(S.wall>0?S.wall:1);
