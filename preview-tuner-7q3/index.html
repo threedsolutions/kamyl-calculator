@@ -89,7 +89,15 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .fb a{color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap}
 .fb a:hover{text-decoration:underline}
 .tuner{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:14px}
-.tn-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.tn-head{display:flex;justify-content:flex-start;align-items:center;gap:10px;flex-wrap:wrap}
+.tuner{padding:0;gap:0}
+.tn-toggle{all:unset;box-sizing:border-box;width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;border-radius:14px}
+.tn-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tn-tt{display:grid;gap:2px}
+.tn-tt small{font-size:12.5px;color:var(--muted)}
+.chev{font:500 20px var(--mono);color:var(--muted);width:24px;text-align:center}
+.tn-body{display:grid;gap:14px;padding:0 16px 16px}
+.tn-body[hidden]{display:none}
 .tn-btn{font:600 14px var(--sans);border:0;border-radius:9px;padding:10px 14px;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
 .tn-btn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
 .tn-targets{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
@@ -149,6 +157,24 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     <div class="keys" id="keys"></div>
   </section>
 
+  <section class="tuner" id="tuner">
+    <button type="button" class="tn-toggle" id="tnToggle" aria-expanded="false" aria-controls="tnBody"><span class="tn-tt"><span class="label" data-i="tnTitle">Тюнер</span><small data-i="tnSub">проверка строя и подсказка, сколько подпилить</small></span><span class="chev" aria-hidden="true">+</span></button>
+    <div class="tn-body" id="tnBody" hidden>
+    <div class="tn-head"><button type="button" class="tn-btn" id="tnBtn" aria-pressed="false">Включить микрофон</button></div>
+    <div class="tn-level" aria-hidden="true"><i id="tnLevel"></i></div>
+    <div class="tn-targets" id="tnTargets"></div>
+    <p class="tn-tap" data-i="tnTap">Нажмите на ноту, чтобы услышать её</p>
+    <div class="tn-main" id="tnMain">
+      <div class="tn-note" id="tnNote">-</div>
+      <div class="tn-cents" id="tnCents">&nbsp;</div>
+      <div class="tn-meter"><div class="tn-zone"></div><div class="tn-mid"></div><div class="tn-needle" id="tnNeedle"></div></div>
+      <div class="tn-scale"><span>−50</span><span>0</span><span>+50</span></div>
+    </div>
+    <div class="tn-tip" id="tnTip" aria-live="polite"></div>
+    <p class="tn-hint" data-i="tnHint"></p>
+    </div>
+  </section>
+
   <section>
     <span class="label" data-i="tube">Трубка</span>
     <div class="fields">
@@ -168,20 +194,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 
   <div class="howto" id="howto"></div>
 
-  <section class="tuner" id="tuner" aria-live="polite">
-    <div class="tn-head"><span class="label" data-i="tnTitle">Тюнер</span><button type="button" class="tn-btn" id="tnBtn" aria-pressed="false">Включить микрофон</button></div>
-    <div class="tn-level" aria-hidden="true"><i id="tnLevel"></i></div>
-    <div class="tn-targets" id="tnTargets"></div>
-    <p class="tn-tap" data-i="tnTap">Нажмите на ноту, чтобы услышать её</p>
-    <div class="tn-main" id="tnMain">
-      <div class="tn-note" id="tnNote">-</div>
-      <div class="tn-cents" id="tnCents">&nbsp;</div>
-      <div class="tn-meter"><div class="tn-zone"></div><div class="tn-mid"></div><div class="tn-needle" id="tnNeedle"></div></div>
-      <div class="tn-scale"><span>−50</span><span>0</span><span>+50</span></div>
-    </div>
-    <div class="tn-tip" id="tnTip"></div>
-    <p class="tn-hint" data-i="tnHint"></p>
-  </section>
 
   <p class="fb" id="fb"></p>
 </div>
@@ -197,7 +209,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         len:"Длина трубки",h:["Отверстие 1","Отверстие 2","Отверстие 3"],draw:"Чертёж",top:"вдув",bottom:"низ",scaleNote:"длина в масштабе, мм",
         fb:"Это бета-версия, значения могут немного быть неточными. Буду рад фидбеку, который поможет улучшить точность - пишите в Instagram ",
 
-        tnTitle:"Тюнер",tnTap:"Нажмите на ноту, чтобы услышать её",tnPlay:"слушать",tnStop:"стоп",tnOn:"Включить микрофон",tnOff:"Выключить",
+        tnTitle:"Тюнер",tnSub:"проверка строя и подсказка, сколько подпилить",tnTap:"Нажмите на ноту, чтобы услышать её",tnPlay:"слушать",tnStop:"стоп",tnOn:"Включить микрофон",tnOff:"Выключить",
         tnFing:["все закрыты","отв. 1","отв. 1-2","отв. 1-3"],
         tnIdle:"Включите микрофон и сыграйте ноту в нижнем регистре.",
         tnListen:"Слушаю… сыграйте ноту ровно и не слишком громко.",
@@ -220,7 +232,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         len:"Tube length",h:["Hole 1","Hole 2","Hole 3"],draw:"Drawing",top:"blowing end",bottom:"bottom",scaleNote:"length to scale, mm",
         fb:"This is a beta version, the values may be slightly inaccurate. I'd be glad of feedback that helps improve the accuracy - message me on Instagram ",
 
-        tnTitle:"Tuner",tnTap:"Tap a note to hear it",tnPlay:"listen",tnStop:"stop",tnOn:"Turn on microphone",tnOff:"Turn off",
+        tnTitle:"Tuner",tnSub:"check the tuning and see how much to trim",tnTap:"Tap a note to hear it",tnPlay:"listen",tnStop:"stop",tnOn:"Turn on microphone",tnOff:"Turn off",
         tnFing:["all closed","hole 1","holes 1-2","holes 1-3"],
         tnIdle:"Turn on the microphone and play a note in the low register.",
         tnListen:"Listening… play a steady note, not too loud.",
@@ -240,7 +252,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
           `Cut the tube 20-30 mm long and trim the bottom to a tuner until the tonic is in tune.`],
         bad:"Check the tube dimensions"}
   };
-  const DEF={lang:"ru",key:5,bore:14,outer:16,hole:8,sens:8};
+  const DEF={lang:"ru",key:5,bore:14,outer:16,hole:8,tuner:false};
   let S=Object.assign({},DEF);
   try{const s=JSON.parse(localStorage.getItem("kamyl-lite")||"null");if(s)S=Object.assign(S,s);}catch(e){}
   if(!(S.outer>0)) S.outer=S.bore+2*(S.wall>0?S.wall:1);
@@ -445,6 +457,14 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   }
   function tunerBtn(){const b=$("tnBtn");b.setAttribute("aria-pressed",TN.on);b.textContent=TN.on?t().tnOff:t().tnOn;}
   $("tnBtn").addEventListener("click",()=>{TN.on?tunerStop():tunerStart();});
+  function tunerOpen(open){
+    S.tuner=open; $("tnBody").hidden=!open; $("tnToggle").setAttribute("aria-expanded",open);
+    $("tuner").querySelector(".chev").textContent=open?"−":"+";
+    if(!open){ if(TN.on) tunerStop(); if(GEN.idx>=0) genStop(); }
+    try{localStorage.setItem("kamyl-lite",JSON.stringify(S));}catch(e){}
+  }
+  $("tnToggle").addEventListener("click",()=>tunerOpen(!S.tuner));
+  tunerOpen(!!S.tuner);
   $("tnTargets").addEventListener("click",e=>{const b=e.target.closest(".tn-t");if(!b)return;const i=+b.dataset.n;GEN.idx===i?genStop():genPlay(i);});
   window.__kamylDetect=detect;
 
