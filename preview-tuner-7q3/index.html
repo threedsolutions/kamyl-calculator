@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Калькулятор къамыля: длина трубки и расстояния до трёх отверстий для 12 тональностей. Kamyl calculator: tube length and hole positions for 12 keys.">
+<meta property="og:title" content="Къамыл - калькулятор">
+<meta property="og:description" content="Длина трубки и позиции отверстий для 12 тональностей.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://threedsolutions.github.io/kamyl-calculator/">
+<meta property="og:image" content="https://threedsolutions.github.io/kamyl-calculator/og.png?v=5">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://threedsolutions.github.io/kamyl-calculator/og.png?v=5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='26' y='4' width='12' height='56' rx='3' fill='%232E6A4E'/%3E%3Ccircle cx='32' cy='36' r='3' fill='%23fff'/%3E%3Ccircle cx='32' cy='44' r='3' fill='%23fff'/%3E%3Ccircle cx='32' cy='52' r='3' fill='%23fff'/%3E%3C/svg%3E">
+<title>Къамыл - калькулятор</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#F2F3F1; --surface:#FFFFFF;
+  --ink:#191C1A; --muted:#656B67; --faint:#9A9F9B; --line:#D9DCD8;
+  --accent:#2E6A4E; --accent-soft:#DDEBE3; --accent-ink:#FFFFFF;
+  --sans:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#111413; --surface:#191D1B;
+    --ink:#E7EAE8; --muted:#9DA4A0; --faint:#6E7571; --line:#2D3330;
+    --accent:#72C39A; --accent-soft:#1F3329; --accent-ink:#0E1A14;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111413; --surface:#191D1B;
+  --ink:#E7EAE8; --muted:#9DA4A0; --faint:#6E7571; --line:#2D3330;
+  --accent:#72C39A; --accent-soft:#1F3329; --accent-ink:#0E1A14;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:32px 48px}
+.wrap{max-width:460px;margin:0 auto;display:grid;gap:22px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+h1{font-size:24px;font-weight:700;letter-spacing:-.02em;margin:0}
+.lang{display:inline-grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:8px;padding:2px;background:var(--surface)}
+.lang button{font:600 12px var(--sans);letter-spacing:.04em;border:0;background:transparent;color:var(--muted);border-radius:6px;padding:5px 10px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+section{display:grid;gap:10px}
+
+.keys{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.keys button{font:600 16px var(--sans);height:46px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;cursor:pointer}
+.keys button:hover{border-color:var(--faint)}
+.keys button sup{font-size:.6em;font-weight:500;margin-left:1px;opacity:.75}
+.keys button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px 8px}
+.field .in.auto{background:transparent;border-style:dashed}
+.field .in.auto output{font:500 16px var(--mono);color:var(--muted);padding:10px;flex:1}
+.field{display:grid;gap:4px;grid-template-rows:1fr auto}
+.field label{align-self:end}
+.field label{font-size:12.5px;color:var(--muted);line-height:1.25}
+.field .in{display:flex;align-items:center;border:1px solid var(--line);border-radius:9px;background:var(--surface);padding-right:9px}
+.field .in:focus-within{border-color:var(--accent)}
+.field input{font:500 16px var(--mono);background:transparent;border:0;color:var(--ink);width:100%;min-width:0;padding:10px;outline:none}
+.field .u{color:var(--faint);font-size:12px}
+
+.result{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:16px 18px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0;background:var(--accent-soft)}
+.row .k{color:var(--muted)}
+.row:first-child .k{color:var(--ink);font-weight:600}
+.row .v{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:24px;font-weight:500;white-space:nowrap}
+.row:first-child .v{font-size:34px}
+.row .v small{font-size:13px;color:var(--muted);margin-left:4px}
+.howto{background:var(--accent);color:var(--accent-ink);border-radius:14px;padding:16px 18px;display:grid;gap:8px}
+.howto h2{margin:0;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.howto ol{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14.5px;line-height:1.45}
+.howto b{font-weight:700}
+.fb{font-size:13.5px;color:var(--muted);margin:0;padding:0 4px;line-height:1.5}
+.fb a{color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap}
+.fb a:hover{text-decoration:underline}
+.tuner{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:14px}
+.tn-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.tn-btn{font:600 14px var(--sans);border:0;border-radius:9px;padding:10px 14px;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+.tn-btn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.tn-targets{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.tn-t{border:1px solid var(--line);border-radius:10px;padding:8px 4px;display:grid;justify-items:center;gap:2px;background:var(--bg);transition:background .15s,border-color .15s}
+.tn-t b{font-size:17px}
+.tn-t b sup{font-size:.6em;font-weight:500}
+.tn-t small{font-size:11.5px;color:var(--muted);text-align:center;line-height:1.2}
+.tn-t .c{font:500 12px var(--mono);color:var(--muted);min-height:1.2em}
+.tn-t.on{border-color:var(--accent);background:var(--accent-soft)}
+.tn-t.ok .c{color:var(--accent);font-weight:600}
+.tn-main{display:grid;justify-items:center;gap:8px;padding:6px 0}
+.tn-note{font:500 40px var(--mono);line-height:1}
+.tn-note sup{font-size:.5em}
+.tn-cents{font:500 15px var(--mono);color:var(--muted)}
+.tn-meter{position:relative;width:100%;max-width:360px;height:30px;border-radius:8px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.tn-zone{position:absolute;top:0;bottom:0;left:45%;width:10%;background:var(--accent-soft)}
+.tn-mid{position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--faint)}
+.tn-needle{position:absolute;top:3px;bottom:3px;width:4px;margin-left:-2px;border-radius:2px;background:var(--ink);left:50%;transition:left .12s linear}
+.tn-needle.ok{background:var(--accent)}
+.tn-scale{display:flex;justify-content:space-between;width:100%;max-width:360px;font:500 11px var(--mono);color:var(--faint)}
+.tn-tip{border-radius:10px;padding:12px 14px;background:var(--bg);font-size:14.5px;line-height:1.45;min-height:3em}
+.tn-tip.ok{background:var(--accent-soft)}
+.tn-tip b{font-weight:700}
+.tn-hint{font-size:12.5px;color:var(--muted);margin:0;line-height:1.45}
+.drawing{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 12px 12px;display:grid;gap:6px}
+.drawing .label{padding-left:6px}
+.drawing svg{display:block;width:100%;max-width:340px;height:auto;margin:0 auto}
+.tube{fill:var(--accent-soft);stroke:var(--ink);stroke-width:1.2}
+.hole{fill:var(--surface);stroke:var(--ink);stroke-width:1.2}
+.dim{stroke:var(--muted);stroke-width:1;fill:none}
+.ext{stroke:var(--faint);stroke-width:.8;stroke-dasharray:3 3;fill:none}
+.tick{stroke:var(--ink);stroke-width:1.4}
+.dtxt{fill:var(--ink);font:500 13px var(--mono)}
+.dtxt.total{fill:var(--accent);font-weight:600}
+.num{fill:var(--ink);font:700 13px var(--sans)}
+.cap{fill:var(--muted);font:500 12px var(--sans)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1 data-i="h1">Къамыл</h1>
+    <div class="lang" role="group" aria-label="Язык / Language">
+      <button type="button" id="ru">RU</button>
+      <button type="button" id="en">EN</button>
+    </div>
+  </header>
+
+  <section>
+    <span class="label" data-i="key">Тональность</span>
+    <div class="keys" id="keys"></div>
+  </section>
+
+  <section>
+    <span class="label" data-i="tube">Трубка</span>
+    <div class="fields">
+      <div class="field"><label for="bore" data-i="bore">Внутренний диаметр трубки</label><div class="in"><input id="bore" type="text" inputmode="decimal"><span class="u" data-i="mm">мм</span></div></div>
+      <div class="field"><label for="outer" data-i="outer">Внешний диаметр трубки</label><div class="in"><input id="outer" type="text" inputmode="decimal"><span class="u" data-i="mm">мм</span></div></div>
+      <div class="field"><label for="wallOut" data-i="wall">Толщина стенки (считается сама)</label><div class="in auto"><output id="wallOut" for="bore outer"></output><span class="u" data-i="mm">мм</span></div></div>
+      <div class="field"><label for="hole" data-i="hole">Диаметр отверстий</label><div class="in"><input id="hole" type="text" inputmode="decimal"><span class="u" data-i="mm">мм</span></div></div>
+    </div>
+  </section>
+
+  <div class="result" id="result" aria-live="polite"></div>
+
+  <div class="drawing" id="drawingBox">
+    <span class="label" data-i="draw">Чертёж</span>
+    <div id="drawing"></div>
+  </div>
+
+  <div class="howto" id="howto"></div>
+
+  <section class="tuner" id="tuner" aria-live="polite">
+    <div class="tn-head"><span class="label" data-i="tnTitle">Тюнер</span><button type="button" class="tn-btn" id="tnBtn" aria-pressed="false">Включить микрофон</button></div>
+    <div class="tn-targets" id="tnTargets"></div>
+    <div class="tn-main">
+      <div class="tn-note" id="tnNote">-</div>
+      <div class="tn-cents" id="tnCents">&nbsp;</div>
+      <div class="tn-meter"><div class="tn-zone"></div><div class="tn-mid"></div><div class="tn-needle" id="tnNeedle"></div></div>
+      <div class="tn-scale"><span>−50</span><span>0</span><span>+50</span></div>
+    </div>
+    <div class="tn-tip" id="tnTip"></div>
+    <p class="tn-hint" data-i="tnHint"></p>
+  </section>
+
+  <p class="fb" id="fb"></p>
+</div>
+
+<script>
+(function(){
+  // Тональности как в таблице аппликатур: E³ ... D#⁴
+  const KEYS=[["E",52],["F",53],["F#",54],["G",55],["G#",56],["A",57],["A#",58],["B",59],["C",60],["C#",61],["D",62],["D#",63]];
+  const STEPS=[1,3,5];                 // шаги отверстий снизу вверх
+  const BLOW=55.5, TEMP=25, A4=440;    // калибровка по замерам
+  const TXT={
+    ru:{h1:"Къамыл",key:"Тональность",tube:"Трубка",bore:"Внутренний диаметр трубки",outer:"Внешний диаметр трубки",wall:"Толщина стенки (считается сама)",hole:"Диаметр отверстий",badOuter:"Внешний диаметр должен быть больше внутреннего",mm:"мм",
+        len:"Длина трубки",h:["Отверстие 1","Отверстие 2","Отверстие 3"],draw:"Чертёж",top:"вдув",bottom:"низ",scaleNote:"длина в масштабе, мм",
+        fb:"Это бета-версия, значения могут немного быть неточными. Буду рад фидбеку, который поможет улучшить точность - пишите в Instagram ",
+
+        tnTitle:"Тюнер",tnOn:"Включить микрофон",tnOff:"Выключить",
+        tnFing:["все закрыты","отв. 1","отв. 1-2","отв. 1-3"],
+        tnIdle:"Включите микрофон и сыграйте ноту в нижнем регистре.",
+        tnListen:"Слушаю… сыграйте ноту ровно и не слишком громко.",
+        tnOther:n=>`Звучит ${n}. Это не нота этого камыля: проверьте аппликатуру или сыграйте ниже, в нижнем регистре.`,
+        tnOk:n=>`<b>${n} в строю.</b>`,
+        tnTonicFlat:(c,mm)=>`<b>Тоника ниже на ${c} ц.</b> Подпилите низ трубки примерно на <b>${mm} мм</b>. Пилите по 2-3 мм и проверяйте снова.`,
+        tnTonicSharp:(c,mm)=>`<b>Тоника выше на ${c} ц</b> - трубка коротковата примерно на ${mm} мм. Попробуйте сильнее прикрыть срез губой. Удлинить трубку нельзя, поэтому пилите всегда с запасом.`,
+        tnHoleFlat:(k,c,mm)=>`<b>Отверстие ${k}: нота ниже на ${c} ц.</b> Рассверлите его немного шире или подпилите надфилем верхний край (в сторону вдува) примерно на <b>${mm} мм</b>. Делайте по чуть-чуть.`,
+        tnHoleSharp:(k,c,mm)=>`<b>Отверстие ${k}: нота выше на ${c} ц.</b> Отверстие великовато или высоковато. Частично заклейте его нижний край (изолента, воск) примерно на ${mm} мм.`,
+        tnMic:"Нет доступа к микрофону. Разрешите его в настройках браузера. Во встроенном браузере Telegram или Instagram микрофон может не работать - откройте сайт в Chrome или Safari.",
+        tnHint:"Порядок настройки: сначала тоника (все отверстия закрыты), потом отверстия 1, 2, 3 снизу вверх. Играйте в нижнем регистре, так, как играете обычно. Звук никуда не отправляется, всё считается на вашем устройстве.",
+        cents:"ц",
+        howT:"Как размечать",
+        how:h=>[`Все расстояния меряйте <b>от места, куда задувается воздух</b> (верхний срез трубки).`,
+          `Для отверстий указано расстояние <b>до ближнего края отверстия</b>, а не до центра.`,
+          `Сверлите так, чтобы <b>ближний край попал точно на отметку</b>: центр сверла ставьте на ${h} мм ниже отметки (половина диаметра отверстия).`,
+          `Трубку отпилите на 20-30 мм длиннее и подпиливайте низ по тюнеру, пока тоника не попадёт в ноту.`],
+        bad:"Проверьте размеры трубки"},
+    en:{h1:"Kamyl",key:"Key",tube:"Tube",bore:"Inner tube diameter",outer:"Outer tube diameter",wall:"Wall thickness (calculated)",hole:"Hole diameter",badOuter:"The outer diameter must be larger than the inner one",mm:"mm",
+        len:"Tube length",h:["Hole 1","Hole 2","Hole 3"],draw:"Drawing",top:"blowing end",bottom:"bottom",scaleNote:"length to scale, mm",
+        fb:"This is a beta version, the values may be slightly inaccurate. I'd be glad of feedback that helps improve the accuracy - message me on Instagram ",
+
+        tnTitle:"Tuner",tnOn:"Turn on microphone",tnOff:"Turn off",
+        tnFing:["all closed","hole 1","holes 1-2","holes 1-3"],
+        tnIdle:"Turn on the microphone and play a note in the low register.",
+        tnListen:"Listening… play a steady note, not too loud.",
+        tnOther:n=>`Hearing ${n}. That's not a note of this kamyl: check the fingering or play lower, in the low register.`,
+        tnOk:n=>`<b>${n} is in tune.</b>`,
+        tnTonicFlat:(c,mm)=>`<b>The tonic is ${c} c flat.</b> Trim the bottom of the tube by about <b>${mm} mm</b>. Cut 2-3 mm at a time and check again.`,
+        tnTonicSharp:(c,mm)=>`<b>The tonic is ${c} c sharp</b> - the tube is about ${mm} mm too short. Try covering more of the top with your lip. A tube can't be lengthened, so always cut it long.`,
+        tnHoleFlat:(k,c,mm)=>`<b>Hole ${k}: the note is ${c} c flat.</b> Widen the hole slightly, or file its upper edge (towards the blowing end) by about <b>${mm} mm</b>. Go a little at a time.`,
+        tnHoleSharp:(k,c,mm)=>`<b>Hole ${k}: the note is ${c} c sharp.</b> The hole is a bit too big or too high. Partly cover its lower edge (tape, wax) by about ${mm} mm.`,
+        tnMic:"No access to the microphone. Allow it in your browser settings. Inside Telegram or Instagram the microphone may not work - open the site in Chrome or Safari.",
+        tnHint:"Tuning order: the tonic first (all holes closed), then holes 1, 2, 3 from the bottom up. Play in the low register, the way you normally play. The sound is not sent anywhere; everything is computed on your device.",
+        cents:"c",
+        howT:"How to mark",
+        how:h=>[`Measure every distance <b>from where you blow into the tube</b> (the top end).`,
+          `Hole distances are <b>to the near edge of the hole</b>, not to its centre.`,
+          `Drill so that <b>the near edge lands exactly on the mark</b>: put the drill centre ${h} mm below the mark (half the hole diameter).`,
+          `Cut the tube 20-30 mm long and trim the bottom to a tuner until the tonic is in tune.`],
+        bad:"Check the tube dimensions"}
+  };
+  const DEF={lang:"ru",key:5,bore:14,outer:16,hole:8};
+  let S=Object.assign({},DEF);
+  try{const s=JSON.parse(localStorage.getItem("kamyl-lite")||"null");if(s)S=Object.assign(S,s);}catch(e){}
+  if(!(S.outer>0)) S.outer=S.bore+2*(S.wall>0?S.wall:1);
+  delete S.wall;
+  if(location.hash==="#en")S.lang="en";else if(location.hash==="#ru")S.lang="ru";
+  const $=id=>document.getElementById(id);
+  const t=()=>TXT[S.lang]||TXT.ru;
+
+  const wallOf=()=>(S.outer-S.bore)/2;
+  function calc(tonic){
+    const c=331.3+0.606*TEMP;
+    const Leff=m=>c*1000/(2*A4*Math.pow(2,(m-69)/12));
+    const L=Leff(tonic)-BLOW-0.6133*S.bore/2;
+    const te=wallOf()+0.75*S.hole, R=Math.pow(S.bore/S.hole,2);
+    let prev=L, ok=L>0&&S.bore>0&&S.hole>0&&wallOf()>0; const holes=[], centers=[];
+    for(const st of STEPS){
+      const target=Leff(tonic+st)-BLOW; let lo=0,hi=prev;
+      for(let i=0;i<70;i++){const x=(lo+hi)/2,g=Math.max(prev-x,1e-6);const z=g/2*(Math.sqrt(1+4*te/g*R)-1);if(x+z>target)hi=x;else lo=x;}
+      const x=(lo+hi)/2; if(x<=S.hole)ok=false;
+      holes.push(x-S.hole/2); centers.push(x); prev=x;
+    }
+    return {L,holes,centers,ok};
+  }
+
+  const keysEl=$("keys");
+  KEYS.forEach(([n,m],i)=>{const b=document.createElement("button");b.type="button";b.innerHTML=n+"<sup>"+(Math.floor(m/12)-1)+"</sup>";b.addEventListener("click",()=>{S.key=i;render();});keysEl.appendChild(b);});
+  ["bore","outer","hole"].forEach(k=>{const el=$(k);el.value=S[k];el.addEventListener("input",()=>{const v=parseFloat(el.value.replace(",","."));if(isFinite(v)&&v>0){S[k]=v;render();}});});
+  $("ru").addEventListener("click",()=>{S.lang="ru";render();});
+  $("en").addEventListener("click",()=>{S.lang="en";render();});
+
+  // Вертикальный чертёж: вдув сверху, размеры цепочкой от вдува
+  function drawing(r,T){
+    const H=480, top=34, sc=H/r.L, W=300;
+    const tx=58, tw=18;                       // трубка (ширина не в масштабе)
+    const Y=v=>top+v*sc;
+    const dimX=[tx+tw+44,tx+tw+84,tx+tw+124,tx+tw+172]; // отв.3, отв.2, отв.1, длина
+    let o=`<svg viewBox="0 0 ${W} ${top+H+34}" role="img" aria-label="${T.draw}">`;
+    // extension line at the blowing end
+    o+=`<line class="ext" x1="${tx+tw}" y1="${top}" x2="${dimX[3]+8}" y2="${top}"/>`;
+    // tube
+    o+=`<rect class="tube" x="${tx}" y="${top}" width="${tw}" height="${r.L*sc}" rx="2"/>`;
+    o+=`<text class="cap" x="${tx+tw/2}" y="${top-12}" text-anchor="middle">${T.top}</text>`;
+    // holes
+    const hr=Math.max(S.hole*sc/2,4.5);
+    r.centers.forEach((c,i)=>{
+      o+=`<circle class="hole" cx="${tx+tw/2}" cy="${Y(c)}" r="${hr}"/>`;
+      o+=`<text class="num" x="${tx-10}" y="${Y(c)+4.5}" text-anchor="end">${i+1}</text>`;
+    });
+    // dimension helper
+    const dim=(x,y2,label,cls)=>{
+      let d=`<line class="ext" x1="${tx+tw}" y1="${y2}" x2="${x+8}" y2="${y2}"/>`;
+      d+=`<line class="dim" x1="${x}" y1="${top}" x2="${x}" y2="${y2}"/>`;
+      d+=`<line class="tick" x1="${x-4}" y1="${top+4}" x2="${x+4}" y2="${top-4}"/>`;
+      d+=`<line class="tick" x1="${x-4}" y1="${y2+4}" x2="${x+4}" y2="${y2-4}"/>`;
+      const my=(top+y2)/2;
+      d+=`<text class="dtxt ${cls||""}" x="${x-6}" y="${my}" text-anchor="middle" transform="rotate(-90 ${x-6} ${my})">${label}</text>`;
+      return d;
+    };
+    // holes 3,2,1 from the tube outward, then total length
+    [2,1,0].forEach((i,k)=>{o+=dim(dimX[k],Y(r.holes[i]),Math.round(r.holes[i]));});
+    o+=dim(dimX[3],Y(r.L),Math.round(r.L),"total");
+    o+=`<text class="cap" x="${tx+tw/2}" y="${Y(r.L)+22}" text-anchor="middle">${T.bottom}</text>`;
+    o+=`<text class="cap" x="${W-4}" y="${Y(r.L)+22}" text-anchor="end">${T.scaleNote}</text>`;
+    return o+"</svg>";
+  }
+
+
+  // ---------- tuner
+  const TN={on:false,ctx:null,stream:null,an:null,buf:null,hist:[],last:0,raf:0};
+  const noteHtml=m=>{const n=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"][((m%12)+12)%12];return n+"<sup>"+(Math.floor(m/12)-1)+"</sup>";};
+  const noteTxt=m=>["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"][((m%12)+12)%12]+(Math.floor(m/12)-1);
+  const fOf=m=>A4*Math.pow(2,(m-69)/12);
+  const targets=()=>{const tn=KEYS[S.key][1];return [tn].concat(STEPS.map(s=>tn+s));};
+
+  function renderTargets(match){
+    const T=t();
+    $("tnTargets").innerHTML=targets().map((m,i)=>{
+      const on=match&&match.i===i, ok=on&&Math.abs(match.c)<=5;
+      const c=on?(match.c>0?"+":match.c<0?"−":"")+Math.abs(Math.round(match.c))+" "+T.cents:"";
+      return `<div class="tn-t ${on?"on":""} ${ok?"ok":""}"><b>${noteHtml(m)}</b><small>${T.tnFing[i]}</small><span class="c">${c}</span></div>`;
+    }).join("");
+  }
+
+  // McLeod-style normalized autocorrelation
+  function detect(x,sr){
+    const N=x.length; let e=0; for(let i=0;i<N;i++) e+=x[i]*x[i];
+    if(Math.sqrt(e/N)<0.008) return null;
+    const minLag=Math.max(2,Math.floor(sr/2400)), maxLag=Math.min(Math.floor(sr/110),(N>>1));
+    const n=new Float32Array(maxLag+2);
+    for(let tau=minLag;tau<=maxLag+1;tau++){
+      let ac=0,m=0;
+      for(let j=0;j<N-tau;j++){const a=x[j],b=x[j+tau];ac+=a*b;m+=a*a+b*b;}
+      n[tau]=m>0?2*ac/m:0;
+    }
+    let tau=minLag; while(tau<maxLag&&n[tau]>0) tau++;
+    const peaks=[]; let pos=false,best=-1,bestT=-1;
+    for(;tau<=maxLag;tau++){
+      if(n[tau]>0){ if(!pos){pos=true;best=-1;} if(n[tau]>best){best=n[tau];bestT=tau;} }
+      else if(pos){pos=false;peaks.push([bestT,best]);}
+    }
+    if(pos&&bestT>0) peaks.push([bestT,best]);
+    if(!peaks.length) return null;
+    const mx=Math.max(...peaks.map(p=>p[1])); if(mx<0.6) return null;
+    const pk=peaks.find(p=>p[1]>=0.88*mx), T0=pk[0];
+    const a=n[T0-1],b=n[T0],c=n[T0+1], den=a-2*b+c, sh=den?(a-c)/(2*den):0;
+    return sr/(T0+sh);
+  }
+
+  function advise(f){
+    const T=t(), tg=targets(), mf=69+12*Math.log2(f/A4);
+    let best=null;
+    tg.forEach((m,i)=>[0,12].forEach(o=>{const c=(mf-(m+o))*100; if(!best||Math.abs(c)<Math.abs(best.c)) best={i,m,o,c};}));
+    const near=Math.round(mf);
+    $("tnNote").innerHTML=noteHtml(best&&Math.abs(best.c)<=80?best.m+best.o:near);
+    if(!best||Math.abs(best.c)>80){
+      const c=(mf-near)*100;
+      $("tnCents").textContent=(c>0?"+":c<0?"−":"")+Math.abs(Math.round(c))+" "+T.cents+" · "+f.toFixed(1)+" Hz";
+      setNeedle(c); renderTargets(null);
+      $("tnTip").className="tn-tip"; $("tnTip").innerHTML=T.tnOther(noteTxt(near)); return;
+    }
+    const c=best.c, ac=Math.abs(Math.round(c));
+    $("tnCents").textContent=(c>0?"+":c<0?"−":"")+ac+" "+T.cents+" · "+f.toFixed(1)+" Hz";
+    setNeedle(c); renderTargets(best);
+    // effective-length difference (fundamental), mm
+    const sound=331.3+0.606*TEMP, f1=f/Math.pow(2,best.o/12), ft=fOf(best.m);
+    const dmm=Math.abs(sound*1000/2*(1/f1-1/ft));
+    const mm=dmm<1?String(Math.round(dmm*10)/10).replace(".",S.lang==="ru"?",":"."):String(Math.round(dmm));
+    const tip=$("tnTip");
+    if(ac<=5){tip.className="tn-tip ok";tip.innerHTML=T.tnOk(noteTxt(best.m));return;}
+    tip.className="tn-tip";
+    if(best.i===0) tip.innerHTML=c<0?T.tnTonicFlat(ac,mm):T.tnTonicSharp(ac,mm);
+    else tip.innerHTML=c<0?T.tnHoleFlat(best.i,ac,mm):T.tnHoleSharp(best.i,ac,mm);
+  }
+  function setNeedle(c){
+    const v=Math.max(-50,Math.min(50,c));
+    const nd=$("tnNeedle"); nd.style.left=(50+v)+"%"; nd.classList.toggle("ok",Math.abs(c)<=5);
+  }
+  function loop(){
+    if(!TN.on) return;
+    TN.raf=requestAnimationFrame(loop);
+    TN.an.getFloatTimeDomainData(TN.buf);
+    const f=detect(TN.buf,TN.ctx.sampleRate), now=performance.now();
+    if(f){
+      TN.hist.push(f); if(TN.hist.length>7) TN.hist.shift();
+      const sorted=[...TN.hist].sort((a,b)=>a-b); advise(sorted[sorted.length>>1]); TN.last=now;
+    } else if(now-TN.last>900){
+      TN.hist=[]; $("tnNote").textContent="-"; $("tnCents").innerHTML="&nbsp;"; setNeedle(0); renderTargets(null);
+      $("tnTip").className="tn-tip"; $("tnTip").textContent=t().tnListen; TN.last=now;
+    }
+  }
+  async function tunerStart(){
+    const T=t();
+    try{
+      if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) throw new Error("no media");
+      TN.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+      TN.ctx=new (window.AudioContext||window.webkitAudioContext)();
+      if(TN.ctx.state==="suspended") await TN.ctx.resume();
+      const src=TN.ctx.createMediaStreamSource(TN.stream);
+      TN.an=TN.ctx.createAnalyser(); TN.an.fftSize=2048; src.connect(TN.an);
+      TN.buf=new Float32Array(TN.an.fftSize); TN.on=true; TN.last=0; TN.hist=[];
+      $("tnTip").textContent=T.tnListen; tunerBtn(); loop();
+    }catch(e){ tunerStop(); $("tnTip").className="tn-tip"; $("tnTip").textContent=T.tnMic; }
+  }
+  function tunerStop(){
+    TN.on=false; cancelAnimationFrame(TN.raf);
+    if(TN.stream) TN.stream.getTracks().forEach(tr=>tr.stop());
+    if(TN.ctx) TN.ctx.close().catch(()=>{});
+    TN.stream=TN.ctx=TN.an=null; tunerBtn();
+  }
+  function tunerBtn(){const b=$("tnBtn");b.setAttribute("aria-pressed",TN.on);b.textContent=TN.on?t().tnOff:t().tnOn;}
+  $("tnBtn").addEventListener("click",()=>{TN.on?tunerStop():tunerStart();});
+  window.__kamylDetect=detect;
+
+  function render(){
+    try{localStorage.setItem("kamyl-lite",JSON.stringify(S));}catch(e){}
+    const T=t();
+    document.documentElement.lang=S.lang;
+    document.querySelectorAll("[data-i]").forEach(el=>el.textContent=T[el.dataset.i]);
+    $("ru").setAttribute("aria-pressed",S.lang==="ru");$("en").setAttribute("aria-pressed",S.lang==="en");
+    [...keysEl.children].forEach((b,i)=>b.setAttribute("aria-pressed",i===S.key));
+    const r=calc(KEYS[S.key][1]);
+    const v=x=>r.ok?`${Math.round(x)}<small>${T.mm}</small>`:"-";
+    $("result").innerHTML=
+      `<div class="row"><span class="k">${T.len}</span><span class="v">${v(r.L)}</span></div>`+
+      r.holes.map((h,i)=>`<div class="row"><span class="k">${T.h[i]}</span><span class="v">${v(h)}</span></div>`).join("")+
+      (r.ok?"":`<div class="row"><span class="k">${wallOf()>0?T.bad:T.badOuter}</span></div>`);
+    const w=wallOf();
+    $("wallOut").textContent=w>0?String(Math.round(w*100)/100).replace(".",S.lang==="ru"?",":"."):"-";
+    $("drawingBox").hidden=!r.ok;
+    const half=String(Math.round(S.hole/2*10)/10).replace(".",S.lang==="ru"?",":".");
+    $("fb").innerHTML=T.fb+`<a href="https://www.instagram.com/circassian_flute/" target="_blank" rel="noopener">@circassian_flute</a>`;
+    $("howto").innerHTML=`<h2>${T.howT}</h2><ol>`+T.how(half).map(x=>`<li>${x}</li>`).join("")+`</ol>`;
+    $("drawing").innerHTML=r.ok?drawing(r,T):"";
+    tunerBtn(); renderTargets(null);
+    if(!TN.on){$("tnTip").className="tn-tip";$("tnTip").textContent=T.tnIdle;$("tnNote").textContent="-";}
+  }
+  render();
+})();
+</script>
+</body>
+</html>
