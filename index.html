@@ -47,7 +47,11 @@ body{margin:0}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:32px 48px}
 .wrap{max-width:460px;margin:0 auto;display:grid;gap:22px}
 header{display:flex;justify-content:space-between;align-items:center;gap:12px}
-h1{font-size:24px;font-weight:700;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(17px,4.9vw,20px);font-weight:700;letter-spacing:-.02em;margin:0;display:flex;flex-wrap:wrap;align-items:center;column-gap:7px;row-gap:3px;min-width:0}
+h1 [data-i="h1"]{white-space:nowrap}
+.wrap>*{min-width:0}
+header{min-width:0}
+.ver{font:600 12px var(--mono);letter-spacing:0;color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:3px 7px}
 .lang{display:inline-grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:8px;padding:2px;background:var(--surface)}
 .lang button{font:600 12px var(--sans);letter-spacing:.04em;border:0;background:transparent;color:var(--muted);border-radius:6px;padding:5px 10px;cursor:pointer}
 .lang button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
@@ -87,6 +91,67 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .fb{font-size:13.5px;color:var(--muted);margin:0;padding:0 4px;line-height:1.5}
 .fb a{color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap}
 .fb a:hover{text-decoration:underline}
+.chev{font:500 20px var(--mono);color:var(--muted);width:24px;text-align:center}
+.tuner{background:var(--surface);border:1px solid var(--line);border-radius:14px;display:grid}
+.tn-toggle{all:unset;box-sizing:border-box;width:100%;height:64px;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;border-radius:14px}
+.tn-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tn-tt{display:grid;gap:2px;min-width:0}
+.tn-tt small{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tn-body{display:grid;gap:14px;padding:2px 12px 16px}
+.tn-body[hidden]{display:none}
+.tn-head{display:flex;align-items:center;gap:10px}
+.tn-btn{flex:none;font:600 13.5px var(--sans);border:0;border-radius:9px;padding:8px 12px;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+.tn-btn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.tn-level{flex:1;height:6px;border-radius:3px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.tn-level i{display:block;height:100%;width:0;background:var(--accent);transition:width .08s linear}
+.tn-main{display:grid;gap:8px;padding:4px 0}
+.tn-main.stale{opacity:.45}
+.tn-read{display:flex;align-items:baseline;justify-content:center;gap:12px}
+.tn-note{font:500 34px var(--mono);line-height:1}
+.tn-note sup{font-size:.5em}
+.tn-cents{font:500 14px var(--mono);color:var(--muted)}
+.tn-meter{position:relative;height:22px;border-radius:6px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.tn-zone{position:absolute;top:0;bottom:0;left:45%;width:10%;background:var(--accent-soft)}
+.tn-mid{position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--faint)}
+.tn-needle{position:absolute;top:2px;bottom:2px;width:4px;margin-left:-2px;border-radius:2px;background:var(--ink);left:50%;transition:left .25s ease-out}
+.tn-needle.ok{background:var(--accent)}
+.tn-tip{font-size:12.5px;color:var(--muted);text-align:center;margin:0;min-height:0}
+.tn-tip:empty{display:none}
+.tn-targets{display:grid;grid-template-columns:10px repeat(4,1fr);gap:7px;align-items:center;max-width:420px;width:100%;justify-self:center}
+.tn-reg{font:600 11px var(--mono);color:var(--faint);align-self:center;text-align:center}
+.tn-t{position:relative;font:inherit;color:var(--ink);cursor:pointer;border:1px solid var(--line);border-radius:12px;padding:0;aspect-ratio:1/1;width:100%;display:block;background:var(--bg);transition:background .15s,border-color .15s}
+.tn-t b{position:absolute;left:calc(50% - 5px);top:50%;transform:translateY(-50%);font-size:16px;font-weight:700;line-height:1;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.tn-t b sup{font-size:.62em;font-weight:500}
+.tn-t .fd{position:absolute;left:calc(50% - 22px);top:50%;transform:translateY(-50%);display:grid;gap:4px}
+.tn-t .fd i{display:block;width:8px;height:8px;border-radius:50%;border:1.4px solid var(--ink);box-sizing:border-box}
+.tn-t .fd i.cl{background:var(--ink)}
+.tn-t .pl{position:absolute;bottom:5px;right:6px;font-size:8px;color:var(--accent);line-height:1}
+.tn-t .c{display:none}
+.tn-t.on{border-color:var(--accent);background:var(--accent-soft)}
+.tn-t.ok{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.tn-t.ok .fd i{border-color:var(--accent-ink)} .tn-t.ok .fd i.cl{background:var(--accent-ink)} .tn-t.ok .pl{color:var(--accent-ink)}
+.tn-t[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--accent)}
+.tn-tap{font-size:12.5px;color:var(--muted);margin:-2px 0 0;text-align:center}
+.tn-hint{font-size:12.5px;color:var(--muted);margin:0;line-height:1.5;text-align:center}
+.kd-reset{flex:none;font:600 13px var(--sans);border:1px solid var(--line);border-radius:9px;padding:8px 12px;cursor:pointer;background:var(--surface);color:var(--ink)}
+.kd-time{margin-left:auto;font:500 13px var(--mono);color:var(--muted)}
+.kd-now{display:flex;justify-content:center;align-items:baseline;gap:10px;font:500 26px var(--mono);min-height:32px}
+.kd-now sup{font-size:.5em}
+.kd-now small{font:500 12px var(--mono);color:var(--muted)}
+.kd-hist{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;align-items:end;height:92px}
+.kd-bar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%}
+.kd-bar i{display:block;width:100%;border-radius:4px 4px 2px 2px;background:var(--accent-soft);min-height:3px;transition:height .3s ease-out}
+.kd-bar.in i{background:var(--accent)}
+.kd-bar span{font:600 10.5px var(--mono);color:var(--muted)}
+.kd-res{display:grid;gap:8px}
+.kd-r{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;font:inherit;color:var(--ink);text-align:left;cursor:pointer;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--bg)}
+.kd-r.best{border-color:var(--accent);background:var(--accent-soft)}
+.kd-r b{font-size:17px}
+.kd-r b sup{font-size:.6em;font-weight:500}
+.kd-r .kd-m{font-size:12.5px;color:var(--muted);line-height:1.35}
+.kd-l{display:grid;gap:3px}
+.kd-r .kd-p{font-size:12px;font-weight:600;color:var(--accent)}
+.kd-msg{font-size:13.5px;color:var(--muted);text-align:center;margin:0}
 .drawing{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 12px 12px;display:grid;gap:6px}
 .drawing .label{padding-left:6px}
 .drawing svg{display:block;width:100%;max-width:340px;height:auto;margin:0 auto}
@@ -104,7 +169,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 <body>
 <div class="wrap">
   <header>
-    <h1 data-i="h1">Къамыл</h1>
+    <h1><span data-i="h1">Къамыл калькулятор</span> <span class="ver">v0.9</span></h1>
     <div class="lang" role="group" aria-label="Язык / Language">
       <button type="button" id="ru">RU</button>
       <button type="button" id="en">EN</button>
@@ -114,6 +179,31 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   <section>
     <span class="label" data-i="key">Тональность</span>
     <div class="keys" id="keys"></div>
+  </section>
+
+  <section class="tuner" id="tuner">
+    <button type="button" class="tn-toggle" id="tnToggle" aria-expanded="false" aria-controls="tnBody"><span class="tn-tt"><span class="label" data-i="tnTitle">Тюнер</span><small data-i="tnSub">проверка строя и все ноты камыля</small></span><span class="chev" aria-hidden="true">+</span></button>
+    <div class="tn-body" id="tnBody" hidden>
+    <div class="tn-head"><button type="button" class="tn-btn" id="tnBtn" aria-pressed="false">Включить микрофон</button><div class="tn-level" aria-hidden="true"><i id="tnLevel"></i></div></div>
+    <div class="tn-main" id="tnMain">
+      <div class="tn-read"><span class="tn-note" id="tnNote">-</span><span class="tn-cents" id="tnCents">&nbsp;</span></div>
+      <div class="tn-meter"><div class="tn-zone"></div><div class="tn-mid"></div><div class="tn-needle" id="tnNeedle"></div></div>
+    </div>
+    <p class="tn-tip" id="tnTip" aria-live="polite"></p>
+    <div class="tn-targets" id="tnTargets"></div>
+    <p class="tn-hint" data-i="tnHint"></p>
+    </div>
+  </section>
+
+  <section class="tuner" id="kd">
+    <button type="button" class="tn-toggle" id="kdToggle" aria-expanded="false" aria-controls="kdBody"><span class="tn-tt"><span class="label" data-i="kdTitle">Подбор къамыла</span><small data-i="kdSub">подскажу тональность по мелодии</small></span><span class="chev" aria-hidden="true">+</span></button>
+    <div class="tn-body" id="kdBody" hidden>
+    <div class="tn-head"><button type="button" class="tn-btn" id="kdBtn" aria-pressed="false">Слушать мелодию</button><button type="button" class="kd-reset" id="kdReset" data-i="kdReset">Сбросить</button><span class="kd-time" id="kdTime"></span></div>
+    <div class="kd-now"><span id="kdNow">-</span><small id="kdTune"></small></div>
+    <div class="kd-hist" id="kdHist" aria-hidden="true"></div>
+    <div class="kd-res" id="kdRes"></div>
+    <p class="tn-hint" data-i="kdHint"></p>
+    </div>
   </section>
 
   <section>
@@ -135,6 +225,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 
   <div class="howto" id="howto"></div>
 
+
   <p class="fb" id="fb"></p>
 </div>
 
@@ -145,26 +236,48 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   const STEPS=[1,3,5];                 // шаги отверстий снизу вверх
   const BLOW=55.5, TEMP=25, A4=440;    // калибровка по замерам
   const TXT={
-    ru:{h1:"Къамыл",key:"Тональность",tube:"Трубка",bore:"Внутренний диаметр трубки",outer:"Внешний диаметр трубки",wall:"Толщина стенки (считается сама)",hole:"Диаметр отверстий",badOuter:"Внешний диаметр должен быть больше внутреннего",mm:"мм",
-        len:"Длина трубки",h:["Отверстие 1","Отверстие 2","Отверстие 3"],draw:"Чертёж",top:"вдув",bottom:"низ",scaleNote:"длина в масштабе, мм",
+    ru:{h1:"Къамыл калькулятор",key:"Тональность",tube:"Трубка",bore:"Внутренний диаметр трубки",outer:"Внешний диаметр трубки",wall:"Толщина стенки (считается сама)",hole:"Диаметр отверстий",badOuter:"Внешний диаметр должен быть больше внутреннего",mm:"мм",
+        len:"Длина трубки",h:["Отверстие 1","Отверстие 2","Отверстие 3"],draw:"Чертёж",top:"верх",bottom:"низ",scaleNote:"длина в масштабе, мм",
         fb:"Это бета-версия, значения могут немного быть неточными. Буду рад фидбеку, который поможет улучшить точность - пишите в Instagram ",
+
+        kdTitle:"Подбор къамыла",kdSub:"подскажу тональность по мелодии",kdOn:"Слушать мелодию",kdOff:"Стоп",kdReset:"Сбросить",
+        kdHint:"Лучше всего работает с одним голосом: пение, свист, камыль или другой инструмент соло. Музыка с аккомпанементом может сбить определение. Нажмите на вариант, чтобы выбрать эту тональность в калькуляторе.",
+        kdWait:"Слушаю… нужно хотя бы 5-10 секунд мелодии.",kdIdle:"Включите микрофон и сыграйте или спойте мелодию.",
+        kdKamyl:"Къамыл в",kdFit:p=>`совпадает ${p}% мелодии`,kdMiss:n=>`нет нот: ${n}`,kdAll:"все ноты мелодии есть",kdTuneL:c=>`строй записи ${c} ц`,kdSel:"выбран",tnTitle:"Тюнер",tnSub:"проверка строя и все ноты камыля",tnTap:"Нажмите на ноту, чтобы услышать её",tnPlay:"слушать",tnStop:"стоп",tnOn:"Включить микрофон",tnOff:"Выключить",
+        tnFing:["все закрыты","отв. 1","отв. 1-2","отв. 1-3","отв. 2"],tnReg:n=>`Регистр ${n}`,
+        tnIdle:"Включите микрофон и сыграйте ноту.",
+        tnListen:"Слушаю… сыграйте ноту ровно и не слишком громко.",
+        tnMic:"Нет доступа к микрофону. Разрешите его в настройках браузера. Во встроенном браузере Telegram или Instagram микрофон может не работать - откройте сайт в Chrome или Safari.",
+        tnHint:"Нажмите на ноту, чтобы услышать её. Тюнер сам подсветит ноту, которую вы играете. Звук никуда не отправляется.",
+        cents:"ц",
         howT:"Как размечать",
-        how:h=>[`Все расстояния меряйте <b>от места, куда задувается воздух</b> (верхний срез трубки).`,
+        how:h=>[`Все расстояния замеряйте <b>от места, куда задувается воздух</b> (верхний срез трубки).`,
           `Для отверстий указано расстояние <b>до ближнего края отверстия</b>, а не до центра.`,
           `Сверлите так, чтобы <b>ближний край попал точно на отметку</b>: центр сверла ставьте на ${h} мм ниже отметки (половина диаметра отверстия).`,
-          `Трубку отпилите на 20-30 мм длиннее и подпиливайте низ по тюнеру, пока тоника не попадёт в ноту.`],
+          `Трубку отпилите на 20-30 мм длиннее и подпиливайте низ по тюнеру, пока тоника (самая низкая нота) не попадёт в ноту.`],
         bad:"Проверьте размеры трубки"},
-    en:{h1:"Kamyl",key:"Key",tube:"Tube",bore:"Inner tube diameter",outer:"Outer tube diameter",wall:"Wall thickness (calculated)",hole:"Hole diameter",badOuter:"The outer diameter must be larger than the inner one",mm:"mm",
-        len:"Tube length",h:["Hole 1","Hole 2","Hole 3"],draw:"Drawing",top:"blowing end",bottom:"bottom",scaleNote:"length to scale, mm",
+    en:{h1:"Kamyl calculator",key:"Key",tube:"Tube",bore:"Inner tube diameter",outer:"Outer tube diameter",wall:"Wall thickness (calculated)",hole:"Hole diameter",badOuter:"The outer diameter must be larger than the inner one",mm:"mm",
+        len:"Tube length",h:["Hole 1","Hole 2","Hole 3"],draw:"Drawing",top:"top",bottom:"bottom",scaleNote:"length to scale, mm",
         fb:"This is a beta version, the values may be slightly inaccurate. I'd be glad of feedback that helps improve the accuracy - message me on Instagram ",
+
+        kdTitle:"Find a kamyl",kdSub:"suggests the key from a melody",kdOn:"Listen to a melody",kdOff:"Stop",kdReset:"Reset",
+        kdHint:"Works best with a single voice: singing, whistling, a kamyl or another solo instrument. Music with accompaniment can confuse it. Tap a suggestion to select that key in the calculator.",
+        kdWait:"Listening… play at least 5-10 seconds of the melody.",kdIdle:"Turn on the microphone and play or sing a melody.",
+        kdKamyl:"Kamyl in",kdFit:p=>`matches ${p}% of the melody`,kdMiss:n=>`missing: ${n}`,kdAll:"every note of the melody fits",kdTuneL:c=>`recording tuning ${c} c`,kdSel:"selected",tnTitle:"Tuner",tnSub:"check the tuning, hear every note",tnTap:"Tap a note to hear it",tnPlay:"listen",tnStop:"stop",tnOn:"Turn on microphone",tnOff:"Turn off",
+        tnFing:["all closed","hole 1","holes 1-2","holes 1-3","hole 2"],tnReg:n=>`Register ${n}`,
+        tnIdle:"Turn on the microphone and play a note.",
+        tnListen:"Listening… play a steady note, not too loud.",
+        tnMic:"No access to the microphone. Allow it in your browser settings. Inside Telegram or Instagram the microphone may not work - open the site in Chrome or Safari.",
+        tnHint:"Tap a note to hear it. The tuner highlights the note you are playing. The sound is not sent anywhere.",
+        cents:"c",
         howT:"How to mark",
         how:h=>[`Measure every distance <b>from where you blow into the tube</b> (the top end).`,
           `Hole distances are <b>to the near edge of the hole</b>, not to its centre.`,
           `Drill so that <b>the near edge lands exactly on the mark</b>: put the drill centre ${h} mm below the mark (half the hole diameter).`,
-          `Cut the tube 20-30 mm long and trim the bottom to a tuner until the tonic is in tune.`],
+          `Cut the tube 20-30 mm long and trim the bottom to a tuner until the tonic (the lowest note) is in tune.`],
         bad:"Check the tube dimensions"}
   };
-  const DEF={lang:"ru",key:5,bore:14,outer:16,hole:8};
+  const DEF={lang:"ru",key:5,bore:14,outer:16,hole:8,tuner:false};
   let S=Object.assign({},DEF);
   try{const s=JSON.parse(localStorage.getItem("kamyl-lite")||"null");if(s)S=Object.assign(S,s);}catch(e){}
   if(!(S.outer>0)) S.outer=S.bore+2*(S.wall>0?S.wall:1);
@@ -231,6 +344,263 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     return o+"</svg>";
   }
 
+
+  // ---------- tuner
+  const TN={on:false,ctx:null,stream:null,an:null,buf:null,hist:[],last:0,raf:0,match:null,sm:null};
+  const NN=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+  const noteHtml=m=>NN[((m%12)+12)%12]+"<sup>"+(Math.floor(m/12)-1)+"</sup>";
+  const fOf=m=>A4*Math.pow(2,(m-69)/12);
+  const noteTxtA=m=>NN[((m%12)+12)%12]+(Math.floor(m/12)-1);
+  // all notes of the kamyl, as in the fingering chart: 4 registers x 4 fingerings + 2 top notes
+  const REGS=[0,12,19,24];
+  const allNotes=()=>{
+    const tn=KEYS[S.key][1], out=[];
+    REGS.forEach((r,ri)=>[0].concat(STEPS).forEach((st,fi)=>out.push({m:tn+r+st,reg:ri,f:fi})));
+    out.push({m:tn+31,reg:4,f:4},{m:tn+32,reg:4,f:1});
+    return out;
+  };
+  const GEN={ctx:null,osc:[],gain:null,idx:-1,key:-1};
+  function renderTargets(match){
+    if(match!==undefined) TN.match=match; match=TN.match;
+    const T=t(), box=$("tnTargets"), sig=S.key+"|"+S.lang, all=allNotes();
+    if(box.dataset.sig!==sig){   // rebuild only when key or language changes, so taps are not lost
+      box.dataset.sig=sig;
+      let h="", reg=-1;
+      all.forEach((n,i)=>{
+        if(n.reg!==reg){reg=n.reg; h+=`<span class="tn-reg" title="${T.tnReg(reg+1)}" aria-label="${T.tnReg(reg+1)}">${reg+1}</span>`;}
+        const open=[[],[1],[1,2],[1,2,3],[2]][n.f];
+        const dots=[3,2,1].map(k=>`<i class="${open.includes(k)?"":"cl"}"></i>`).join("");
+        h+=`<button type="button" class="tn-t" data-n="${i}" aria-pressed="false" aria-label="${noteTxtA(n.m)}, ${T.tnFing[n.f]}"><span class="pl"></span><span class="fd" aria-hidden="true">${dots}</span><b>${noteHtml(n.m)}</b><span class="c"></span></button>`;
+      });
+      box.innerHTML=h;
+    }
+    box.querySelectorAll(".tn-t").forEach(btn=>{
+      const i=+btn.dataset.n, on=!!(match&&match.i===i), ok=on&&Math.abs(match.c)<=5, pl=GEN.idx===i;
+      btn.classList.toggle("on",on); btn.classList.toggle("ok",ok); btn.setAttribute("aria-pressed",pl);
+      btn.querySelector(".c").textContent=on?(match.c>0?"+":match.c<0?"−":"")+Math.abs(Math.round(match.c))+" "+T.cents:"";
+      btn.querySelector(".pl").textContent=pl?"■":"▶";
+    });
+  }
+  // note generator: loud, soft-edged tone with harmonics so phone speakers can play low notes
+  function genStop(){
+    if(GEN.gain&&GEN.ctx){
+      const g=GEN.gain, now=GEN.ctx.currentTime, os=GEN.osc;
+      g.gain.cancelScheduledValues(now); g.gain.setTargetAtTime(0,now,0.03);
+      setTimeout(()=>os.forEach(o=>{try{o.stop();}catch(e){}}),250);
+    }
+    GEN.osc=[];GEN.gain=null;GEN.idx=-1; renderTargets();
+  }
+  function genPlay(i){
+    try{
+      if(!GEN.ctx){
+        GEN.ctx=new (window.AudioContext||window.webkitAudioContext)();
+        GEN.comp=GEN.ctx.createDynamicsCompressor();
+        GEN.comp.threshold.value=-10; GEN.comp.knee.value=6; GEN.comp.ratio.value=8;
+        GEN.comp.attack.value=0.003; GEN.comp.release.value=0.2;
+        GEN.comp.connect(GEN.ctx.destination);
+      }
+      if(GEN.ctx.state==="suspended") GEN.ctx.resume();
+      if(GEN.idx>=0) genStop();
+      const f=fOf(allNotes()[i].m), g=GEN.ctx.createGain(); g.gain.value=0; g.connect(GEN.comp);
+      [[1,.6],[2,.4],[3,.25],[4,.14],[5,.07]].forEach(([h,a])=>{
+        if(f*h>8000) return;
+        const o=GEN.ctx.createOscillator();o.type="sine";o.frequency.value=f*h;
+        const og=GEN.ctx.createGain();og.gain.value=a;o.connect(og);og.connect(g);o.start();GEN.osc.push(o);
+      });
+      g.gain.setTargetAtTime(1.6,GEN.ctx.currentTime,0.04);
+      GEN.gain=g; GEN.idx=i; GEN.key=S.key; renderTargets();
+    }catch(e){}
+  }
+
+  // McLeod-style normalized autocorrelation
+  function detect(x,sr){
+    const N=x.length; let e=0; for(let i=0;i<N;i++) e+=x[i]*x[i];
+    if(e<1e-10) return null;   // only true digital silence is skipped
+    const minLag=Math.max(2,Math.floor(sr/2400)), maxLag=Math.min(Math.floor(sr/110),(N>>1));
+    const n=new Float32Array(maxLag+2);
+    for(let tau=minLag;tau<=maxLag+1;tau++){
+      let ac=0,m=0;
+      for(let j=0;j<N-tau;j++){const a=x[j],b=x[j+tau];ac+=a*b;m+=a*a+b*b;}
+      n[tau]=m>0?2*ac/m:0;
+    }
+    let tau=minLag; while(tau<maxLag&&n[tau]>0) tau++;
+    const peaks=[]; let pos=false,best=-1,bestT=-1;
+    for(;tau<=maxLag;tau++){
+      if(n[tau]>0){ if(!pos){pos=true;best=-1;} if(n[tau]>best){best=n[tau];bestT=tau;} }
+      else if(pos){pos=false;peaks.push([bestT,best]);}
+    }
+    if(pos&&bestT>0) peaks.push([bestT,best]);
+    if(!peaks.length) return null;
+    const mx=Math.max(...peaks.map(p=>p[1])); if(mx<0.45) return null;
+    const pk=peaks.find(p=>p[1]>=0.86*mx), T0=pk[0];
+    const a=n[T0-1],b=n[T0],c=n[T0+1], den=a-2*b+c, sh=den?(a-c)/(2*den):0;
+    return sr/(T0+sh);
+  }
+
+  function show(mf,f){
+    const T=t(), all=allNotes();
+    let best=null;
+    all.forEach((n,i)=>{const c=(mf-n.m)*100; if(!best||Math.abs(c)<Math.abs(best.c)) best={i,m:n.m,c};});
+    const hit=best&&Math.abs(best.c)<=80, near=Math.round(mf), c=hit?best.c:(mf-near)*100;
+    $("tnNote").innerHTML=noteHtml(hit?best.m:near);
+    $("tnCents").textContent=(c>0?"+":c<0?"−":"")+Math.abs(Math.round(c))+" "+T.cents+" · "+f.toFixed(1)+" Hz";
+    setNeedle(c); renderTargets(hit?best:null);
+  }
+  function setNeedle(c){
+    const v=Math.max(-50,Math.min(50,c));
+    const nd=$("tnNeedle"); nd.style.left=(50+v)+"%"; nd.classList.toggle("ok",Math.abs(c)<=5);
+  }
+  function loop(){
+    if(!TN.on) return;
+    TN.raf=requestAnimationFrame(loop);
+    TN.an.getFloatTimeDomainData(TN.buf);
+    let e=0; for(let i=0;i<TN.buf.length;i++) e+=TN.buf[i]*TN.buf[i];
+    const rms=Math.sqrt(e/TN.buf.length), lvl=Math.max(0,Math.min(1,(Math.log10(rms+1e-9)+5)/4.3));
+    $("tnLevel").style.width=(lvl*100)+"%";
+    const f=detect(TN.buf,TN.ctx.sampleRate), now=performance.now();
+    if(f){
+      TN.hist.push(f); if(TN.hist.length>9) TN.hist.shift();
+      const fm=[...TN.hist].sort((a,b)=>a-b)[TN.hist.length>>1], mf=69+12*Math.log2(fm/A4);
+      // inertia: glide toward the new reading; jump only when a different note starts
+      if(TN.sm===null||Math.abs(mf-TN.sm)>0.6) TN.sm=mf; else TN.sm+=(mf-TN.sm)*0.12;
+      show(TN.sm,A4*Math.pow(2,(TN.sm-69)/12)); TN.last=now;
+      $("tnMain").classList.remove("stale"); $("tnTip").textContent="";
+    } else if(now-TN.last>1200){
+      TN.hist=[]; TN.sm=null; $("tnMain").classList.add("stale");   // keep the last reading, just dim it
+    }
+  }
+  async function tunerStart(){
+    const T=t();
+    if(typeof KD!=="undefined"&&KD.on) kdStop();
+    try{
+      if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) throw new Error("no media");
+      TN.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:true}});
+      TN.ctx=new (window.AudioContext||window.webkitAudioContext)();
+      if(TN.ctx.state==="suspended") await TN.ctx.resume();
+      const src=TN.ctx.createMediaStreamSource(TN.stream);
+      const hp=TN.ctx.createBiquadFilter(); hp.type="highpass"; hp.frequency.value=110;
+      const lp=TN.ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=2600;
+      TN.an=TN.ctx.createAnalyser(); TN.an.fftSize=2048;
+      src.connect(hp); hp.connect(lp); lp.connect(TN.an);
+      TN.buf=new Float32Array(TN.an.fftSize); TN.on=true; TN.last=0; TN.hist=[]; TN.sm=null;
+      $("tnTip").textContent=T.tnListen; tunerBtn(); loop();
+    }catch(e){ tunerStop(); $("tnTip").textContent=T.tnMic; }
+  }
+  function tunerStop(){
+    TN.on=false; cancelAnimationFrame(TN.raf);
+    if(TN.stream) TN.stream.getTracks().forEach(tr=>tr.stop());
+    if(TN.ctx) TN.ctx.close().catch(()=>{});
+    TN.stream=TN.ctx=TN.an=null; tunerBtn();
+  }
+  function tunerBtn(){const b=$("tnBtn");b.setAttribute("aria-pressed",TN.on);b.textContent=TN.on?t().tnOff:t().tnOn;}
+  $("tnBtn").addEventListener("click",()=>{TN.on?tunerStop():tunerStart();});
+  function tunerOpen(open){
+    S.tuner=open; $("tnBody").hidden=!open; $("tnToggle").setAttribute("aria-expanded",open);
+    $("tuner").querySelector(".chev").textContent=open?"−":"+";
+    if(!open){ if(TN.on) tunerStop(); if(GEN.idx>=0) genStop(); }
+    try{localStorage.setItem("kamyl-lite",JSON.stringify(S));}catch(e){}
+  }
+  $("tnToggle").addEventListener("click",()=>tunerOpen(!S.tuner));
+  tunerOpen(!!S.tuner);
+  $("tnTargets").addEventListener("click",e=>{const b=e.target.closest(".tn-t");if(!b)return;const i=+b.dataset.n;GEN.idx===i?genStop():genPlay(i);});
+  window.__kamylDetect=detect;
+  // ---------- key finder: which kamyl can play the melody
+  const OFFS=[0,1,3,5,12,13,15,17,19,20,22,24,25,27,29,31,32];   // every note of a kamyl, from the tonic
+  const KD={on:false,ctx:null,stream:null,an:null,buf:null,raf:0,frames:[],prev:null,t0:0,lastA:0};
+  function kdAudio(){
+    return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:true}}).then(st=>{
+      const ctx=new (window.AudioContext||window.webkitAudioContext)(), src=ctx.createMediaStreamSource(st);
+      const hp=ctx.createBiquadFilter(); hp.type="highpass"; hp.frequency.value=110;
+      const lp=ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=2600;
+      const an=ctx.createAnalyser(); an.fftSize=2048; src.connect(hp); hp.connect(lp); lp.connect(an);
+      return {st,ctx,an};
+    });
+  }
+  async function kdStart(){
+    const T=t();
+    if(TN.on) tunerStop();
+    if(GEN.idx>=0) genStop();
+    try{
+      if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) throw new Error("no media");
+      const a=await kdAudio(); KD.stream=a.st; KD.ctx=a.ctx; KD.an=a.an;
+      if(KD.ctx.state==="suspended") await KD.ctx.resume();
+      KD.buf=new Float32Array(KD.an.fftSize); KD.on=true; KD.prev=null; KD.t0=performance.now()-kdElapsed();
+      kdBtn(); kdAnalyze(); kdLoop();
+    }catch(e){ kdStop(); $("kdRes").innerHTML=`<p class="kd-msg">${T.tnMic}</p>`; }
+  }
+  function kdElapsed(){return KD.frames.length*1000/60;}
+  function kdStop(){
+    KD.on=false; cancelAnimationFrame(KD.raf);
+    if(KD.stream) KD.stream.getTracks().forEach(tr=>tr.stop());
+    if(KD.ctx) KD.ctx.close().catch(()=>{});
+    KD.stream=KD.ctx=KD.an=null; kdBtn(); kdAnalyze();
+  }
+  function kdBtn(){const b=$("kdBtn");b.setAttribute("aria-pressed",KD.on);b.textContent=KD.on?t().kdOff:t().kdOn;}
+  function kdLoop(){
+    if(!KD.on) return;
+    KD.raf=requestAnimationFrame(kdLoop);
+    KD.an.getFloatTimeDomainData(KD.buf);
+    const f=detect(KD.buf,KD.ctx.sampleRate), now=performance.now();
+    if(f){
+      const m=69+12*Math.log2(f/A4);
+      if(KD.prev!==null&&Math.abs(m-KD.prev)<0.35) KD.frames.push(m);   // keep only steady, sung/played notes
+      KD.prev=m; $("kdNow").innerHTML=noteHtml(Math.round(m));
+    } else KD.prev=null;
+    const sec=Math.round(KD.frames.length/60);
+    $("kdTime").textContent=sec+" s";
+    if(now-KD.lastA>500){KD.lastA=now; kdAnalyze();}
+  }
+  function kdAnalyze(){
+    const T=t(), fr=KD.frames;
+    // bars for the 12 note names
+    const hist=new Array(12).fill(0);
+    let off=0;
+    if(fr.length){
+      const dev=fr.map(m=>m-Math.round(m)).sort((a,b)=>a-b); off=dev[dev.length>>1];   // how far the recording is from A=440
+      fr.forEach(m=>hist[(((Math.round(m-off))%12)+12)%12]++);
+    }
+    const best=kdRank(fr,off), top=best[0], mx=Math.max(1,...hist);
+    const inSet=top&&fr.length>=60?new Set(OFFS.map(o=>(KEYS[top.i][1]+o)%12)):null;
+    $("kdHist").innerHTML=NN.map((n,i)=>`<div class="kd-bar ${inSet&&inSet.has(i)?"in":""}"><i style="height:${Math.round(hist[i]/mx*72)+3}px"></i><span>${n}</span></div>`).join("");
+    $("kdTune").textContent=fr.length>=60?T.kdTuneL((off>0?"+":off<0?"−":"")+Math.abs(Math.round(off*100))):"";
+    if(fr.length<300){ $("kdRes").innerHTML=`<p class="kd-msg">${fr.length?T.kdWait:(KD.on?T.kdWait:T.kdIdle)}</p>`; return; }
+    $("kdRes").innerHTML=best.slice(0,3).map((r,j)=>{
+      const miss=r.miss.length?T.kdMiss(r.miss.join(", ")):T.kdAll;
+      return `<button type="button" class="kd-r ${j===0?"best":""}" data-k="${r.i}"><span class="kd-l"><b>${T.kdKamyl} ${noteHtml(KEYS[r.i][1])}</b><span class="kd-m">${T.kdFit(r.p)} · ${miss}</span></span><span class="kd-p">${r.i===S.key?T.kdSel:""}</span></button>`;
+    }).join("");
+  }
+  function kdRank(fr,off){
+    if(!fr.length) return [];
+    const cnt=new Map(); fr.forEach(m=>{const k=Math.round(m-off);cnt.set(k,(cnt.get(k)||0)+1);});
+    const total=fr.length, out=[];
+    KEYS.forEach(([n,tonic],i)=>{
+      const set=new Set(OFFS.map(o=>tonic+o));
+      // best octave placement: most of the melody playable, then the lowest (easiest) registers
+      let best=null;
+      [-24,-12,0,12,24].forEach(sh=>{
+        let c=0,hi=0; cnt.forEach((v,k)=>{if(set.has(k+sh)){c+=v;hi+=v*(k+sh-tonic);}});
+        const score=c/total*100-(c?hi/c:32)/32*3;
+        if(!best||score>best.score) best={score,c,sh};
+      });
+      const miss=[]; cnt.forEach((v,k)=>{if(!set.has(k+best.sh)&&v/total>0.03){const nm=NN[(((k+best.sh)%12)+12)%12]; if(miss.indexOf(nm)<0) miss.push(nm);}});
+      out.push({i,p:Math.round(best.c/total*100),score:best.score,miss});
+    });
+    return out.sort((a,b)=>b.score-a.score);
+  }
+  $("kdBtn").addEventListener("click",()=>{KD.on?kdStop():kdStart();});
+  $("kdReset").addEventListener("click",()=>{KD.frames=[];KD.prev=null;$("kdNow").textContent="-";$("kdTime").textContent="";kdAnalyze();});
+  $("kdRes").addEventListener("click",e=>{const b=e.target.closest(".kd-r");if(!b)return;S.key=+b.dataset.k;render();kdAnalyze();});
+  function kdOpen(open){
+    S.kd=open; $("kdBody").hidden=!open; $("kdToggle").setAttribute("aria-expanded",open);
+    $("kd").querySelector(".chev").textContent=open?"−":"+";
+    if(!open&&KD.on) kdStop();
+    try{localStorage.setItem("kamyl-lite",JSON.stringify(S));}catch(e){}
+  }
+  $("kdToggle").addEventListener("click",()=>kdOpen(!S.kd));
+  kdOpen(!!S.kd);
+  window.__kamylRank=kdRank;
+
+
   function render(){
     try{localStorage.setItem("kamyl-lite",JSON.stringify(S));}catch(e){}
     const T=t();
@@ -251,6 +621,10 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     $("fb").innerHTML=T.fb+`<a href="https://www.instagram.com/circassian_flute/" target="_blank" rel="noopener">@circassian_flute</a>`;
     $("howto").innerHTML=`<h2>${T.howT}</h2><ol>`+T.how(half).map(x=>`<li>${x}</li>`).join("")+`</ol>`;
     $("drawing").innerHTML=r.ok?drawing(r,T):"";
+    if(GEN.idx>=0&&GEN.key!==S.key) genStop();
+    if(typeof kdBtn==="function"){kdBtn(); kdAnalyze();}
+    tunerBtn(); renderTargets(TN.on?undefined:null);
+    if(!TN.on){$("tnTip").textContent=T.tnIdle;$("tnNote").textContent="-";}
   }
   render();
 })();
