@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Калькулятор къамыля: длина трубки и расстояния до трёх отверстий для 12 тональностей. Kamyl calculator: tube length and hole positions for 12 keys.">
-<meta property="og:title" content="Къамыл - калькулятор">
-<meta property="og:description" content="Длина трубки и позиции отверстий для 12 тональностей.">
+<meta name="description" content="Kamyl App: калькулятор къамыля для 12 тональностей, тюнер, подбор къамыла по мелодии. Kamyl calculator, tuner and kamyl finder.">
+<meta property="og:title" content="Kamyl App">
+<meta property="og:description" content="Калькулятор къамыля для 12 тональностей, тюнер и подбор къамыла.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://threedsolutions.github.io/kamyl-calculator/">
 <meta property="og:image" content="https://threedsolutions.github.io/kamyl-calculator/og.png?v=5">
@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://threedsolutions.github.io/kamyl-calculator/og.png?v=5">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='26' y='4' width='12' height='56' rx='3' fill='%232E6A4E'/%3E%3Ccircle cx='32' cy='36' r='3' fill='%23fff'/%3E%3Ccircle cx='32' cy='44' r='3' fill='%23fff'/%3E%3Ccircle cx='32' cy='52' r='3' fill='%23fff'/%3E%3C/svg%3E">
-<title>Къамыл - калькулятор</title>
+<title>Kamyl App</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -23,7 +23,7 @@
 :root{
   --bg:#F2F3F1; --surface:#FFFFFF;
   --ink:#191C1A; --muted:#656B67; --faint:#9A9F9B; --line:#D9DCD8;
-  --accent:#2E6A4E; --accent-soft:#DDEBE3; --accent-ink:#FFFFFF;
+  --accent:#2E6A4E; --accent-soft:#DDEBE3; --accent-ink:#FFFFFF; --warn:#B4441B;
   --sans:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
 }
@@ -32,14 +32,14 @@
     color-scheme:dark;
     --bg:#111413; --surface:#191D1B;
     --ink:#E7EAE8; --muted:#9DA4A0; --faint:#6E7571; --line:#2D3330;
-    --accent:#72C39A; --accent-soft:#1F3329; --accent-ink:#0E1A14;
+    --accent:#72C39A; --accent-soft:#1F3329; --accent-ink:#0E1A14; --warn:#F0936B;
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
   --bg:#111413; --surface:#191D1B;
   --ink:#E7EAE8; --muted:#9DA4A0; --faint:#6E7571; --line:#2D3330;
-  --accent:#72C39A; --accent-soft:#1F3329; --accent-ink:#0E1A14;
+  --accent:#72C39A; --accent-soft:#1F3329; --accent-ink:#0E1A14; --warn:#F0936B;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -165,12 +165,38 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .dtxt.total{fill:var(--accent);font-weight:600}
 .num{fill:var(--ink);font:700 13px var(--sans)}
 .cap{fill:var(--muted);font:500 12px var(--sans)}
+.pr-diff{font-family:var(--mono);white-space:nowrap}
+.mk-intro{font-size:13.5px;color:var(--muted);margin:0;line-height:1.5}
+.mk-step{display:grid;gap:10px;border-top:1px solid var(--line);padding-top:14px}
+.mk-h{font-size:13.5px;font-weight:700}
+.mk-note{font-size:12.5px;color:var(--muted);margin:0;line-height:1.45}
+.fields.one{grid-template-columns:1fr}
+.field input.txt{font-family:var(--sans);font-weight:400;font-size:15px}
+.mk-c b{top:44%}
+.mk-c .mk-v{position:absolute;left:0;right:0;bottom:9px;text-align:center;font:500 9.5px var(--mono);color:var(--muted);line-height:1}
+.mk-c .mk-p{position:absolute;left:9px;right:9px;bottom:4px;height:3px;border-radius:2px;overflow:hidden}
+.mk-c .mk-p i{display:block;height:100%;width:0;background:var(--accent)}
+.mk-c.rec{border-color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent)}
+.mk-c.done{background:var(--accent-soft);border-color:var(--accent)}
+.mk-tab{width:100%;border-collapse:collapse;font-size:12.5px}
+.mk-tab th{font:600 11px var(--sans);color:var(--muted);text-align:right;padding:0 4px 6px}
+.mk-tab td{padding:7px 4px;border-top:1px solid var(--line);text-align:right;font-family:var(--mono);white-space:nowrap}
+.mk-tab th:first-child,.mk-tab td:first-child{text-align:left;font-family:var(--sans)}
+.mk-tab .ok{color:var(--accent);font-weight:600}
+.mk-tab .bad{color:var(--warn);font-weight:600}
+.mk-box{border-radius:10px;padding:10px 12px;font-size:13.5px;line-height:1.45;background:var(--bg);border:1px solid var(--line)}
+.mk-box.ok{background:var(--accent-soft);border-color:var(--accent)}
+.mk-box.bad{border-color:var(--warn)}
+.mk-box ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.mk-send{padding:12px;font-size:15px}
+.mk-send:disabled{opacity:.4;cursor:not-allowed}
+.mk-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1><span data-i="h1">Къамыл калькулятор</span> <span class="ver">v0.9</span></h1>
+    <h1><span data-i="h1">Kamyl App</span> <span class="ver">v0.10 beta</span></h1>
     <div class="lang" role="group" aria-label="Язык / Language">
       <button type="button" id="ru">RU</button>
       <button type="button" id="en">EN</button>
@@ -207,6 +233,54 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     </div>
   </section>
 
+  <section class="tuner" id="pr">
+    <button type="button" class="tn-toggle" id="prToggle" aria-expanded="false" aria-controls="prBody"><span class="tn-tt"><span class="label" data-i="prTitle">Игра вместе</span><small data-i="prSub"></small></span><span class="chev" aria-hidden="true">+</span></button>
+    <div class="tn-body" id="prBody" hidden>
+    <div class="kd-res" id="prRes"></div>
+    <p class="tn-hint" data-i="prHint"></p>
+    </div>
+  </section>
+
+  <section class="tuner" id="mk">
+    <button type="button" class="tn-toggle" id="mkToggle" aria-expanded="false" aria-controls="mkBody"><span class="tn-tt"><span class="label" data-i="mkTitle">Мой къамыл</span><small data-i="mkSub"></small></span><span class="chev" aria-hidden="true">+</span></button>
+    <div class="tn-body" id="mkBody" hidden>
+    <p class="mk-intro" data-i="mkIntro"></p>
+    <div class="mk-step">
+      <span class="mk-h" data-i="mkS1"></span>
+      <div class="fields">
+        <div class="field"><label for="mkL" data-i="mkL"></label><div class="in"><input id="mkL" type="text" inputmode="decimal" class="" autocomplete="off"><span class="u" data-i="mm"></span></div></div>
+        <div class="field"><label for="mkHole" data-i="hole"></label><div class="in"><input id="mkHole" type="text" inputmode="decimal" class="" autocomplete="off"><span class="u" data-i="mm"></span></div></div>
+        <div class="field"><label for="mkBore" data-i="bore"></label><div class="in"><input id="mkBore" type="text" inputmode="decimal" class="" autocomplete="off"><span class="u" data-i="mm"></span></div></div>
+        <div class="field"><label for="mkOuter" data-i="outer"></label><div class="in"><input id="mkOuter" type="text" inputmode="decimal" class="" autocomplete="off"><span class="u" data-i="mm"></span></div></div>
+        <div class="field"><label for="mkE1" data-i="mkE1"></label><div class="in"><input id="mkE1" type="text" inputmode="decimal" class="" autocomplete="off"><span class="u" data-i="mm"></span></div></div>
+        <div class="field"><label for="mkE2" data-i="mkE2"></label><div class="in"><input id="mkE2" type="text" inputmode="decimal" class="" autocomplete="off"><span class="u" data-i="mm"></span></div></div>
+        <div class="field"><label for="mkE3" data-i="mkE3"></label><div class="in"><input id="mkE3" type="text" inputmode="decimal" class="" autocomplete="off"><span class="u" data-i="mm"></span></div></div>
+        <div class="field"><label for="mkT" data-i="mkT"></label><div class="in"><input id="mkT" type="text" inputmode="decimal" class="" autocomplete="off"><span class="u" data-i="mkC"></span></div></div>
+      </div>
+      <p class="mk-note" data-i="mkDimNote"></p>
+    </div>
+    <div class="mk-step">
+      <span class="mk-h" data-i="mkS2"></span>
+      <p class="mk-note" data-i="mkRecHint"></p>
+      <div class="tn-head"><button type="button" class="tn-btn" id="mkBtn" aria-pressed="false"></button><button type="button" class="kd-reset" id="mkReset" data-i="mkReset"></button><div class="tn-level" aria-hidden="true"><i id="mkLevel"></i></div></div>
+      <div class="kd-now"><span id="mkNow">-</span><small id="mkNowC"></small></div>
+      <p class="tn-tip" id="mkTip" aria-live="polite"></p>
+      <div class="tn-targets" id="mkGrid"></div>
+    </div>
+    <div class="mk-step">
+      <span class="mk-h" data-i="mkS3"></span>
+      <div id="mkCheck" aria-live="polite"></div>
+      <div class="fields one">
+        <div class="field"><label for="mkWho" data-i="mkWho"></label><div class="in"><input id="mkWho" type="text" class="txt" maxlength="80" autocomplete="off"></div></div>
+        <div class="field"><label for="mkNote" data-i="mkNote"></label><div class="in"><input id="mkNote" type="text" class="txt" maxlength="300" autocomplete="off"></div></div>
+      </div>
+      <input class="mk-hp" id="mkHp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button type="button" class="tn-btn mk-send" id="mkSend" data-i="mkSendB"></button>
+      <p class="tn-hint" id="mkMsg" aria-live="polite"></p>
+    </div>
+    </div>
+  </section>
+
   <section>
     <span class="label" data-i="tube">Трубка</span>
     <div class="fields">
@@ -237,7 +311,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   const STEPS=[1,3,5];                 // шаги отверстий снизу вверх
   const BLOW=55.5, TEMP=25, A4=440;    // калибровка по замерам
   const TXT={
-    ru:{h1:"Къамыл калькулятор",key:"Тональность",tube:"Трубка",bore:"Внутренний диаметр трубки",outer:"Внешний диаметр трубки",wall:"Толщина стенки (считается сама)",hole:"Диаметр отверстий",badOuter:"Внешний диаметр должен быть больше внутреннего",mm:"мм",
+    ru:{h1:"Kamyl App",key:"Тональность",tube:"Трубка",bore:"Внутренний диаметр трубки",outer:"Внешний диаметр трубки",wall:"Толщина стенки (считается сама)",hole:"Диаметр отверстий",badOuter:"Внешний диаметр должен быть больше внутреннего",mm:"мм",
         len:"Длина трубки",h:["Отверстие 1","Отверстие 2","Отверстие 3"],draw:"Чертёж",top:"верх",bottom:"низ",scaleNote:"длина в масштабе, мм",
         fb:"Это бета-версия, значения могут немного быть неточными. Буду рад фидбеку, который поможет улучшить точность - пишите в Instagram ",
 
@@ -249,15 +323,39 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         tnIdle:"Включите микрофон и сыграйте ноту.",
         tnListen:"Слушаю… сыграйте ноту ровно и не слишком громко.",
         tnMic:"Нет доступа к микрофону. Разрешите его в настройках браузера. Во встроенном браузере Telegram или Instagram микрофон может не работать - откройте сайт в Chrome или Safari.",
-        tnHint:"Нажмите на ноту, чтобы услышать её. Тюнер сам подсветит ноту, которую вы играете. Звук никуда не отправляется.",
+        tnHint:"Нажмите на ноту, чтобы услышать её. Тюнер сам подсветит ноту, которую вы играете.",
         cents:"ц",
+        prTitle:"Игра вместе",prSub:"какие къамылы сочетаются с выбранным",prFit:n=>`${n} из 7 нот общие`,prDiff:"отличается",
+        prHint:"Такой же къамыл совпадает по всем 7 нотам - можно играть в унисон. У остальных тональностей общих нот 4 и меньше. Для игры вместе настройте оба къамыла по одному строю (A = 440 Гц). Нажмите на вариант, чтобы выбрать его в калькуляторе.",
+        mkTitle:"Мой къамыл",mkSub:"поделиться замерами своего инструмента",
+        mkIntro:"Если ваш къамыл хорошо строит, поделитесь его размерами - так расчёт станет точнее. Приложение проверит, что ноты сыграны ровно и что размеры сходятся со звуком.",
+        mkS1:"1. Размеры",mkS2:"2. Запись нот",mkS3:"3. Проверка и отправка",
+        mkL:"Длина трубки",mkE1:"Отверстие 1 (нижнее)",mkE2:"Отверстие 2",mkE3:"Отверстие 3 (верхнее)",mkT:"Температура воздуха",mkC:"°C",
+        mkDimNote:"Все расстояния - от места, куда задувается воздух: до нижнего среза трубки и до ближнего края каждого отверстия. Температуру можно не указывать.",
+        mkRecHint:"Играйте по порядку: сначала 4 ноты регистра 1 (все закрыты, затем открывайте отверстия по очереди, начиная с нижнего), потом те же аппликатуры в регистре 2. Держите ноту ровно, пока клетка не заполнится, затем сделайте паузу и переходите к следующей. Чтобы перезаписать ноту, нажмите на её клетку.",
+        mkOn:"Начать запись",mkOff:"Стоп",mkReset:"Сбросить",
+        mkPlay:(r,f)=>`Сыграйте: регистр ${r}, ${f}`,mkWobble:"Нота плавает - сыграйте ровнее.",mkAllDone:"Все 8 нот записаны.",
+        mkTh:["Аппликатура","Сыграно","Расчёт","Разница"],
+        mkTol:(a,b)=>`Основной тон сравнивается по высоте (допуск ±${a} ц), остальные ноты - по интервалу от основного тона (допуск ±${b} ц).`,
+        mkNeedDims:"Заполните все размеры.",mkNeedRec:n=>`Осталось записать нот: ${n}.`,
+        mkBadL:"Проверьте длину трубки: от 200 до 1200 мм.",mkBadBore:"Проверьте внутренний диаметр.",mkBadHole:"Проверьте диаметр отверстий.",
+        mkBadOrder:"Проверьте расстояния: отверстие 1 дальше всех от вдува, отверстие 3 ближе всех, и все отверстия внутри трубки.",
+        mkBadGap:"Отверстия получаются слишком близко друг к другу - проверьте расстояния.",mkBadTemp:"Проверьте температуру.",
+        mkBadSeq:"Ноты идут не по порядку. Перезапишите их: сначала все закрыты, затем открывайте отверстия по очереди снизу.",
+        mkBadOct:f=>`Аппликатура «${f}»: ноты регистров 1 и 2 не сходятся на октаву. Перезапишите их.`,
+        mkBadTonic:c=>`Основной тон отличается от расчёта на ${c} ц. Проверьте длину трубки и внутренний диаметр.`,
+        mkBadHoleN:(f,c,k)=>`Аппликатура «${f}» отличается от расчёта на ${c} ц. Проверьте расстояние до отверстия ${k}.`,
+        mkPass:"Всё сходится - можно отправлять.",
+        mkWho:"Имя или Instagram (необязательно)",mkNote:"Комментарий: материал, особенности (необязательно)",
+        mkSendB:"Отправить",mkSending:"Отправляю…",mkSent:"Спасибо! Данные отправлены.",mkNoUrl:"Отправка ещё не подключена - это тестовая версия.",
+        mkNet:"Не получилось отправить. Проверьте интернет и попробуйте ещё раз.",mkSrv:e=>`Сервер не принял данные: ${e}`,
         howT:"Как размечать",
         how:h=>[`Все расстояния замеряйте <b>от места, куда задувается воздух</b> (верхний срез трубки).`,
           `Для отверстий указано расстояние <b>до ближнего края отверстия</b>, а не до центра.`,
           `Сверлите так, чтобы <b>ближний край попал точно на отметку</b>: центр сверла ставьте на ${h} мм ниже отметки (половина диаметра отверстия).`,
           `Трубку отпилите на 20-30 мм длиннее и подпиливайте низ по тюнеру, пока тоника (самая низкая нота) не попадёт в ноту.`],
         bad:"Проверьте размеры трубки"},
-    en:{h1:"Kamyl calculator",key:"Key",tube:"Tube",bore:"Inner tube diameter",outer:"Outer tube diameter",wall:"Wall thickness (calculated)",hole:"Hole diameter",badOuter:"The outer diameter must be larger than the inner one",mm:"mm",
+    en:{h1:"Kamyl App",key:"Key",tube:"Tube",bore:"Inner tube diameter",outer:"Outer tube diameter",wall:"Wall thickness (calculated)",hole:"Hole diameter",badOuter:"The outer diameter must be larger than the inner one",mm:"mm",
         len:"Tube length",h:["Hole 1","Hole 2","Hole 3"],draw:"Drawing",top:"top",bottom:"bottom",scaleNote:"length to scale, mm",
         fb:"This is a beta version, the values may be slightly inaccurate. I'd be glad of feedback that helps improve the accuracy - message me on Instagram ",
 
@@ -269,8 +367,32 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         tnIdle:"Turn on the microphone and play a note.",
         tnListen:"Listening… play a steady note, not too loud.",
         tnMic:"No access to the microphone. Allow it in your browser settings. Inside Telegram or Instagram the microphone may not work - open the site in Chrome or Safari.",
-        tnHint:"Tap a note to hear it. The tuner highlights the note you are playing. The sound is not sent anywhere.",
+        tnHint:"Tap a note to hear it. The tuner highlights the note you are playing.",
         cents:"c",
+        prTitle:"Play together",prSub:"kamyls that match the selected one",prFit:n=>`${n} of 7 notes shared`,prDiff:"differs",
+        prHint:"The same kamyl shares all 7 notes, so you can play in unison. Every other key shares 4 notes or fewer. To play together, tune both kamyls to the same pitch (A = 440 Hz). Tap an option to select it in the calculator.",
+        mkTitle:"My kamyl",mkSub:"share the measurements of your instrument",
+        mkIntro:"If your kamyl plays in tune, share its dimensions. This makes the calculator more accurate. The app checks that the notes are played steadily and that the dimensions match the sound.",
+        mkS1:"1. Dimensions",mkS2:"2. Record the notes",mkS3:"3. Check and send",
+        mkL:"Tube length",mkE1:"Hole 1 (bottom)",mkE2:"Hole 2",mkE3:"Hole 3 (top)",mkT:"Air temperature",mkC:"°C",
+        mkDimNote:"Measure every distance from where you blow into the tube: to the bottom end, and to the near edge of each hole. Temperature is optional.",
+        mkRecHint:"Play in order: first the 4 notes of register 1 (all closed, then open the holes one by one, starting from the bottom), then the same fingerings in register 2. Hold each note steady until its cell fills up, then pause and move on. Tap a cell to record that note again.",
+        mkOn:"Start recording",mkOff:"Stop",mkReset:"Reset",
+        mkPlay:(r,f)=>`Play: register ${r}, ${f}`,mkWobble:"The note is wavering - play it steadier.",mkAllDone:"All 8 notes recorded.",
+        mkTh:["Fingering","Played","Expected","Difference"],
+        mkTol:(a,b)=>`The base note is compared by pitch (within ±${a} c), the other notes by their interval from the base note (within ±${b} c).`,
+        mkNeedDims:"Fill in all dimensions.",mkNeedRec:n=>`Notes left to record: ${n}.`,
+        mkBadL:"Check the tube length: 200 to 1200 mm.",mkBadBore:"Check the inner diameter.",mkBadHole:"Check the hole diameter.",
+        mkBadOrder:"Check the distances: hole 1 is farthest from where you blow, hole 3 is closest, and all holes are within the tube.",
+        mkBadGap:"The holes come out too close to each other - check the distances.",mkBadTemp:"Check the temperature.",
+        mkBadSeq:"The notes are out of order. Record them again: all closed first, then open the holes one by one from the bottom.",
+        mkBadOct:f=>`Fingering "${f}": the register 1 and 2 notes are not an octave apart. Record them again.`,
+        mkBadTonic:c=>`The base note is ${c} c off the calculation. Check the tube length and inner diameter.`,
+        mkBadHoleN:(f,c,k)=>`Fingering "${f}" is ${c} c off the calculation. Check the distance to hole ${k}.`,
+        mkPass:"Everything matches - ready to send.",
+        mkWho:"Name or Instagram (optional)",mkNote:"Comment: material, details (optional)",
+        mkSendB:"Send",mkSending:"Sending…",mkSent:"Thank you! Your data has been sent.",mkNoUrl:"Sending is not connected yet - this is a test version.",
+        mkNet:"Could not send. Check your connection and try again.",mkSrv:e=>`The server did not accept the data: ${e}`,
         howT:"How to mark",
         how:h=>[`Measure every distance <b>from where you blow into the tube</b> (the top end).`,
           `Hole distances are <b>to the near edge of the hole</b>, not to its centre.`,
@@ -473,6 +595,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   async function tunerStart(){
     const T=t();
     if(typeof KD!=="undefined"&&KD.on) kdStop();
+    if(MK.on) mkStop();
     try{
       if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) throw new Error("no media");
       TN.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:true}});
@@ -520,6 +643,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   async function kdStart(){
     const T=t();
     if(TN.on) tunerStop();
+    if(MK.on) mkStop();
     if(GEN.idx>=0) genStop();
     try{
       if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) throw new Error("no media");
@@ -601,6 +725,210 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   kdOpen(!!S.kd);
   window.__kamylRank=kdRank;
 
+  const save=()=>{try{localStorage.setItem("kamyl-lite",JSON.stringify(S));}catch(e){}};
+  const median=a=>{const s=[...a].sort((x,y)=>x-y);return s.length?s[s.length>>1]:0;};
+  const centsTxt=c=>(c>0.5?"+":c<-0.5?"−":"")+Math.abs(Math.round(c));
+  function blockOpen(id,key,open,onClose){
+    S[key]=open; $(id+"Body").hidden=!open; $(id+"Toggle").setAttribute("aria-expanded",open);
+    $(id).querySelector(".chev").textContent=open?"−":"+";
+    if(!open&&onClose) onClose();
+    save();
+  }
+
+  // ---------- play together: which kamyls share the most notes with the selected one
+  const pcs=tonic=>new Set(OFFS.map(o=>(tonic+o)%12));
+  function prRender(){
+    const T=t(), me=KEYS[S.key][1], A=pcs(me);
+    const rows=KEYS.map(([n,m],i)=>{
+      const B=pcs(m), common=[...A].filter(x=>B.has(x)).length;
+      const mine=[...A].filter(x=>!B.has(x)), their=[...B].filter(x=>!A.has(x));
+      // pair each note that differs with its neighbour a semitone away: B -> A#
+      const diff=mine.map(x=>{let j=their.findIndex(y=>(y-x+12)%12===1||(y-x+12)%12===11);if(j<0)j=0;const y=their.splice(j,1)[0];return NN[x]+" → "+NN[y];});
+      return {i,m,common,diff};
+    }).filter(r=>r.i!==S.key&&r.common>=5).sort((a,b)=>b.common-a.common||a.i-b.i);
+    $("prRes").innerHTML=rows.map(r=>`<button type="button" class="kd-r ${r.common===6?"best":""}" data-k="${r.i}"><span class="kd-l"><b>${T.kdKamyl} ${noteHtml(r.m)}</b><span class="kd-m">${T.prFit(r.common)} · ${T.prDiff}: ${r.diff.map(x=>`<span class="pr-diff">${x}</span>`).join(", ")}</span></span><span class="kd-p"></span></button>`).join("");
+  }
+  $("prRes").addEventListener("click",e=>{const b=e.target.closest(".kd-r");if(!b)return;S.key=+b.dataset.k;render();});
+  $("prToggle").addEventListener("click",()=>blockOpen("pr","pr",!S.pr));
+  blockOpen("pr","pr",!!S.pr);
+
+  // ---------- my kamyl: measurements of real instruments, checked by the tuner and the model
+  const MK_URL="";                                   // Google Apps Script web app address
+  const MK_HOLD=2000, MK_SD=12, MK_OCT=60, MK_ABS=100, MK_INT=50;
+  const MK_OPEN=[[],[1],[1,2],[1,2,3]];
+  const MK_DIMS=[["mkL","L"],["mkHole","hole"],["mkBore","bore"],["mkOuter","outer"],["mkE1","e1"],["mkE2","e2"],["mkE3","e3"],["mkT","temp"]];
+  const MK={on:false,ctx:null,stream:null,an:null,buf:null,raf:0,cur:-1,run:[],t0:0,lastF:0,wait:false,gap:false,lastM:null,busy:false,sentSig:null};
+  if(!S.mkd||typeof S.mkd!=="object") S.mkd={};
+  if(!Array.isArray(S.mkc)||S.mkc.length!==8) S.mkc=new Array(8).fill(null);
+  MK_DIMS.forEach(([id,k])=>{
+    const el=$(id); if(typeof S.mkd[k]==="number") el.value=String(S.mkd[k]).replace(".",S.lang==="ru"?",":".");
+    el.addEventListener("input",()=>{const v=parseFloat(el.value.replace(",","."));S.mkd[k]=isFinite(v)?v:null;save();mkCheck();});
+  });
+  const mkN=k=>typeof S.mkd[k]==="number"&&isFinite(S.mkd[k])?S.mkd[k]:null;
+  const mkFing=i=>t().tnFing[i];
+
+  // forward model: frequency of each fingering from the real dimensions (same physics as calc)
+  function mkModel(d){
+    const c=331.3+0.606*(d.temp===null?TEMP:d.temp), f=Le=>c*1000/(2*Le);
+    const te=(d.outer-d.bore)/2+0.75*d.hole, R=Math.pow(d.bore/d.hole,2), out=[f(d.L+BLOW+0.6133*d.bore/2)];
+    let prev=d.L;
+    [d.e1,d.e2,d.e3].forEach(e=>{const x=e+d.hole/2, g=Math.max(prev-x,1e-6), z=g/2*(Math.sqrt(1+4*te/g*R)-1); out.push(f(x+z+BLOW)); prev=x;});
+    return out;
+  }
+  function mkDimErr(d,T){
+    if(MK_DIMS.some(([id,k])=>k!=="temp"&&d[k]===null)) return T.mkNeedDims;
+    if(d.L<200||d.L>1200) return T.mkBadL;
+    if(d.bore<5||d.bore>40) return T.mkBadBore;
+    if(d.outer<=d.bore||d.outer>d.bore+20) return T.badOuter;
+    if(d.hole<2||d.hole>20) return T.mkBadHole;
+    if(!(d.e1+d.hole<d.L&&d.e2<d.e1&&d.e3<d.e2&&d.e3>0)) return T.mkBadOrder;
+    if(d.e1-d.e2<d.hole||d.e2-d.e3<d.hole) return T.mkBadGap;
+    if(d.temp!==null&&(d.temp<-10||d.temp>50)) return T.mkBadTemp;
+    return "";
+  }
+  function mkAnalyze(){
+    const T=t(), d={}; MK_DIMS.forEach(([id,k])=>d[k]=mkN(k));
+    const c=S.mkc, done=c.filter(Boolean).length, errs=[], dimErr=mkDimErr(d,T);
+    let rows=null, incomplete=false, hard=false; const bad=m=>{errs.push(m);hard=true;};
+    if(dimErr){ if(dimErr===T.mkNeedDims){errs.push(dimErr);incomplete=true;} else bad(dimErr); }
+    if(done<8){errs.push(T.mkNeedRec(8-done)); incomplete=true;}
+    if(done===8){
+      const r1=c.slice(0,4).map(x=>x.f), r2=c.slice(4).map(x=>x.f);
+      for(let i=1;i<4;i++) if(!(r1[i]>r1[i-1]&&r2[i]>r2[i-1])){bad(T.mkBadSeq);break;}
+      for(let i=0;i<4;i++) if(Math.abs(1200*Math.log2(r2[i]/r1[i])-1200)>MK_OCT) bad(T.mkBadOct(mkFing(i)));
+      if(!dimErr){
+        const mf=mkModel(d);
+        rows=[0,1,2,3].map(k=>{
+          const dev=k===0?1200*Math.log2(r1[0]/mf[0]):1200*Math.log2(r1[k]/r1[0])-1200*Math.log2(mf[k]/mf[0]);
+          const lim=k===0?MK_ABS:MK_INT, ok=Math.abs(dev)<=lim;
+          if(!ok) bad(k===0?T.mkBadTonic(centsTxt(dev)):T.mkBadHoleN(mkFing(k),centsTxt(dev),k));
+          return {k,meas:r1[k],model:mf[k],dev,ok};
+        });
+      }
+    }
+    return {pass:errs.length===0,errs,rows,d,incomplete,hard};
+  }
+  const mkNote=f=>{const m=69+12*Math.log2(f/A4), n=Math.round(m);return noteHtml(n)+" "+centsTxt((m-n)*100);};
+  const mkSig=()=>JSON.stringify([S.mkd,S.mkc]);
+  function mkCheck(){
+    const T=t(), a=mkAnalyze();
+    let h="";
+    if(a.rows){
+      h+=`<table class="mk-tab"><thead><tr>${T.mkTh.map(x=>`<th>${x}</th>`).join("")}</tr></thead><tbody>`+
+        a.rows.map(r=>`<tr><td>${mkFing(r.k)}</td><td>${mkNote(r.meas)}</td><td>${mkNote(r.model)}</td><td class="${r.ok?"ok":"bad"}">${centsTxt(r.dev)} ${T.cents} ${r.ok?"✓":"✗"}</td></tr>`).join("")+
+        `</tbody></table><p class="mk-note">${T.mkTol(MK_ABS,MK_INT)}</p>`;
+    }
+    if(a.pass) h+=`<div class="mk-box ok">${T.mkPass}</div>`;
+    else h+=`<div class="mk-box ${a.hard?"bad":""}"><ul>${a.errs.map(e=>`<li>${e}</li>`).join("")}</ul></div>`;
+    $("mkCheck").innerHTML=h;
+    const sent=MK.sentSig===mkSig();
+    $("mkSend").disabled=!a.pass||MK.busy||sent;
+    if(!sent&&!MK.busy&&$("mkMsg").dataset.k==="sent"){$("mkMsg").textContent="";$("mkMsg").dataset.k="";}
+    return a;
+  }
+  function mkGrid(){
+    const T=t(), box=$("mkGrid");
+    let h="";
+    for(let i=0;i<8;i++){
+      if(i%4===0) h+=`<span class="tn-reg" aria-label="${T.tnReg(i/4+1)}">${i/4+1}</span>`;
+      const f=i%4, cap=S.mkc[i], open=MK_OPEN[f];
+      const dots=[3,2,1].map(k=>`<i class="${open.includes(k)?"":"cl"}"></i>`).join("");
+      let note="–", v="";
+      if(cap){const m=69+12*Math.log2(cap.f/A4), n=Math.round(m); note=noteHtml(n); v=centsTxt((m-n)*100)+" "+T.cents;}
+      h+=`<button type="button" class="tn-t mk-c ${cap?"done":""} ${MK.on&&MK.cur===i?"rec":""}" data-c="${i}" aria-label="${T.tnReg(i/4+1|0)}, ${mkFing(f)}"><span class="fd" aria-hidden="true">${dots}</span><b>${note}</b><span class="mk-v">${v}</span><span class="mk-p"><i></i></span></button>`;
+    }
+    box.innerHTML=h;
+  }
+  function mkProg(p){const c=$("mkGrid").querySelector(`[data-c="${MK.cur}"] .mk-p i`); if(c) c.style.width=(p*100)+"%";}
+  function mkArm(i){
+    MK.cur=i; MK.run=[]; mkGrid();
+    const T=t(); $("mkTip").textContent=T.mkPlay((i>>2)+1,mkFing(i%4));
+  }
+  function mkNextFree(from){for(let k=1;k<=8;k++){const j=(from+k)%8;if(!S.mkc[j])return j;}return -1;}
+  function mkBtn(){const b=$("mkBtn");b.setAttribute("aria-pressed",MK.on);b.textContent=MK.on?t().mkOff:t().mkOn;}
+  async function mkStart(at){
+    const T=t();
+    if(TN.on) tunerStop(); if(KD.on) kdStop(); if(GEN.idx>=0) genStop();
+    try{
+      if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) throw new Error("no media");
+      const a=await kdAudio(); MK.stream=a.st; MK.ctx=a.ctx; MK.an=a.an;
+      if(MK.ctx.state==="suspended") await MK.ctx.resume();
+      MK.buf=new Float32Array(MK.an.fftSize); MK.on=true; MK.wait=false; MK.gap=false; MK.lastF=0;
+      const first=at!==undefined?at:(S.mkc.indexOf(null)>=0?S.mkc.indexOf(null):0);
+      mkBtn(); mkArm(first); mkLoop();
+    }catch(e){ mkStop(); $("mkTip").textContent=T.tnMic; }
+  }
+  function mkStop(){
+    MK.on=false; cancelAnimationFrame(MK.raf);
+    if(MK.stream) MK.stream.getTracks().forEach(tr=>tr.stop());
+    if(MK.ctx) MK.ctx.close().catch(()=>{});
+    MK.stream=MK.ctx=MK.an=null; MK.run=[]; $("mkLevel").style.width="0";
+    mkBtn(); mkGrid();
+  }
+  function mkLoop(){
+    if(!MK.on) return;
+    MK.raf=requestAnimationFrame(mkLoop);
+    MK.an.getFloatTimeDomainData(MK.buf);
+    let e=0; for(let i=0;i<MK.buf.length;i++) e+=MK.buf[i]*MK.buf[i];
+    const rms=Math.sqrt(e/MK.buf.length); $("mkLevel").style.width=(Math.max(0,Math.min(1,(Math.log10(rms+1e-9)+5)/4.3))*100)+"%";
+    const f=detect(MK.buf,MK.ctx.sampleRate), now=performance.now(), T=t();
+    if(f){
+      const m=69+12*Math.log2(f/A4), n=Math.round(m); MK.lastF=now;
+      $("mkNow").innerHTML=noteHtml(n); $("mkNowC").textContent=centsTxt((m-n)*100)+" "+T.cents;
+      if(MK.wait){ if(MK.gap||Math.abs(m-MK.lastM)>0.4) MK.wait=false; else return; }
+      if(MK.run.length&&Math.abs(m-median(MK.run.map(r=>r[1])))>0.3){ if(now-MK.t0>400) $("mkTip").textContent=T.mkWobble; MK.run=[]; }   // pitch jumped: start over
+      if(!MK.run.length) MK.t0=now;
+      MK.run.push([now,m]);
+      const p=Math.min(1,(now-MK.t0)/MK_HOLD); mkProg(p);
+      if(p>=1){
+        const vals=MK.run.filter(r=>r[0]-MK.t0>300).map(r=>r[1]), med=median(vals);
+        const sd=Math.sqrt(vals.reduce((s,v)=>s+(v-med)*(v-med),0)/Math.max(1,vals.length))*100;
+        if(sd<=MK_SD&&vals.length>=20){
+          S.mkc[MK.cur]={f:Math.round(A4*Math.pow(2,(med-69)/12)*100)/100,sd:Math.round(sd*10)/10};
+          save(); MK.lastM=med; MK.wait=true; MK.gap=false;
+          const nx=mkNextFree(MK.cur);
+          mkCheck();
+          if(nx<0){ mkStop(); $("mkTip").textContent=T.mkAllDone; }
+          else mkArm(nx);
+        } else {
+          MK.run=MK.run.slice(MK.run.length>>1); MK.t0=MK.run[0][0]; $("mkTip").textContent=T.mkWobble;
+        }
+      }
+    } else if(now-MK.lastF>150){
+      if(MK.wait) MK.gap=true;
+      if(now-MK.lastF>250&&MK.run.length){MK.run=[];mkProg(0);}
+    }
+  }
+  $("mkBtn").addEventListener("click",()=>{MK.on?mkStop():mkStart();});
+  $("mkReset").addEventListener("click",()=>{S.mkc=new Array(8).fill(null);save();if(MK.on)mkArm(0);else mkGrid();$("mkTip").textContent="";mkCheck();});
+  $("mkGrid").addEventListener("click",e=>{const b=e.target.closest(".mk-c");if(!b)return;const i=+b.dataset.c;if(MK.on){MK.wait=false;mkArm(i);}else mkStart(i);});
+  function mkSid(){
+    try{let s=localStorage.getItem("kamyl-sid");if(!s){s=Math.random().toString(36).slice(2,12);localStorage.setItem("kamyl-sid",s);}return s;}catch(e){return "";}
+  }
+  async function mkSend(){
+    const T=t(), a=mkCheck(), msg=$("mkMsg");
+    if(!a.pass||MK.busy) return;
+    if(!MK_URL){msg.textContent=T.mkNoUrl;msg.dataset.k="";return;}
+    const d=a.d, c=S.mkc, r0=a.rows[0].meas, m0=69+12*Math.log2(r0/A4);
+    const body={v:"0.10",lang:S.lang,sid:mkSid(),hp:$("mkHp").value,who:$("mkWho").value.trim().slice(0,80),note:$("mkNote").value.trim().slice(0,300),
+      L:d.L,bore:d.bore,outer:d.outer,hole:d.hole,e1:d.e1,e2:d.e2,e3:d.e3,temp:d.temp,
+      f:c.map(x=>x.f),sd:c.map(x=>x.sd),tonic:noteTxtA(Math.round(m0)),tonicC:Math.round((m0-Math.round(m0))*100),
+      dev:a.rows.map(r=>Math.round(r.dev))};
+    MK.busy=true; $("mkSend").disabled=true; $("mkSend").textContent=T.mkSending; msg.textContent="";
+    try{
+      const r=await fetch(MK_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)});
+      const j=await r.json();
+      if(j&&j.ok){MK.sentSig=mkSig();msg.textContent=T.mkSent;msg.dataset.k="sent";}
+      else {msg.textContent=T.mkSrv(j&&j.error||"?");msg.dataset.k="";}
+    }catch(e){msg.textContent=T.mkNet;msg.dataset.k="";}
+    MK.busy=false; $("mkSend").textContent=T.mkSendB; mkCheck();
+  }
+  $("mkSend").addEventListener("click",mkSend);
+  function mkRender(){ mkBtn(); mkGrid(); mkCheck(); }
+  $("mkToggle").addEventListener("click",()=>blockOpen("mk","mk",!S.mk,()=>{if(MK.on)mkStop();}));
+  blockOpen("mk","mk",!!S.mk,()=>{});
+  window.__kamylModel=mkModel;
+
 
   function render(){
     try{localStorage.setItem("kamyl-lite",JSON.stringify(S));}catch(e){}
@@ -624,6 +952,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     $("drawing").innerHTML=r.ok?drawing(r,T):"";
     if(GEN.idx>=0&&GEN.key!==S.key) genStop();
     if(typeof kdBtn==="function"){kdBtn(); kdAnalyze();}
+    prRender(); mkRender();
     tunerBtn(); renderTargets(TN.on?undefined:null);
     if(!TN.on){$("tnTip").textContent=T.tnIdle;$("tnNote").textContent="-";}
   }
