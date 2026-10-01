@@ -152,6 +152,13 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .kd-r .kd-m{font-size:12.5px;color:var(--muted);line-height:1.35}
 .kd-l{display:grid;gap:3px}
 .kd-r .kd-p{font-size:12px;font-weight:600;color:var(--accent)}
+.kd-fx{display:flex;flex-wrap:wrap;align-items:center;gap:5px;font-size:12px;color:var(--muted);margin-top:5px}
+.kd-x{font-weight:700;color:var(--warn);text-decoration:line-through;text-decoration-thickness:1.5px}
+.kd-x sup,.kd-fg sup{font-size:.65em}
+.kd-fg{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:7px;padding:3px 7px 3px 5px;background:var(--surface);color:var(--ink);font-weight:600}
+.kd-d{display:grid;gap:2px}
+.kd-d i{display:block;width:6px;height:6px;border-radius:50%;border:1.2px solid var(--ink);box-sizing:border-box}
+.kd-d i.cl{background:var(--ink)}
 .kd-msg{font-size:13.5px;color:var(--muted);text-align:center;margin:0}
 .drawing{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 12px 12px;display:grid;gap:6px}
 .drawing .label{padding-left:6px}
@@ -318,7 +325,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         kdTitle:"Подбор къамыла",kdSub:"подскажу тональность по мелодии",kdOn:"Слушать мелодию",kdOff:"Стоп",kdReset:"Сбросить",
         kdHint:"Лучше всего работает с одним голосом: пение, свист, камыль или другой инструмент соло. Музыка с аккомпанементом может сбить определение. Нажмите на вариант, чтобы выбрать эту тональность в калькуляторе.",
         kdWait:"Слушаю… нужно хотя бы 5-10 секунд мелодии.",kdIdle:"Включите микрофон и сыграйте или спойте мелодию.",
-        kdKamyl:"Къамыл в",kdFit:p=>`совпадает ${p}% мелодии`,kdMiss:n=>`нет нот: ${n}`,kdAll:"все ноты мелодии есть",kdTuneL:c=>`строй записи ${c} ц`,kdSel:"выбран",tnTitle:"Тюнер",tnSub:"проверка строя и все ноты камыля",tnTap:"Нажмите на ноту, чтобы услышать её",tnPlay:"слушать",tnStop:"стоп",tnOn:"Включить микрофон",tnOff:"Выключить",
+        kdKamyl:"Къамыл в",kdFit:p=>`совпадает ${p}% мелодии`,kdMiss:n=>`нет нот: ${n}`,kdAll:"все ноты мелодии есть",kdRepl:"нет на къамыле, замените:",kdOr:"или",kdAvoid:"избегать",kdTuneL:c=>`строй записи ${c} ц`,kdSel:"выбран",tnTitle:"Тюнер",tnSub:"проверка строя и все ноты камыля",tnTap:"Нажмите на ноту, чтобы услышать её",tnPlay:"слушать",tnStop:"стоп",tnOn:"Включить микрофон",tnOff:"Выключить",
         tnFing:["все закрыты","отв. 1","отв. 1-2","отв. 1-3","отв. 2"],tnReg:n=>`Регистр ${n}`,
         tnIdle:"Включите микрофон и сыграйте ноту.",
         tnListen:"Слушаю… сыграйте ноту ровно и не слишком громко.",
@@ -362,7 +369,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         kdTitle:"Find a kamyl",kdSub:"suggests the key from a melody",kdOn:"Listen to a melody",kdOff:"Stop",kdReset:"Reset",
         kdHint:"Works best with a single voice: singing, whistling, a kamyl or another solo instrument. Music with accompaniment can confuse it. Tap a suggestion to select that key in the calculator.",
         kdWait:"Listening… play at least 5-10 seconds of the melody.",kdIdle:"Turn on the microphone and play or sing a melody.",
-        kdKamyl:"Kamyl in",kdFit:p=>`matches ${p}% of the melody`,kdMiss:n=>`missing: ${n}`,kdAll:"every note of the melody fits",kdTuneL:c=>`recording tuning ${c} c`,kdSel:"selected",tnTitle:"Tuner",tnSub:"check the tuning, hear every note",tnTap:"Tap a note to hear it",tnPlay:"listen",tnStop:"stop",tnOn:"Turn on microphone",tnOff:"Turn off",
+        kdKamyl:"Kamyl in",kdFit:p=>`matches ${p}% of the melody`,kdMiss:n=>`missing: ${n}`,kdAll:"every note of the melody fits",kdRepl:"not on this kamyl, play instead:",kdOr:"or",kdAvoid:"avoid",kdTuneL:c=>`recording tuning ${c} c`,kdSel:"selected",tnTitle:"Tuner",tnSub:"check the tuning, hear every note",tnTap:"Tap a note to hear it",tnPlay:"listen",tnStop:"stop",tnOn:"Turn on microphone",tnOff:"Turn off",
         tnFing:["all closed","hole 1","holes 1-2","holes 1-3","hole 2"],tnReg:n=>`Register ${n}`,
         tnIdle:"Turn on the microphone and play a note.",
         tnListen:"Listening… play a steady note, not too loud.",
@@ -476,8 +483,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   const noteTxtA=m=>NN[((m%12)+12)%12]+(Math.floor(m/12)-1);
   // all notes of the kamyl, as in the fingering chart: 4 registers x 4 fingerings + 2 top notes
   const REGS=[0,12,19,24];
-  const allNotes=()=>{
-    const tn=KEYS[S.key][1], out=[];
+  const allNotes=()=>notesOf(KEYS[S.key][1]);
+  const notesOf=tn=>{
+    const out=[];
     REGS.forEach((r,ri)=>[0].concat(STEPS).forEach((st,fi)=>out.push({m:tn+r+st,reg:ri,f:fi})));
     out.push({m:tn+31,reg:4,f:4},{m:tn+32,reg:4,f:1});
     return out;
@@ -691,7 +699,18 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     if(fr.length<300){ $("kdRes").innerHTML=`<p class="kd-msg">${fr.length?T.kdWait:(KD.on?T.kdWait:T.kdIdle)}</p>`; return; }
     $("kdRes").innerHTML=best.slice(0,3).map((r,j)=>{
       const miss=r.miss.length?T.kdMiss(r.miss.join(", ")):T.kdAll;
-      return `<button type="button" class="kd-r ${j===0?"best":""}" data-k="${r.i}"><span class="kd-l"><b>${T.kdKamyl} ${noteHtml(KEYS[r.i][1])}</b><span class="kd-m">${T.kdFit(r.p)} · ${miss}</span></span><span class="kd-p">${r.i===S.key?T.kdSel:""}</span></button>`;
+      return `<button type="button" class="kd-r ${j===0?"best":""}" data-k="${r.i}"><span class="kd-l"><b>${T.kdKamyl} ${noteHtml(KEYS[r.i][1])}</b><span class="kd-m">${T.kdFit(r.p)} · ${miss}</span>${kdSubs(r)}</span><span class="kd-p">${r.i===S.key?T.kdSel:""}</span></button>`;
+    }).join("");
+  }
+  // notes the kamyl cannot play: crossed out, with the nearest notes it can play and their fingerings
+  function kdSubs(r){
+    if(!r.missM||!r.missM.length) return "";
+    const T=t(), ns=notesOf(KEYS[r.i][1]), seen=new Set();
+    const fg=n=>{const open=[[],[1],[1,2],[1,2,3],[2]][n.f];return `<span class="kd-fg" title="${T.tnFing[n.f]}"><span class="kd-d" aria-hidden="true">${[3,2,1].map(k=>`<i class="${open.includes(k)?"":"cl"}"></i>`).join("")}</span>${noteHtml(n.m)}</span>`;};
+    return r.missM.filter(x=>!seen.has(x.m)&&seen.add(x.m)).slice(0,3).map(x=>{
+      let lo=null,hi=null; ns.forEach(n=>{if(n.m<x.m&&(!lo||n.m>lo.m))lo=n; if(n.m>x.m&&(!hi||n.m<hi.m))hi=n;});
+      const subs=[lo,hi].filter(Boolean).map(fg).join(` ${T.kdOr} `);
+      return `<span class="kd-fx"><span class="kd-x" aria-label="${T.kdAvoid} ${noteTxtA(x.m)}">${noteHtml(x.m)}</span><span>${T.kdRepl}</span>${subs}</span>`;
     }).join("");
   }
   function kdRank(fr,off){
@@ -707,8 +726,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         const score=c/total*100-(c?hi/c:32)/32*3;
         if(!best||score>best.score) best={score,c,sh};
       });
-      const miss=[]; cnt.forEach((v,k)=>{if(!set.has(k+best.sh)&&v/total>0.03){const nm=NN[(((k+best.sh)%12)+12)%12]; if(miss.indexOf(nm)<0) miss.push(nm);}});
-      out.push({i,p:Math.round(best.c/total*100),score:best.score,miss});
+      const miss=[], missM=[]; cnt.forEach((v,k)=>{if(!set.has(k+best.sh)&&v/total>0.03){const nm=NN[(((k+best.sh)%12)+12)%12]; if(miss.indexOf(nm)<0) miss.push(nm); missM.push({m:k+best.sh,v});}});
+      missM.sort((a,b)=>b.v-a.v);
+      out.push({i,p:Math.round(best.c/total*100),score:best.score,miss,missM});
     });
     return out.sort((a,b)=>b.score-a.score);
   }
