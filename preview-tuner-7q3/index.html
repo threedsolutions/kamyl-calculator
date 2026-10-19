@@ -68,8 +68,51 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 
 .fields{display:grid;grid-template-columns:1fr 1fr;gap:10px 8px}
 .tech{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.tech button{font:600 14px var(--sans);height:42px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;cursor:pointer}
+.tech button{font:inherit;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:10px 12px;min-height:64px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;cursor:pointer}
+.tech button b{font-size:15px;font-weight:600}
+.tech button small{font-size:12.5px;line-height:1.3;color:var(--muted)}
 .tech button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.tech button[aria-pressed="true"] small{color:var(--bg);opacity:.75}
+.pt-type{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pt-type button{font:600 14px var(--sans);height:44px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;cursor:pointer}
+.pt-type button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.pt-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pt-key{display:grid;gap:1px}
+.pt-key b{font:600 22px var(--mono);letter-spacing:-.01em}
+.pt-key b sup{font-size:.55em}
+.pt-key small{font-size:12.5px;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;border-radius:999px;padding:5px 10px;white-space:nowrap}
+.pill.ok{color:var(--accent);background:var(--accent-soft)}
+.pill.wait{color:var(--warn);background:color-mix(in srgb,var(--warn) 12%,var(--surface))}
+.pt-fig{margin:0;display:grid;gap:8px;background:var(--bg);border-radius:12px;padding:14px 12px 12px}
+.pt-fig.dim .pt-bar{opacity:.6}
+.pt-ends{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)}
+.pt-bar{position:relative;height:16px;margin:6px 0}
+.pt-segs{position:absolute;inset:0;display:flex;border-radius:4px;overflow:hidden}
+.pt-segs i{display:block;height:100%;background:var(--accent)}
+.pt-segs i:nth-child(even){opacity:.78}
+.pt-hole{position:absolute;top:4px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--bg)}
+.pt-joint{position:absolute;top:-6px;bottom:-6px;width:2px;margin-left:-1px;background:var(--warn)}
+.pt-labs{display:flex;font:500 11.5px var(--mono);color:var(--muted)}
+.pt-labs span{text-align:center;white-space:nowrap}
+.pt-fig figcaption{font-size:11.5px;color:var(--muted);text-align:center}
+.pt-dl{display:flex;align-items:center;justify-content:center;gap:8px;height:52px;border-radius:12px;background:var(--accent);color:var(--accent-ink);font-weight:600;font-size:15.5px;text-decoration:none}
+.pt-dl[aria-disabled="true"]{background:var(--line);color:var(--muted);pointer-events:none}
+.pt-sub{font-size:12.5px;color:var(--muted);text-align:center;margin:-8px 0 0}
+.pt-set{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.pt-set h3{margin:0;padding:11px 14px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+.pt-set div{display:flex;justify-content:space-between;gap:10px;padding:9px 14px;border-top:1px solid var(--line);font-size:14px}
+.pt-set div span:first-child{color:var(--muted)}
+.pt-set div span:last-child{font-family:var(--mono);text-align:right}
+.pt-asm{background:var(--accent);color:var(--accent-ink);border-radius:12px;padding:14px 16px;display:grid;gap:8px}
+.pt-asm h3{margin:0;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.pt-asm ol{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px;line-height:1.45}
+.pt-msg{display:grid;gap:6px;border:1px solid color-mix(in srgb,var(--warn) 30%,var(--line));background:color-mix(in srgb,var(--warn) 6%,var(--surface));border-radius:12px;padding:12px 14px}
+.pt-msg b{font-size:14.5px;font-weight:600}
+.pt-msg span{font-size:14px;line-height:1.45;color:var(--muted)}
+.pt-help{display:flex;align-items:center;justify-content:center;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-weight:600;font-size:14px;text-decoration:none}
+#ptMain{display:grid;gap:16px}
+.pt-foot{margin:0;font-size:12.5px;color:var(--muted);line-height:1.45}
 .tech-note{font-size:12.5px;color:var(--muted);line-height:1.4;margin:0}
 .field .in.auto{background:transparent;border-style:dashed}
 .field .in.auto output{font:500 16px var(--mono);color:var(--muted);padding:10px;flex:1}
@@ -207,12 +250,24 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 <body>
 <div class="wrap">
   <header>
-    <h1><span data-i="h1">Kamyl App</span> <span class="ver">v0.10 beta</span></h1>
+    <h1><span data-i="h1">Kamyl App</span> <span class="ver">v0.11 beta</span></h1>
     <div class="lang" role="group" aria-label="Язык / Language">
       <button type="button" id="ru">RU</button>
       <button type="button" id="en">EN</button>
     </div>
   </header>
+
+  <section>
+    <span class="label" id="techT" data-i="techT">Звукоизвлечение</span>
+    <div class="tech" role="group" aria-labelledby="techT">
+      <button type="button" id="techTeeth"><b data-i="techTeeth">Зубное</b><small data-i="techTeethI">камыль, ачарпын, сыбызгы</small></button>
+      <button type="button" id="techLip"><b data-i="techLip">Губное</b><small data-i="techLipI">уадындз</small></button>
+    </div>
+    <div class="fields one" id="techBox">
+      <div class="field"><label for="teethC" data-i="techC">Поправка для зубного звукоизвлечения</label><div class="in"><input id="teethC" type="text" inputmode="decimal"><span class="u" data-i="cents">ц</span></div></div>
+    </div>
+    <p class="tech-note" id="techNote"></p>
+  </section>
 
   <section>
     <span class="label" data-i="key">Тональность</span>
@@ -252,7 +307,18 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     </div>
   </section>
 
-  <section class="tuner" id="mk">
+  <section class="tuner" id="pt">
+    <button type="button" class="tn-toggle" id="ptToggle" aria-expanded="false" aria-controls="ptBody"><span class="tn-tt"><span class="label" data-i="ptTitle">Печать на 3D-принтере</span><small data-i="ptSub">файлы STL для выбранного камыля</small></span><span class="chev" aria-hidden="true">+</span></button>
+    <div class="tn-body" id="ptBody" hidden>
+      <div class="pt-type" role="group" id="ptType">
+        <button type="button" data-t="trad" data-i="ptTrad">Традиционный</button>
+        <button type="button" data-t="whistle" data-i="ptWhistle">Вистл</button>
+      </div>
+      <div id="ptMain"></div>
+    </div>
+  </section>
+
+  <section class="tuner" id="mk" hidden>
     <button type="button" class="tn-toggle" id="mkToggle" aria-expanded="false" aria-controls="mkBody"><span class="tn-tt"><span class="label" data-i="mkTitle">Мой камыль</span><small data-i="mkSub"></small></span><span class="chev" aria-hidden="true">+</span></button>
     <div class="tn-body" id="mkBody" hidden>
     <p class="mk-intro" data-i="mkIntro"></p>
@@ -300,18 +366,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
       <div class="field"><label for="wallOut" data-i="wall">Толщина стенки (считается сама)</label><div class="in auto"><output id="wallOut" for="bore outer"></output><span class="u" data-i="mm">мм</span></div></div>
       <div class="field"><label for="hole" data-i="hole">Диаметр отверстий</label><div class="in"><input id="hole" type="text" inputmode="decimal"><span class="u" data-i="mm">мм</span></div></div>
     </div>
-  </section>
-
-  <section>
-    <span class="label" data-i="techT">Техника игры</span>
-    <div class="tech" role="group">
-      <button type="button" id="techLip" data-i="techLip">Губная</button>
-      <button type="button" id="techTeeth" data-i="techTeeth">Зубная</button>
-    </div>
-    <div class="fields one" id="techBox">
-      <div class="field"><label for="teethC" data-i="techC">Поправка для зубной техники</label><div class="in"><input id="teethC" type="text" inputmode="decimal"><span class="u" data-i="cents">ц</span></div></div>
-    </div>
-    <p class="tech-note" id="techNote"></p>
   </section>
 
   <div class="result" id="result" aria-live="polite"></div>
@@ -377,9 +431,19 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
           `Для отверстий указано расстояние <b>до ближнего края отверстия</b>, а не до центра.`,
           `Сверлите так, чтобы <b>ближний край попал точно на отметку</b>: центр сверла ставьте на ${h} мм ниже отметки (половина диаметра отверстия).`,
           `Трубку отпилите на 20-30 мм длиннее и подпиливайте низ по тюнеру, пока тоника (самая низкая нота) не попадёт в ноту.`],
-        techT:"Техника игры",techLip:"Губная",techTeeth:"Зубная",techC:"Поправка для зубной техники",
-        techNoteLip:"Расчёт для игры губами.",
-        techNoteTeeth:c=>`При зубной технике камыль звучит ниже. Размеры рассчитаны так, будто тональность на ${c} ц выше: трубка и все отверстия немного ближе к вдуву. Поправка 55 ц - по замерам одного камыля, у вас она может отличаться: проверьте по тюнеру и при необходимости измените.`,
+        techT:"Звукоизвлечение",techLip:"Губное",techTeeth:"Зубное",techLipI:"уадындз",techTeethI:"камыль, ачарпын, сыбызгы",techC:"Поправка для зубного звукоизвлечения",
+        techNoteLip:"",
+        techNoteTeeth:c=>`При зубном звукоизвлечении камыль звучит ниже, поэтому размеры рассчитаны так, будто тональность на ${c} ц выше. Поправка 55 ц - по замерам одного камыля, у вас она может отличаться: проверьте по тюнеру.`,
+        ptTitle:"Печать на 3D-принтере",ptSub:"файлы STL для выбранного камыля",ptTrad:"Традиционный",ptWhistle:"Вистл",
+        ptFrom:"тональность и звукоизвлечение - из выбора выше",ptOk:"Проверено",ptWait:"Ждёт проверки",ptNone:"Пока нет файлов",
+        ptTechW:{teeth:"зубное",lip:"губное"},ptEnds:["вдув","низ"],ptCap:"метки - стыки частей; длины без шипа, мм",
+        ptDl:s=>`Скачать архив · ${s}`,ptDlSub:n=>`${n} части в формате STL, каждая отдельным файлом`,ptDlNo:"Файлы после проверки",
+        ptSetT:"Настройки печати",ptSet:[["Пластик, сопло","PLA · 0,4"],["Слой","0,16 мм"],["Стенки","4"],["Поддержки","включены"],["Кайма","5 мм, снаружи"],["Положение","стоя, гнездом вниз"]],
+        ptAsmT:"Как собрать",ptAsm:["Соберите части, как показано на схеме сверху.","Если посадка не плотная, обязательно добавьте клей или фум-ленту."],
+        ptFoot:"Проверено на Bambu Lab A1 mini с этими настройками. На другом принтере посадка шипа может отличаться.",
+        ptWaitT:"Этот камыль ещё не напечатан",ptWaitX:"Размеры рассчитаны, но строй ещё не проверен по тюнеру. Файлы откроются, когда кто-то напечатает его и пришлёт замеры.",
+        ptNoneT:"Для этого варианта файлов пока нет",ptNoneX:"Файлы появляются только после того, как камыль напечатан и проверен по тюнеру.",
+        ptHelp:"Хочу помочь проверить",ptDone:l=>`Проверенные сейчас: ${l}.`,
         bad:"Проверьте размеры трубки"},
     en:{h1:"Kamyl App",key:"Key",tube:"Tube",bore:"Inner tube diameter",outer:"Outer tube diameter",wall:"Wall thickness (calculated)",hole:"Hole diameter",badOuter:"The outer diameter must be larger than the inner one",mm:"mm",
         len:"Tube length",h:["Hole 1","Hole 2","Hole 3"],draw:"Drawing",top:"top",bottom:"bottom",scaleNote:"length to scale, mm",
@@ -424,12 +488,22 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
           `Hole distances are <b>to the near edge of the hole</b>, not to its centre.`,
           `Drill so that <b>the near edge lands exactly on the mark</b>: put the drill centre ${h} mm below the mark (half the hole diameter).`,
           `Cut the tube 20-30 mm long and trim the bottom to a tuner until the tonic (the lowest note) is in tune.`],
-        techT:"Playing technique",techLip:"Lips",techTeeth:"Teeth",techC:"Teeth technique correction",
-        techNoteLip:"Calculated for playing with the lips.",
-        techNoteTeeth:c=>`With the teeth technique the kamyl sounds lower. The dimensions are calculated as if the key were ${c} c higher: the tube and all holes are slightly closer to where you blow. The 55 c correction comes from measuring one kamyl, yours may differ: check with the tuner and change it if needed.`,
+        techT:"Sound production",techLip:"Lips",techTeeth:"Teeth",techLipI:"uadyndz",techTeethI:"kamyl, acharpyn, sybyzgy",techC:"Teeth correction",
+        techNoteLip:"",
+        techNoteTeeth:c=>`Played with the teeth, the kamyl sounds lower, so the dimensions are calculated as if the key were ${c} c higher. The 55 c correction comes from measuring one kamyl, yours may differ: check with the tuner.`,
+        ptTitle:"3D printing",ptSub:"STL files for the selected kamyl",ptTrad:"Traditional",ptWhistle:"Whistle",
+        ptFrom:"key and sound production - from your choice above",ptOk:"Tested",ptWait:"Awaiting test",ptNone:"No files yet",
+        ptTechW:{teeth:"teeth",lip:"lips"},ptEnds:["blowing end","bottom"],ptCap:"marks are the joints; lengths without the tenon, mm",
+        ptDl:s=>`Download archive · ${s}`,ptDlSub:n=>`${n} parts as STL, one file each`,ptDlNo:"Files after testing",
+        ptSetT:"Print settings",ptSet:[["Material, nozzle","PLA · 0.4"],["Layer","0.16 mm"],["Walls","4"],["Supports","on"],["Brim","5 mm, outside"],["Orientation","upright, socket down"]],
+        ptAsmT:"Assembly",ptAsm:["Assemble the parts as shown in the diagram above.","If a joint is loose, be sure to add glue or PTFE tape."],
+        ptFoot:"Tested on a Bambu Lab A1 mini with these settings. On another printer the joint fit may differ.",
+        ptWaitT:"This kamyl has not been printed yet",ptWaitX:"The dimensions are calculated, but the tuning has not been checked with a tuner yet. The files open once someone prints it and sends the measurements.",
+        ptNoneT:"No files for this option yet",ptNoneX:"Files appear only after a kamyl has been printed and checked with a tuner.",
+        ptHelp:"I want to help test it",ptDone:l=>`Tested so far: ${l}.`,
         bad:"Check the tube dimensions"}
   };
-  const DEF={lang:"ru",key:5,bore:14,outer:16,hole:8,tuner:false,tech:"lip",teethC:55};
+  const DEF={lang:"ru",key:5,bore:14,outer:16,hole:8,tuner:false,tech:"lip",teethC:55,ptype:"trad"};
   let S=Object.assign({},DEF);
   try{const s=JSON.parse(localStorage.getItem("kamyl-lite")||"null");if(s)S=Object.assign(S,s);}catch(e){}
   if(!(S.outer>0)) S.outer=S.bore+2*(S.wall>0?S.wall:1);
@@ -978,6 +1052,48 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   window.__kamylModel=mkModel;
 
 
+  // ---------- 3D printing: ready STL archives, only for kamyls checked with a tuner
+  // len - tube length with trim, mm from the blowing end; joints and hole centres the same way
+  const PRINTS={
+    "whistle|62|teeth":{ok:true,len:521.3,joints:[152,290,406],holes:[228.9,265.5,306.1,356.9,378.0,432.0],zip:"../stl/kamyl-D4-whistle-teeth.zip",kb:140},
+    "trad|59|teeth":{ok:false,len:629.4,joints:[164,319,474],holes:[440.7,503.3,575.9]}
+  };
+  const IG="https://www.instagram.com/circassian_flute/";
+  function ptRender(){
+    const T=t(), m=KEYS[S.key][1], typ=S.ptype==="whistle"?"whistle":"trad", P=PRINTS[typ+"|"+m+"|"+S.tech];
+    [...$("ptType").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===typ));
+    const pill=P?(P.ok?`<span class="pill ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>${T.ptOk}</span>`:`<span class="pill wait">${T.ptWait}</span>`):`<span class="pill wait">${T.ptNone}</span>`;
+    let h=`<div class="pt-head"><div class="pt-key"><b>${noteHtml(m)} · ${T.ptTechW[S.tech]}</b><small>${T.ptFrom}</small></div>${pill}</div>`;
+    if(P){
+      const pct=x=>(100*x/P.len).toFixed(2)+"%", B=[0].concat(P.joints,[P.len]), segs=[];
+      for(let i=0;i<B.length-1;i++) segs.push({w:pct(B[i+1]-B[i]),n:i+1,l:Math.round(B[i+1]-B[i])});
+      h+=`<figure class="pt-fig${P.ok?"":" dim"}"><div class="pt-ends"><span>${T.ptEnds[0]}</span><span>${T.ptEnds[1]}</span></div>`+
+        `<div class="pt-bar"><div class="pt-segs">${segs.map(s=>`<i style="width:${s.w}"></i>`).join("")}</div>`+
+        P.holes.map(x=>`<span class="pt-hole" style="left:${pct(x)}"></span>`).join("")+
+        P.joints.map(x=>`<span class="pt-joint" style="left:${pct(x)}"></span>`).join("")+`</div>`+
+        `<div class="pt-labs">${segs.map(s=>`<span style="width:${s.w}">${s.n} · ${s.l}</span>`).join("")}</div>`+
+        `<figcaption>${T.ptCap}</figcaption></figure>`;
+    }
+    if(P&&P.ok){
+      const n=P.joints.length+1, size=S.lang==="ru"?`${P.kb} КБ`:`${P.kb} KB`;
+      h+=`<a class="pt-dl" href="${P.zip}" download><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10.5l5 5 5-5"/><path d="M5 19.5h14"/></svg>${T.ptDl(size)}</a>`+
+        `<p class="pt-sub">${T.ptDlSub(n)}</p>`+
+        `<div class="pt-set"><h3>${T.ptSetT}</h3>${T.ptSet.map(([k,v])=>`<div><span>${k}</span><span>${v}</span></div>`).join("")}</div>`+
+        `<div class="pt-asm"><h3>${T.ptAsmT}</h3><ol>${T.ptAsm.map(x=>`<li>${x}</li>`).join("")}</ol></div>`+
+        `<p class="pt-foot">${T.ptFoot}</p>`;
+    } else {
+      const done=Object.entries(PRINTS).filter(([k,v])=>v.ok).map(([k])=>{const [ty,mm,te]=k.split("|");return `${noteHtml(+mm)} ${ty==="whistle"?T.ptWhistle.toLowerCase():T.ptTrad.toLowerCase()}, ${T.ptTechW[te]}`;}).join("; ");
+      h+=`<div class="pt-msg"><b>${P?T.ptWaitT:T.ptNoneT}</b><span>${P?T.ptWaitX:T.ptNoneX}</span></div>`+
+        `<a class="pt-dl" aria-disabled="true" role="link" aria-label="${T.ptDlNo}">${T.ptDlNo}</a>`+
+        `<a class="pt-help" href="${IG}" target="_blank" rel="noopener">${T.ptHelp}</a>`+
+        (done?`<p class="pt-foot">${T.ptDone(done)}</p>`:"");
+    }
+    $("ptMain").innerHTML=h;
+  }
+  $("ptType").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S.ptype=b.dataset.t;save();ptRender();});
+  $("ptToggle").addEventListener("click",()=>blockOpen("pt","pt",!S.pt));
+  blockOpen("pt","pt",!!S.pt);
+
   function render(){
     try{localStorage.setItem("kamyl-lite",JSON.stringify(S));}catch(e){}
     const T=t();
@@ -988,6 +1104,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
     $("techLip").setAttribute("aria-pressed",S.tech!=="teeth");$("techTeeth").setAttribute("aria-pressed",S.tech==="teeth");
     $("techBox").hidden=S.tech!=="teeth";
     $("techNote").textContent=S.tech==="teeth"?T.techNoteTeeth(String(S.teethC).replace(".",S.lang==="ru"?",":".")):T.techNoteLip;
+    $("techNote").hidden=S.tech!=="teeth";
+    ptRender();
     const r=calc(KEYS[S.key][1]);
     const v=x=>r.ok?`${Math.round(x)}<small>${T.mm}</small>`:"-";
     $("result").innerHTML=
