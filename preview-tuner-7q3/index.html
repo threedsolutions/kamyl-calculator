@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Kamyl App: калькулятор къамыля для 12 тональностей, тюнер, подбор къамыла по мелодии. Kamyl calculator, tuner and kamyl finder.">
+<meta name="description" content="Kamyl App: калькулятор камыля для 12 тональностей, тюнер, подбор камыля по мелодии. Kamyl calculator, tuner and kamyl finder.">
 <meta property="og:title" content="Kamyl App">
-<meta property="og:description" content="Калькулятор къамыля для 12 тональностей, тюнер и подбор къамыла.">
+<meta property="og:description" content="Калькулятор камыля для 12 тональностей, тюнер и подбор камыля.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://threedsolutions.github.io/kamyl-calculator/">
 <meta property="og:image" content="https://threedsolutions.github.io/kamyl-calculator/og.png?v=5">
@@ -234,7 +234,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   </section>
 
   <section class="tuner" id="kd">
-    <button type="button" class="tn-toggle" id="kdToggle" aria-expanded="false" aria-controls="kdBody"><span class="tn-tt"><span class="label" data-i="kdTitle">Подбор къамыла</span><small data-i="kdSub">подскажу тональность по мелодии</small></span><span class="chev" aria-hidden="true">+</span></button>
+    <button type="button" class="tn-toggle" id="kdToggle" aria-expanded="false" aria-controls="kdBody"><span class="tn-tt"><span class="label" data-i="kdTitle">Подбор камыля</span><small data-i="kdSub">подскажу тональность по мелодии</small></span><span class="chev" aria-hidden="true">+</span></button>
     <div class="tn-body" id="kdBody" hidden>
     <div class="tn-head"><button type="button" class="tn-btn" id="kdBtn" aria-pressed="false">Слушать мелодию</button><button type="button" class="kd-reset" id="kdReset" data-i="kdReset">Сбросить</button><span class="kd-time" id="kdTime"></span></div>
     <div class="kd-now"><span id="kdNow">-</span><small id="kdTune"></small></div>
@@ -253,7 +253,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
   </section>
 
   <section class="tuner" id="mk">
-    <button type="button" class="tn-toggle" id="mkToggle" aria-expanded="false" aria-controls="mkBody"><span class="tn-tt"><span class="label" data-i="mkTitle">Мой къамыл</span><small data-i="mkSub"></small></span><span class="chev" aria-hidden="true">+</span></button>
+    <button type="button" class="tn-toggle" id="mkToggle" aria-expanded="false" aria-controls="mkBody"><span class="tn-tt"><span class="label" data-i="mkTitle">Мой камыль</span><small data-i="mkSub"></small></span><span class="chev" aria-hidden="true">+</span></button>
     <div class="tn-body" id="mkBody" hidden>
     <p class="mk-intro" data-i="mkIntro"></p>
     <div class="mk-step">
@@ -338,20 +338,20 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
         len:"Длина трубки",h:["Отверстие 1","Отверстие 2","Отверстие 3"],draw:"Чертёж",top:"верх",bottom:"низ",scaleNote:"длина в масштабе, мм",
         fb:"Это бета-версия, значения могут немного быть неточными. Буду рад фидбеку, который поможет улучшить точность - пишите в Instagram ",
 
-        kdTitle:"Подбор къамыла",kdSub:"подскажу тональность по мелодии",kdOn:"Слушать мелодию",kdOff:"Стоп",kdReset:"Сбросить",
+        kdTitle:"Подбор камыля",kdSub:"подскажу тональность по мелодии",kdOn:"Слушать мелодию",kdOff:"Стоп",kdReset:"Сбросить",
         kdHint:"Лучше всего работает с одним голосом: пение, свист, камыль или другой инструмент соло. Музыка с аккомпанементом может сбить определение. Нажмите на вариант, чтобы выбрать эту тональность в калькуляторе.",
         kdWait:"Слушаю… нужно хотя бы 5-10 секунд мелодии.",kdIdle:"Включите микрофон и сыграйте или спойте мелодию.",
-        kdKamyl:"Къамыл в",kdFit:p=>`совпадает ${p}% мелодии`,kdMiss:n=>`нет нот: ${n}`,kdAll:"все ноты мелодии есть",kdRepl:"нет на къамыле, замените:",kdOr:"или",kdAvoid:"избегать",kdTuneL:c=>`строй записи ${c} ц`,kdSel:"выбран",tnTitle:"Тюнер",tnSub:"проверка строя и все ноты камыля",tnTap:"Нажмите на ноту, чтобы услышать её",tnPlay:"слушать",tnStop:"стоп",tnOn:"Включить микрофон",tnOff:"Выключить",
+        kdKamyl:"Камыль в",kdFit:p=>`совпадает ${p}% мелодии`,kdMiss:n=>`нет нот: ${n}`,kdAll:"все ноты мелодии есть",kdRepl:"нет на камыле, замените:",kdOr:"или",kdAvoid:"избегать",kdTuneL:c=>`строй записи ${c} ц`,kdSel:"выбран",tnTitle:"Тюнер",tnSub:"проверка строя и все ноты камыля",tnTap:"Нажмите на ноту, чтобы услышать её",tnPlay:"слушать",tnStop:"стоп",tnOn:"Включить микрофон",tnOff:"Выключить",
         tnFing:["все закрыты","отв. 1","отв. 1-2","отв. 1-3","отв. 2"],tnReg:n=>`Регистр ${n}`,
         tnIdle:"Включите микрофон и сыграйте ноту.",
         tnListen:"Слушаю… сыграйте ноту ровно и не слишком громко.",
         tnMic:"Нет доступа к микрофону. Разрешите его в настройках браузера. Во встроенном браузере Telegram или Instagram микрофон может не работать - откройте сайт в Chrome или Safari.",
         tnHint:"Нажмите на ноту, чтобы услышать её. Тюнер сам подсветит ноту, которую вы играете.",
         cents:"ц",
-        prTitle:"Игра вместе",prSub:"какие къамылы сочетаются с выбранным",prFit:n=>`${n} из 7 нот общие`,prDiff:"отличается",
-        prHint:"Такой же къамыл совпадает по всем 7 нотам - можно играть в унисон. У остальных тональностей общих нот 4 и меньше. Для игры вместе настройте оба къамыла по одному строю (A = 440 Гц). Нажмите на вариант, чтобы выбрать его в калькуляторе.",
-        mkTitle:"Мой къамыл",mkSub:"поделиться замерами своего инструмента",
-        mkIntro:"Если ваш къамыл хорошо строит, поделитесь его размерами - так расчёт станет точнее. Приложение проверит, что ноты сыграны ровно и что размеры сходятся со звуком.",
+        prTitle:"Игра вместе",prSub:"какие камыли сочетаются с выбранным",prFit:n=>`${n} из 7 нот общие`,prDiff:"отличается",
+        prHint:"Такой же камыль совпадает по всем 7 нотам - можно играть в унисон. У остальных тональностей общих нот 4 и меньше. Для игры вместе настройте оба камыля по одному строю (A = 440 Гц). Нажмите на вариант, чтобы выбрать его в калькуляторе.",
+        mkTitle:"Мой камыль",mkSub:"поделиться замерами своего инструмента",
+        mkIntro:"Если ваш камыль хорошо строит, поделитесь его размерами - так расчёт станет точнее. Приложение проверит, что ноты сыграны ровно и что размеры сходятся со звуком.",
         mkS1:"1. Размеры",mkS2:"2. Запись нот",mkS3:"3. Проверка и отправка",
         mkL:"Длина трубки",mkE1:"Отверстие 1 (нижнее)",mkE2:"Отверстие 2",mkE3:"Отверстие 3 (верхнее)",mkT:"Температура воздуха",mkC:"°C",
         mkDimNote:"Все расстояния - от места, куда задувается воздух: до нижнего среза трубки и до ближнего края каждого отверстия. Температуру можно не указывать.",
@@ -379,7 +379,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
           `Трубку отпилите на 20-30 мм длиннее и подпиливайте низ по тюнеру, пока тоника (самая низкая нота) не попадёт в ноту.`],
         techT:"Техника игры",techLip:"Губная",techTeeth:"Зубная",techC:"Поправка для зубной техники",
         techNoteLip:"Расчёт для игры губами.",
-        techNoteTeeth:c=>`При зубной технике къамыл звучит ниже. Размеры рассчитаны так, будто тональность на ${c} ц выше: трубка и все отверстия немного ближе к вдуву. Поправка 55 ц - по замерам одного къамыла, у вас она может отличаться: проверьте по тюнеру и при необходимости измените.`,
+        techNoteTeeth:c=>`При зубной технике камыль звучит ниже. Размеры рассчитаны так, будто тональность на ${c} ц выше: трубка и все отверстия немного ближе к вдуву. Поправка 55 ц - по замерам одного камыля, у вас она может отличаться: проверьте по тюнеру и при необходимости измените.`,
         bad:"Проверьте размеры трубки"},
     en:{h1:"Kamyl App",key:"Key",tube:"Tube",bore:"Inner tube diameter",outer:"Outer tube diameter",wall:"Wall thickness (calculated)",hole:"Hole diameter",badOuter:"The outer diameter must be larger than the inner one",mm:"mm",
         len:"Tube length",h:["Hole 1","Hole 2","Hole 3"],draw:"Drawing",top:"top",bottom:"bottom",scaleNote:"length to scale, mm",
